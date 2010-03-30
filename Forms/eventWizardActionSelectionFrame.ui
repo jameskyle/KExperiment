@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>eventWizardActionSelectionFrame</class>
+ <widget class="QFrame" name="eventWizardActionSelectionFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="frameShape">
+   <enum>QFrame::StyledPanel</enum>
+  </property>
+  <property name="frameShadow">
+   <enum>QFrame::Raised</enum>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="instructionsLabel">
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="text">
+      <string>Select the Actions you'd like to add to the event. An event with no actions will merely pause for the specified duration.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="nameLabel">
+         <property name="toolTip">
+          <string>The Event name specified in the previous dialog.</string>
+         </property>
+         <property name="text">
+          <string>Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="eventName">
+         <property name="toolTip">
+          <string>The Event name specified in the previous dialog.</string>
+         </property>
+         <property name="text">
+          <string>Event Name</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="durationLabel">
+         <property name="toolTip">
+          <string>Total Event duration. This is the sum of all action events.</string>
+         </property>
+         <property name="text">
+          <string>Duration:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="eventDurationLabel">
+         <property name="toolTip">
+          <string>Total Event duration. This is the sum of all action events.</string>
+         </property>
+         <property name="text">
+          <string>00:00.00</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="labelLabel">
+         <property name="toolTip">
+          <string>The Event label specified in the previous dialog.</string>
+         </property>
+         <property name="text">
+          <string>Label:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="eventLabel">
+         <property name="toolTip">
+          <string>The Event label specified in the previous dialog.</string>
+         </property>
+         <property name="text">
+          <string>Event Label</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="actionDurationLabel">
+         <property name="toolTip">
+          <string>The action duration. In the case of video or audio actions, if 
+the action duration is less than the duration of the audio or 
+video file it is truncated. Maximum duration is bounded by 
+the duration of video and audio files.</string>
+         </property>
+         <property name="text">
+          <string>Action Duration</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="actionDurationSpinBox">
+         <property name="toolTip">
+          <string>The action duration. In the case of video or audio actions, if 
+the action duration is less than the duration of the audio or 
+video file it is truncated. Maximum duration is bounded by 
+the duration of video and audio files.</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="actionsLabel">
+       <property name="toolTip">
+        <string>A list of actions available in the Action Library.
+This includes basic, generic actions as well as custom actions
+created by users. All actions can be further customized when 
+used. For example, you may wish to add a generic Video action 
+and add a specific video later.</string>
+       </property>
+       <property name="text">
+        <string>Actions:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableView" name="tableView">
+       <property name="toolTip">
+        <string>A list of actions available in the Action Library.
+This includes basic, generic actions as well as custom actions
+created by users. All actions can be further customized when 
+used. For example, you may wish to add a generic Video action 
+and add a specific video later.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>839</width>
+    <height>762</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_10">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="experimentIcon">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../Resources/icons.qrc">:/other/images/other/Nuvola_apps_edu_science.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="categoryNameLabel">
+              <property name="text">
+               <string>Category</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="experimentNameLabel">
+              <property name="text">
+               <string>Experiment Name</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="experimentDuration">
+              <property name="text">
+               <string>0:15.25</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="eventNameLabel">
+              <property name="text">
+               <string>Event Or Trial Name</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="trialDuration">
+              <property name="text">
+               <string>0:15.25</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="descriptionLabel">
+            <property name="text">
+             <string>Description</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>388</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="experimentDescriptionTextEdit">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QLabel" name="instructionLabel">
+            <property name="text">
+             <string>Instructions</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>388</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="experimentInstructionTextEdit">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QLabel" name="progressLabel">
+          <property name="text">
+           <string>Progress</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QProgressBar" name="progressBar">
+          <property name="value">
+           <number>24</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>839</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionToggleExperimentDock"/>
+    <addaction name="actionToggleTrialDock"/>
+    <addaction name="actionToggleEventDock"/>
+    <addaction name="actionToggleViewer"/>
+   </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNewExperiment"/>
+    <addaction name="actionNewTrial"/>
+    <addaction name="actionNewEvent"/>
+    <addaction name="actionNewAction"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionEditExperiment"/>
+    <addaction name="actionEditTrial"/>
+    <addaction name="actionEditEvent"/>
+    <addaction name="actionEditAction"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionPreviousEvent"/>
+   <addaction name="actionRunExperiment"/>
+   <addaction name="actionPauseExperiment"/>
+   <addaction name="actionStopExperiment"/>
+   <addaction name="actionNextEvent"/>
+  </widget>
+  <widget class="QDockWidget" name="eventDock">
+   <property name="minimumSize">
+    <size>
+     <width>150</width>
+     <height>130</height>
+    </size>
+   </property>
+   <property name="windowTitle">
+    <string>Events</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_9">
+    <layout class="QVBoxLayout" name="verticalLayout_7">
+     <item>
+      <widget class="QListView" name="EventListView"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="experimentDock">
+   <property name="minimumSize">
+    <size>
+     <width>150</width>
+     <height>130</height>
+    </size>
+   </property>
+   <property name="windowTitle">
+    <string>Experiment Categories</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTreeView" name="ExperimentList"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="trialDock">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>150</width>
+     <height>130</height>
+    </size>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>Trials</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_10">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QListView" name="listView"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="viewerDock">
+   <property name="minimumSize">
+    <size>
+     <width>800</width>
+     <height>249</height>
+    </size>
+   </property>
+   <property name="windowTitle">
+    <string>Viewer</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2">
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <property name="leftMargin">
+      <number>48</number>
+     </property>
+     <property name="rightMargin">
+      <number>48</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_9">
+       <item>
+        <widget class="QLabel" name="leftViewer">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>18</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Left Viewer</string>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="leftViewerFrame">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>160</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QLabel" name="leftTextView">
+            <property name="text">
+             <string>Left Text View</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QLabel" name="rightViewer">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>18</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Right Viewer</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="rightViewerFrame">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>160</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <item>
+           <widget class="QLabel" name="rightTextView">
+            <property name="text">
+             <string>Right Text View</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actionRunExperiment">
+   <property name="icon">
+    <iconset resource="../Resources/icons.qrc">
+     <normaloff>:/toolbar/images/toolbar/Knob Play.png</normaloff>
+     <normalon>:/toolbar/images/toolbar/Knob Play.png</normalon>:/toolbar/images/toolbar/Knob Play.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run</string>
+   </property>
+   <property name="toolTip">
+    <string>Run the selected experiment.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionPauseExperiment">
+   <property name="icon">
+    <iconset resource="../Resources/icons.qrc">
+     <normaloff>:/toolbar/images/toolbar/Knob Pause.png</normaloff>:/toolbar/images/toolbar/Knob Pause.png</iconset>
+   </property>
+   <property name="text">
+    <string>Stop</string>
+   </property>
+   <property name="toolTip">
+    <string>Pause the currently running Experiment.</string>
+   </property>
+  </action>
+  <action name="actionStopExperiment">
+   <property name="icon">
+    <iconset resource="../Resources/icons.qrc">
+     <normaloff>:/toolbar/images/toolbar/Knob Stop.png</normaloff>:/toolbar/images/toolbar/Knob Stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Stop</string>
+   </property>
+   <property name="toolTip">
+    <string>Stop the currently running Experiment.</string>
+   </property>
+  </action>
+  <action name="actionNextEvent">
+   <property name="icon">
+    <iconset resource="../Resources/icons.qrc">
+     <normaloff>:/toolbar/images/toolbar/Knob Fast Forward.png</normaloff>:/toolbar/images/toolbar/Knob Fast Forward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Next Event</string>
+   </property>
+   <property name="toolTip">
+    <string>Skip to the next Event in the Experiment.</string>
+   </property>
+  </action>
+  <action name="actionPreviousEvent">
+   <property name="icon">
+    <iconset resource="../Resources/icons.qrc">
+     <normaloff>:/toolbar/images/toolbar/Knob Fast Rewind.png</normaloff>:/toolbar/images/toolbar/Knob Fast Rewind.png</iconset>
+   </property>
+   <property name="text">
+    <string>Previous Event</string>
+   </property>
+   <property name="toolTip">
+    <string>Go back to the previous Event in the Experiment.</string>
+   </property>
+  </action>
+  <action name="actionNewExperiment">
+   <property name="text">
+    <string>New Experiment</string>
+   </property>
+  </action>
+  <action name="actionNewEvent">
+   <property name="text">
+    <string>New Event</string>
+   </property>
+  </action>
+  <action name="actionToggleExperimentDock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Experiments</string>
+   </property>
+  </action>
+  <action name="actionToggleEventDock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Events</string>
+   </property>
+   <property name="iconText">
+    <string>Show Events
+Hide Events</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::TextHeuristicRole</enum>
+   </property>
+  </action>
+  <action name="actionToggleTrialDock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Trials</string>
+   </property>
+  </action>
+  <action name="actionNew_Event">
+   <property name="text">
+    <string>New Wizard</string>
+   </property>
+  </action>
+  <action name="actionEvent_Library">
+   <property name="text">
+    <string>Event Library. . .</string>
+   </property>
+  </action>
+  <action name="actionExperiment_Wizard">
+   <property name="text">
+    <string>Experiment Wizard</string>
+   </property>
+  </action>
+  <action name="actionExperiment_Library">
+   <property name="text">
+    <string>Experiment Library. . .</string>
+   </property>
+  </action>
+  <action name="actionAction_Wizard">
+   <property name="text">
+    <string>Action Wizard</string>
+   </property>
+  </action>
+  <action name="actionAction_Library">
+   <property name="text">
+    <string>Action Library. . .</string>
+   </property>
+  </action>
+  <action name="actionEdit_Action">
+   <property name="text">
+    <string>Edit Action. . .</string>
+   </property>
+  </action>
+  <action name="actionEditExperiment">
+   <property name="text">
+    <string>Experiment. . .</string>
+   </property>
+  </action>
+  <action name="actionEditEvent">
+   <property name="text">
+    <string>Event. . .</string>
+   </property>
+  </action>
+  <action name="actionEditAction">
+   <property name="text">
+    <string>Action. . .</string>
+   </property>
+  </action>
+  <action name="actionExperiment_Wizard_2">
+   <property name="text">
+    <string>New Experiment</string>
+   </property>
+  </action>
+  <action name="actionEvent_Wizard">
+   <property name="text">
+    <string>New Event</string>
+   </property>
+  </action>
+  <action name="actionAction_Wizard_2">
+   <property name="text">
+    <string>New Action</string>
+   </property>
+  </action>
+  <action name="actionNew_Trial">
+   <property name="text">
+    <string>New Trial</string>
+   </property>
+  </action>
+  <action name="actionEditTrial">
+   <property name="text">
+    <string>Trial. . .</string>
+   </property>
+  </action>
+  <action name="actionNewAction">
+   <property name="text">
+    <string>New Action</string>
+   </property>
+  </action>
+  <action name="actionNewTrial">
+   <property name="text">
+    <string>New Trial</string>
+   </property>
+  </action>
+  <action name="actionToggleViewer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Viewer</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../Resources/icons.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionToggleEventDock</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>eventDock</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>708</x>
+     <y>446</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionToggleExperimentDock</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>experimentDock</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>74</x>
+     <y>322</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionToggleTrialDock</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>trialDock</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>708</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionToggleViewer</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>viewerDock</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>616</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

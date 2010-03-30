@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>actionWizardInformationFrame</class>
+ <widget class="QFrame" name="actionWizardInformationFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Action Information</string>
+  </property>
+  <property name="frameShape">
+   <enum>QFrame::StyledPanel</enum>
+  </property>
+  <property name="frameShadow">
+   <enum>QFrame::Raised</enum>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="instructionsLabel">
+     <property name="text">
+      <string>Please provide the following details about your new action.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="nameLabel">
+       <property name="toolTip">
+        <string>The name of the action as it appears in viewers and the 
+Event Wizard.</string>
+       </property>
+       <property name="text">
+        <string>Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="nameLineEdit">
+       <property name="toolTip">
+        <string>The name of the action as it appears in viewers and the 
+Event Wizard.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="actionTypeLabel">
+       <property name="toolTip">
+        <string>You must select an Action Type for your Action. The Action 
+Type is used to organize Actions in the Action Library. 
+Four basic Action Types are provided:
+
+* Audio - used to play audio for a specified period of time
+* Video - used to play video for a specified period of time
+* Text - used to display text for a specified period of time
+* Image - used to display an image for a specified period of time
+* Pause - used to specify a dely or 'pause' for a specified period of time</string>
+       </property>
+       <property name="text">
+        <string>Action Type:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="actionTypeComboBox">
+       <property name="toolTip">
+        <string>You must select an Action Type for your Action. The Action 
+Type is used to organize Actions in the Action Library. 
+Four basic Action Types are provided:
+
+* Audio - used to play audio for a specified period of time
+* Video - used to play video for a specified period of time
+* Text - used to display text for a specified period of time
+* Image - used to display an image for a specified period of time
+* Pause - used to specify a dely or 'pause' for a specified period of time</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Select Action Type...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Pause</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Text</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Audio</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Video</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Image</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="labelLabel">
+       <property name="toolTip">
+        <string>A short description of the action. 255 characters maximum.</string>
+       </property>
+       <property name="text">
+        <string>Label:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="labelLineEdit">
+       <property name="toolTip">
+        <string>A short description of the action. 255 characters maximum.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="descriptionLabel">
+       <property name="toolTip">
+        <string>A full event description of arbitrary length.</string>
+       </property>
+       <property name="text">
+        <string>Description:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="descriptionTextEdit">
+       <property name="toolTip">
+        <string>A full action description of arbitrary length.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

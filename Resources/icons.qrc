@@ -1,0 +1,53 @@
+<RCC>
+  <qresource prefix="other">
+    <file>../images/other/lightning-icon.png</file>
+    <file>../images/other/Event-256.png</file>
+    <file>../images/other/Nuvola_apps_edu_science.png</file>
+    <file>../images/other/process-icon.png</file>
+    <file>../images/other/delete-icon.png</file>
+    <file>../images/other/Science-64.png</file>
+    <file>../images/other/add-icon.png</file>
+    <file>../images/other/kspace_banner.png</file>
+  </qresource>
+  <qresource prefix="toolbar">
+    <file>../images/toolbar/Knob Add.png</file>
+    <file>../images/toolbar/Knob Attention.png</file>
+    <file>../images/toolbar/Knob Blue.png</file>
+    <file>../images/toolbar/Knob Cancel.png</file>
+    <file>../images/toolbar/Knob Download.png</file>
+    <file>../images/toolbar/Knob Fast Forward.png</file>
+    <file>../images/toolbar/Knob Fast Rewind.png</file>
+    <file>../images/toolbar/Knob Favorite.png</file>
+    <file>../images/toolbar/Knob Forward.png</file>
+    <file>../images/toolbar/Knob Graphite.png</file>
+    <file>../images/toolbar/Knob Green.png</file>
+    <file>../images/toolbar/Knob Grey.png</file>
+    <file>../images/toolbar/Knob Help.png</file>
+    <file>../images/toolbar/Knob Info.png</file>
+    <file>../images/toolbar/Knob Left.png</file>
+    <file>../images/toolbar/Knob Loop Off.png</file>
+    <file>../images/toolbar/Knob Loop On.png</file>
+    <file>../images/toolbar/Knob Message.png</file>
+    <file>../images/toolbar/Knob Orange.png</file>
+    <file>../images/toolbar/Knob Pause.png</file>
+    <file>../images/toolbar/Knob Play Green.png</file>
+    <file>../images/toolbar/Knob Play.png</file>
+    <file>../images/toolbar/Knob Purple.png</file>
+    <file>../images/toolbar/Knob Record Off.png</file>
+    <file>../images/toolbar/Knob Record On.png</file>
+    <file>../images/toolbar/Knob Red.png</file>
+    <file>../images/toolbar/Knob Refresh.png</file>
+    <file>../images/toolbar/Knob Remove Red.png</file>
+    <file>../images/toolbar/Knob Remove.png</file>
+    <file>../images/toolbar/Knob Search.png</file>
+    <file>../images/toolbar/Knob Shuffle Off.png</file>
+    <file>../images/toolbar/Knob Shuffle On.png</file>
+    <file>../images/toolbar/Knob Smart.png</file>
+    <file>../images/toolbar/Knob Snapback.png</file>
+    <file>../images/toolbar/Knob Snapforward.png</file>
+    <file>../images/toolbar/Knob Stop.png</file>
+    <file>../images/toolbar/Knob Upload.png</file>
+    <file>../images/toolbar/Knob Valid Blue.png</file>
+    <file>../images/toolbar/Knob Valid Green.png</file>
+  </qresource>
+</RCC>

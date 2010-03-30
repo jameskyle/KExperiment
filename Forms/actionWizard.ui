@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>actionWizard</class>
+ <widget class="QWizard" name="actionWizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Wizard</string>
+  </property>
+  <widget class="QWizardPage" name="wizardPage1">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="welcomeLabel">
+      <property name="text">
+       <string>Welcome to the K_ Action Wizard!
+
+The Action Wizard allows you to quickly and easily build custom Actions. The created actions can be used in Events, Trials, or Experiments in any order or combination.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage2"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

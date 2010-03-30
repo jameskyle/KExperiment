@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>eventWizardInformationFrame</class>
+ <widget class="QFrame" name="eventWizardInformationFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="frameShape">
+   <enum>QFrame::StyledPanel</enum>
+  </property>
+  <property name="frameShadow">
+   <enum>QFrame::Raised</enum>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="instructionsLabel">
+     <property name="text">
+      <string>Please provide the following details about your new event.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="nameLabel">
+       <property name="toolTip">
+        <string>The name of the event as it appears in viewers and the 
+Experiment Wizard.</string>
+       </property>
+       <property name="text">
+        <string>Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="nameLineEdit">
+       <property name="toolTip">
+        <string>The name of the event as it appears in viewers and the 
+Experiment Wizard.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="labelLabel">
+       <property name="toolTip">
+        <string>A short description of the event. 255 characters maximum.</string>
+       </property>
+       <property name="text">
+        <string>Label:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="labelLineEdit">
+       <property name="toolTip">
+        <string>A short description of the event. 255 characters maximum.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="categoryLabel">
+       <property name="toolTip">
+        <string>You must select a Primary Category for your Event. The Primary 
+Category is used to organize Events in the Event library. 
+Additional categories can be added at a later time. If you wish to 
+create a new category, select &quot;New Category...&quot; and enter your 
+new category name in the text box that appears.</string>
+       </property>
+       <property name="text">
+        <string>Primary Category</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="categoryComboBox">
+       <property name="toolTip">
+        <string>You must select a Primary Category for your Event. The Primary 
+Category is used to organize Events in the Event library. 
+Additional categories can be added at a later time. If you wish to 
+create a new category, select &quot;New Category...&quot; and enter your 
+new category name in the text box that appears.</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Select Category...</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>New Category...</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="newCategoryLineEdit">
+       <property name="toolTip">
+        <string>You must select a Primary Category for your Event. The Primary 
+Category is used to organize Events in the Event library. 
+Additional categories can be added at a later time. If you wish to 
+create a new category, select &quot;New Category...&quot; and enter your 
+new category name in the text box that appears.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="descriptionLabel">
+       <property name="toolTip">
+        <string>A full event description of arbitrary length.</string>
+       </property>
+       <property name="text">
+        <string>Description:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="descriptionTextEdit">
+       <property name="toolTip">
+        <string>A full event description of arbitrary length.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

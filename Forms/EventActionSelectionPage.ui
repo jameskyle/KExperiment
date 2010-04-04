@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>eventWizardActionSelectionFrame</class>
- <widget class="QFrame" name="eventWizardActionSelectionFrame">
+ <class>EventActionSelectionPage</class>
+ <widget class="QWizardPage" name="EventActionSelectionPage">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,32 +11,19 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Frame</string>
+   <string>WizardPage</string>
   </property>
-  <property name="frameShape">
-   <enum>QFrame::StyledPanel</enum>
+  <property name="title">
+   <string>Event Action Selection</string>
   </property>
-  <property name="frameShadow">
-   <enum>QFrame::Raised</enum>
+  <property name="subTitle">
+   <string>Please select the Actions you'd like this Event to contain by opening the Action Library and dragging the desired actions into the Action List.</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
-    <widget class="QLabel" name="instructionsLabel">
-     <property name="lineWidth">
-      <number>2</number>
-     </property>
-     <property name="text">
-      <string>Select the Actions you'd like to add to the event. An event with no actions will merely pause for the specified duration.</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QLabel" name="nameLabel">
          <property name="toolTip">
@@ -48,54 +35,26 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="eventName">
-         <property name="toolTip">
-          <string>The Event name specified in the previous dialog.</string>
-         </property>
-         <property name="text">
-          <string>Event Name</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="durationLabel">
-         <property name="toolTip">
-          <string>Total Event duration. This is the sum of all action events.</string>
-         </property>
-         <property name="text">
-          <string>Duration:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="eventDurationLabel">
-         <property name="toolTip">
-          <string>Total Event duration. This is the sum of all action events.</string>
-         </property>
-         <property name="text">
-          <string>00:00.00</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
         <widget class="QLabel" name="labelLabel">
          <property name="toolTip">
           <string>The Event label specified in the previous dialog.</string>
          </property>
          <property name="text">
           <string>Label:</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QLabel" name="eventName">
+         <property name="toolTip">
+          <string>The Event name specified in the previous dialog.</string>
+         </property>
+         <property name="text">
+          <string>Event Name</string>
          </property>
         </widget>
        </item>
@@ -112,7 +71,17 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="durationLabel">
+         <property name="toolTip">
+          <string>Total Event duration. This is the sum of all action events.</string>
+         </property>
+         <property name="text">
+          <string>Duration:</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QLabel" name="actionDurationLabel">
          <property name="toolTip">
@@ -123,6 +92,20 @@ the duration of video and audio files.</string>
          </property>
          <property name="text">
           <string>Action Duration</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="eventDurationLabel">
+         <property name="toolTip">
+          <string>Total Event duration. This is the sum of all action events.</string>
+         </property>
+         <property name="text">
+          <string>00:00.00</string>
          </property>
         </widget>
        </item>
@@ -143,7 +126,7 @@ the duration of video and audio files.</string>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="actionsLabel">
+      <widget class="QLabel" name="actionsListLabel">
        <property name="toolTip">
         <string>A list of actions available in the Action Library.
 This includes basic, generic actions as well as custom actions
@@ -152,7 +135,7 @@ used. For example, you may wish to add a generic Video action
 and add a specific video later.</string>
        </property>
        <property name="text">
-        <string>Actions:</string>
+        <string>Action List:</string>
        </property>
       </widget>
      </item>
@@ -164,6 +147,30 @@ This includes basic, generic actions as well as custom actions
 created by users. All actions can be further customized when 
 used. For example, you may wish to add a generic Video action 
 and add a specific video later.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QToolButton" name="actionLibraryToolButton">
+       <property name="text">
+        <string>Action Library</string>
        </property>
       </widget>
      </item>

@@ -1,5 +1,7 @@
 #ifndef EXPERIMENT_H
 #define EXPERIMENT_H
+#include <QString>
+#include <QObject>
 
 namespace kex
 {

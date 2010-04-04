@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>839</width>
-    <height>762</height>
+    <height>771</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -243,10 +243,7 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNewExperiment"/>
-    <addaction name="actionNewTrial"/>
-    <addaction name="actionNewEvent"/>
-    <addaction name="actionNewAction"/>
+    <addaction name="actionNew"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -545,16 +542,6 @@
     <string>Go back to the previous Event in the Experiment.</string>
    </property>
   </action>
-  <action name="actionNewExperiment">
-   <property name="text">
-    <string>New Experiment</string>
-   </property>
-  </action>
-  <action name="actionNewEvent">
-   <property name="text">
-    <string>New Event</string>
-   </property>
-  </action>
   <action name="actionToggleExperimentDock">
    <property name="checkable">
     <bool>true</bool>
@@ -595,29 +582,14 @@ Hide Events</string>
     <string>Trials</string>
    </property>
   </action>
-  <action name="actionNew_Event">
-   <property name="text">
-    <string>New Wizard</string>
-   </property>
-  </action>
   <action name="actionEvent_Library">
    <property name="text">
     <string>Event Library. . .</string>
    </property>
   </action>
-  <action name="actionExperiment_Wizard">
-   <property name="text">
-    <string>Experiment Wizard</string>
-   </property>
-  </action>
   <action name="actionExperiment_Library">
    <property name="text">
     <string>Experiment Library. . .</string>
-   </property>
-  </action>
-  <action name="actionAction_Wizard">
-   <property name="text">
-    <string>Action Wizard</string>
    </property>
   </action>
   <action name="actionAction_Library">
@@ -645,39 +617,9 @@ Hide Events</string>
     <string>Action. . .</string>
    </property>
   </action>
-  <action name="actionExperiment_Wizard_2">
-   <property name="text">
-    <string>New Experiment</string>
-   </property>
-  </action>
-  <action name="actionEvent_Wizard">
-   <property name="text">
-    <string>New Event</string>
-   </property>
-  </action>
-  <action name="actionAction_Wizard_2">
-   <property name="text">
-    <string>New Action</string>
-   </property>
-  </action>
-  <action name="actionNew_Trial">
-   <property name="text">
-    <string>New Trial</string>
-   </property>
-  </action>
   <action name="actionEditTrial">
    <property name="text">
     <string>Trial. . .</string>
-   </property>
-  </action>
-  <action name="actionNewAction">
-   <property name="text">
-    <string>New Action</string>
-   </property>
-  </action>
-  <action name="actionNewTrial">
-   <property name="text">
-    <string>New Trial</string>
    </property>
   </action>
   <action name="actionToggleViewer">
@@ -689,6 +631,18 @@ Hide Events</string>
    </property>
    <property name="text">
     <string>Viewer</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>&amp;New...</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the Creation Wizard for creating new Actions, Events, 
+or Experiments.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>
@@ -751,8 +705,8 @@ Hide Events</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>80</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>419</x>

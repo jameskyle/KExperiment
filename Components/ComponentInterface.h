@@ -2,7 +2,7 @@
 #define COMPONENTINTERFACE_H
 #include <QStringList>
 
-#include "Uncopyable.h"
+#include <Common/Uncopyable.h>
 
 namespace kex
 {
@@ -41,11 +41,11 @@ namespace kex
     * \date 2010-04-01
     **/
     virtual ~ComponentInterface () {}
-
+		
     /** \brief Returns the name attribute.
     *
     * The name attribute serves as a unique identifier for every class
-    * intance.
+    * instance.
     *
     * \author James Kyle KSpace MRI
     * \date 2010-04-01
@@ -143,6 +143,8 @@ namespace kex
       TODO doc for log function
     */
     virtual void log(const QString& msg) {QString foo = msg;}
+    
+    static const quint32 MAX_DURATION = 1800000;
     
   private:
     /*

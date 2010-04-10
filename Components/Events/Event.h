@@ -3,9 +3,7 @@
 #include <QString>
 #include <QList>
 
-#include "Common.h"
-#include "ComponentInterface.h"
-#include "ComponentRegister.h"
+#include <Components/ComponentInterface.h>
 
 namespace kex
 {

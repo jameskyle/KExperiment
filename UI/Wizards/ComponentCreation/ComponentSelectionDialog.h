@@ -2,7 +2,9 @@
 #define COMPONENTSELECTIONDIALOG_H
 
 #include "ui_ComponentSelectionDialog.h"
-#include "CreationWizard.h"
+#include <Wizards/ComponentCreation/CreationWizard.h>
+#include <Utilities/Utilities.h>
+#include <Common/Global.h>
 
 namespace kex
 {
@@ -23,7 +25,7 @@ namespace kex
   public:
     ComponentSelectionDialog(QWidget *parent = 0);
     ~ComponentSelectionDialog() {}
-    
+	
   private slots:
     void runWizard(int result);
   };

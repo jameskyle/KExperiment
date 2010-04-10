@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>839</width>
-    <height>771</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="../Resources/icons.qrc">:/other/images/other/Nuvola_apps_edu_science.png</pixmap>
+           <pixmap resource="../../Resources/icons.qrc">:/other/images/other/Nuvola_apps_edu_science.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -221,7 +221,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>839</width>
+     <width>800</width>
      <height>22</height>
     </rect>
    </property>
@@ -234,10 +234,6 @@
     <property name="title">
      <string>View</string>
     </property>
-    <addaction name="actionToggleExperimentDock"/>
-    <addaction name="actionToggleTrialDock"/>
-    <addaction name="actionToggleEventDock"/>
-    <addaction name="actionToggleViewer"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -276,211 +272,9 @@
    <addaction name="actionStopExperiment"/>
    <addaction name="actionNextEvent"/>
   </widget>
-  <widget class="QDockWidget" name="eventDock">
-   <property name="minimumSize">
-    <size>
-     <width>150</width>
-     <height>130</height>
-    </size>
-   </property>
-   <property name="windowTitle">
-    <string>Events</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_9">
-    <layout class="QVBoxLayout" name="verticalLayout_7">
-     <item>
-      <widget class="QListView" name="EventListView"/>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="experimentDock">
-   <property name="minimumSize">
-    <size>
-     <width>150</width>
-     <height>130</height>
-    </size>
-   </property>
-   <property name="windowTitle">
-    <string>Experiment Categories</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QTreeView" name="ExperimentList"/>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="trialDock">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>150</width>
-     <height>130</height>
-    </size>
-   </property>
-   <property name="floating">
-    <bool>false</bool>
-   </property>
-   <property name="windowTitle">
-    <string>Trials</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_10">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QListView" name="listView"/>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="viewerDock">
-   <property name="minimumSize">
-    <size>
-     <width>800</width>
-     <height>249</height>
-    </size>
-   </property>
-   <property name="windowTitle">
-    <string>Viewer</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>8</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QHBoxLayout" name="horizontalLayout_9">
-     <property name="leftMargin">
-      <number>48</number>
-     </property>
-     <property name="rightMargin">
-      <number>48</number>
-     </property>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_9">
-       <item>
-        <widget class="QLabel" name="leftViewer">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>18</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Left Viewer</string>
-         </property>
-         <property name="scaledContents">
-          <bool>false</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="leftViewerFrame">
-         <property name="minimumSize">
-          <size>
-           <width>160</width>
-           <height>160</height>
-          </size>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
-          <item>
-           <widget class="QLabel" name="leftTextView">
-            <property name="text">
-             <string>Left Text View</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_8">
-       <item>
-        <widget class="QLabel" name="rightViewer">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>18</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Right Viewer</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="rightViewerFrame">
-         <property name="minimumSize">
-          <size>
-           <width>160</width>
-           <height>160</height>
-          </size>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_10">
-          <item>
-           <widget class="QLabel" name="rightTextView">
-            <property name="text">
-             <string>Right Text View</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <action name="actionRunExperiment">
    <property name="icon">
-    <iconset resource="../Resources/icons.qrc">
+    <iconset resource="../../Resources/icons.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Play.png</normaloff>
      <normalon>:/toolbar/images/toolbar/Knob Play.png</normalon>:/toolbar/images/toolbar/Knob Play.png</iconset>
    </property>
@@ -496,7 +290,7 @@
   </action>
   <action name="actionPauseExperiment">
    <property name="icon">
-    <iconset resource="../Resources/icons.qrc">
+    <iconset resource="../../Resources/icons.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Pause.png</normaloff>:/toolbar/images/toolbar/Knob Pause.png</iconset>
    </property>
    <property name="text">
@@ -508,7 +302,7 @@
   </action>
   <action name="actionStopExperiment">
    <property name="icon">
-    <iconset resource="../Resources/icons.qrc">
+    <iconset resource="../../Resources/icons.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Stop.png</normaloff>:/toolbar/images/toolbar/Knob Stop.png</iconset>
    </property>
    <property name="text">
@@ -520,7 +314,7 @@
   </action>
   <action name="actionNextEvent">
    <property name="icon">
-    <iconset resource="../Resources/icons.qrc">
+    <iconset resource="../../Resources/icons.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Fast Forward.png</normaloff>:/toolbar/images/toolbar/Knob Fast Forward.png</iconset>
    </property>
    <property name="text">
@@ -532,7 +326,7 @@
   </action>
   <action name="actionPreviousEvent">
    <property name="icon">
-    <iconset resource="../Resources/icons.qrc">
+    <iconset resource="../../Resources/icons.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Fast Rewind.png</normaloff>:/toolbar/images/toolbar/Knob Fast Rewind.png</iconset>
    </property>
    <property name="text">
@@ -547,7 +341,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Experiments</string>
@@ -558,7 +352,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Events</string>
@@ -576,30 +370,10 @@ Hide Events</string>
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Trials</string>
-   </property>
-  </action>
-  <action name="actionEvent_Library">
-   <property name="text">
-    <string>Event Library. . .</string>
-   </property>
-  </action>
-  <action name="actionExperiment_Library">
-   <property name="text">
-    <string>Experiment Library. . .</string>
-   </property>
-  </action>
-  <action name="actionAction_Library">
-   <property name="text">
-    <string>Action Library. . .</string>
-   </property>
-  </action>
-  <action name="actionEdit_Action">
-   <property name="text">
-    <string>Edit Action. . .</string>
    </property>
   </action>
   <action name="actionEditExperiment">
@@ -627,7 +401,7 @@ Hide Events</string>
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Viewer</string>
@@ -645,74 +419,18 @@ or Experiments.</string>
     <string>Ctrl+N</string>
    </property>
   </action>
+  <action name="actionToggleActionDock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Actions</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="../Resources/icons.qrc"/>
+  <include location="../../Resources/icons.qrc"/>
+  <include location="../../Resources/icons.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>actionToggleEventDock</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>eventDock</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>708</x>
-     <y>446</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionToggleExperimentDock</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>experimentDock</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>74</x>
-     <y>322</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionToggleTrialDock</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>trialDock</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>708</x>
-     <y>197</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionToggleViewer</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>viewerDock</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>419</x>
-     <y>616</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

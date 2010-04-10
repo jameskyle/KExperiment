@@ -1,10 +1,10 @@
 #ifndef WELCOMEPAGE_H
 #define WELCOMEPAGE_H
 #include <QWizardPage>
+#include <QString>
 #include <QVBoxLayout>
 #include <QVariant>
-
-#include "Common.h"
+#include <Utilities/Utilities.h>
 
 namespace kex
 {
@@ -24,21 +24,16 @@ namespace kex
   class WelcomePage : public QWizardPage
   {
     Q_OBJECT
-    public:
-      WelcomePage(QWidget *parent = 0) : QWizardPage(parent) {}
-      
-      /** \brief Initializes the page according to a CreationType
-      *
-      * The CreationType is selected in a previous CreationSelectionPage and 
-      * set as a field according to its name (e.g. ActionCreationType). 
-      * Depending on selection, a custom welcome page is generated.
-      * 
-      * \author James Kyle KSpace MRI
-      * \date 2010-04-01
-      * \sa QWizardPage
-      **/
-      void initializePage();
-    };
+	public:
+		WelcomePage(QWidget *parent = 0, const Types::ComponentType component 
+								= Types::UndefinedComponentType);
+		
+		~WelcomePage();
+		void initializePage();
+		
+	private:
+		Types::ComponentType _component;
+	};
     
-  }
+}
   #endif

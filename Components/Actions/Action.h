@@ -2,7 +2,7 @@
 #define ACTION_H
 #include <QObject>
 
-#include "ComponentInterface.h"
+#include <Components/ComponentInterface.h>
 
 namespace kex
 {
@@ -48,7 +48,7 @@ namespace kex
     * \date 2010-04-01
     * \param  type a string specifiying the type of single action
     * 
-    * /sa registerComponentTypes() actionTypeList()
+    * \sa registerComponentTypes() actionTypeList()
     **/
     static void addActionType(const QString& type);
     
@@ -62,7 +62,7 @@ namespace kex
     * \date 2010-04-01
     * \param  type a string specifiying the type of single action
     * 
-    * /sa registerComponentType() actionTypeList()
+    * \sa registerComponentType() actionTypeList()
     **/
     static void addActionTypes(const QList<QString>& types);
     
@@ -76,7 +76,7 @@ namespace kex
     * \date 2010-04-01
     * \param  types a Qlist of QStrings of Action types.
     * 
-    * /sa registerComponentTypes() registerComponentType()
+    * \sa registerComponentTypes() registerComponentType()
     **/
     static const QStringList& actionTypeList();
     
@@ -84,7 +84,8 @@ namespace kex
       TODO doc for log function
     */
     virtual void log(const QString& msg) {QString foo = msg;}
-
+    
+    enum ActionType {REST, IMAGE, AUDIO, VIDEO};
 
   protected:
     static QStringList& _actionTypeList();  //!< list of types of actions

@@ -50,4 +50,9 @@
     <file>./images/toolbar/Knob Valid Blue.png</file>
     <file>./images/toolbar/Knob Valid Green.png</file>
   </qresource>
+
+  <qresource>
+    <file>./templates/actions.xml</file>
+    <file>./templates/events.xml</file>
+  </qresource>
 </RCC>

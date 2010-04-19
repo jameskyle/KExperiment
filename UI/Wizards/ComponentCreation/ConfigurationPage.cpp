@@ -10,7 +10,7 @@ namespace kex
   {
 		registerField("durationMsecs", &durationSpinBoxMsecs);
 		
-		Logger::log("Initialized", this);
+		Logger::instance().log("Initialized", this);
   }
 
   ConfigurationPage::~ConfigurationPage()
@@ -98,7 +98,7 @@ namespace kex
 		
 		if(_component & Types::ActionType)
 		{
-			Logger::log("Configuring for Types::ActionType", this);
+			Logger::instance().log("Configuring for Types::ActionType", this);
 			
 			Q_ASSERT(field("action").isValid());
 			actionTypeHLayout.addWidget(new QLabel(tr("Action Type:"), this));
@@ -109,7 +109,7 @@ namespace kex
 		
 		if(_component & (Types::ActionType | Types::EventType | Types::TrialType | Types::ExperimentType))
 		{
-			Logger::log("Adding duration spinbox", this);
+			Logger::instance().log("Adding duration spinbox", this);
 			
 			_mainLayout.addLayout(&durationHLayout);
 			durationHLayout.setObjectName("durationHLayout");
@@ -126,7 +126,7 @@ namespace kex
 		
 		if(_component & (Types::EventType | Types::TrialType | Types::ExperimentType))
 		{
-			Logger::log("Adding comonent list and library buttons", this);
+			Logger::instance().log("Adding comonent list and library buttons", this);
 			
 			// Set up the action selection portion
 			componentListLabel.setObjectName("componentListLabel");
@@ -145,7 +145,7 @@ namespace kex
 	void ConfigurationPage::dispatchLibraryRequest(const QString& libraryType)
 	{
 		QString msg = "didpsatchLibraryRequest Called: %1";
-		Logger::log(qPrintable(msg.arg(libraryType)), this);
+		Logger::instance().log(qPrintable(msg.arg(libraryType)), this);
 		
 		if (libraryType == "action")
 		{

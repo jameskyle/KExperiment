@@ -4,12 +4,16 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/construct.hpp>
 #include <boost/function.hpp>
-#include <string>
 
 #include <QStringList>
 #include <QMap>
+#include <QVariant>
 
-#include "ComponentInterface.h"
+#include <Components/ComponentInterface.h>
+#include <Components/Actions/RestAction.h>
+#include <Components/Events/Event.h>
+#include <Common/Types.h>
+#include <Common/Global.h>
 
 class ComponentInterface;
 
@@ -77,8 +81,8 @@ namespace kex
     * \param creator the function to be used for instnatiation
     * 
     **/
-    void registerComponent(const QString& name, Creator creator);
-
+    bool registerComponent(const QString& name, Creator creator);
+		
     /** \brief Returns a list of Action types
     * 
     * Each Action has a type specifier. That type must be registered in
@@ -99,8 +103,9 @@ namespace kex
     QMap<QString, Creator> _componentCreatorMap;
   };
   
-  #define REGISTER_COMPONENT(CLASSID, COMPONENT) \
+  #define REGISTER_COMPONENT(CLASSID, COMPONENT, METADATA) \
     ComponentRegister::instance().registerComponent(CLASSID, \
-     boost::lambda::new_ptr<COMPONENT>()); 
+     boost::lambda::new_ptr<COMPONENT>()); \
+		Config::instance().registerComponentMetaData(CLASSID, METADATA);
 }
 #endif

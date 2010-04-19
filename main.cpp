@@ -11,22 +11,13 @@
 
 int main (int argc, char *argv[])
 {
+	QApplication app(argc, argv);
+
   QList<QString> categories;
   categories << "Special1" << "Special2" << "Special3" << "Special4";
-
-  kex::REGISTER_COMPONENT("Action", kex::Action);
-	kex::REGISTER_COMPONENT("Event", kex::Event);
 	
-  QApplication app(argc, argv);
-  // initialize the Config instance
-  QCoreApplication::setOrganizationDomain(
-    kex::Config::instance().DOMAIN_NAME);
-  QCoreApplication::setOrganizationName(
-    kex::Config::instance().ORGANIZATION_NAME);
-  QCoreApplication::setApplicationName(
-    kex::Config::instance().APPLICATION_NAME);
+	kex::Utilities::configureApplication();
   
-  kex::Utilities::setupAppStorageEnvironment();
   kex::MetaData::instance().addCategories(categories);
   
   kex::MainWindow k;

@@ -138,23 +138,19 @@ namespace kex
     * \sa QString category()
     **/
     void setCategory(const QString& category) {_category = category;}
-    
-    /*
-      TODO doc for log function
-    */
-    virtual void log(const QString& msg) {QString foo = msg;}
-    
-    static const quint32 MAX_DURATION = 1800000;
+
+
+    static const quint32 MAX_DURATION = 1800000; //!< maximum run time
     
   private:
     /*
       TODO doc for private vars
     */
-    QString _name;
-    QString _description;
-    QString _label;
-    QString _category;
-    QStringList _tagList;
+    QString _name; //!< name of the component
+    QString _description; //!< detailed description of the component
+    QString _label; //!< brief description of the component
+    QString _category; //!< main group identifier
+    QStringList _tagList; //!< list of associated tags for sorting/filtering
     
   };
 }

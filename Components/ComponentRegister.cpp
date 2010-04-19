@@ -28,12 +28,16 @@ namespace kex
     return _componentCreatorMap.keys();
   }
   
-  void ComponentRegister::registerComponent(const QString& name, Creator creator)
+  bool ComponentRegister::registerComponent(const QString& name, 
+																						Creator creator)
   {
-    if(!_componentCreatorMap.contains(name))
+		bool found = _componentCreatorMap.contains(name);
+		
+    if(!found)
     {
       _componentCreatorMap[name] = creator;
     }
+		
+		return found;
   }
-  
 }

@@ -114,7 +114,7 @@ namespace kex
 	
 	void MainWindow::launchComponentLibrary(Types::ComponentType component)
 	{
-		Logger::log("Launch Library called", this);
+		Logger::instance().log("Launch Library called", this);
 		ComponentLibrary *library;
 		library = actionLibraryDock; // default
 
@@ -133,15 +133,37 @@ namespace kex
 				library = experimentLibraryDock;
 				break;
 			default:
-				Logger::log("Launch of Undefined Component Library requested", this);
+				Logger::instance().log("Launch of Undefined Component Library requested", this);
 			break;
 		}
 		Q_CHECK_PTR(library);
-		if (!library->isVisible())
+		if (library->isHidden())
 		{
-			library->hide();
-			library->setFloating(true);
-			library->show();		
-		} 
+			if (!library->isFloating())
+			{
+				library->hide();
+				library->setFloating(true);
+				library->resize(QSize(200, 600));
+				library->move(QPoint(50, 50));
+				library->show();
+			} else
+			{
+				library->show();
+			}
+
+		} else // Not hidden
+		{
+			if (!library->isFloating())
+			{
+				library->hide();
+				library->setFloating(true);
+				library->show();
+			} else
+			{
+				library->hide();
+			}
+
+		}
+
 	}
 }

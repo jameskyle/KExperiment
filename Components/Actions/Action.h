@@ -80,12 +80,7 @@ namespace kex
     **/
     static const QStringList& actionTypeList();
     
-    /*
-      TODO doc for log function
-    */
-    virtual void log(const QString& msg) {QString foo = msg;}
-    
-    enum ActionType {REST, IMAGE, AUDIO, VIDEO};
+    enum ActionType {RestType, ImageType, AudioType, VideoType};
 
   protected:
     static QStringList& _actionTypeList();  //!< list of types of actions

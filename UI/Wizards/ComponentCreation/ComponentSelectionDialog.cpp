@@ -14,7 +14,7 @@ namespace kex
     actionButton->setChecked(true);
     connect( this, SIGNAL(finished(int)), this, SLOT(runWizard(int)) );
     
-		Logger::log("Initialized", this);
+		Logger::instance().log("Initialized", this);
   }
   
   void ComponentSelectionDialog::runWizard(int result)
@@ -28,8 +28,8 @@ namespace kex
 			
 			if (!parent)
 			{
-				Logger::log("Failed to upcast parent widget", this, 
-										Types::FatalLogLevel);
+				Logger::instance().log("Failed to upcast parent widget", this, 
+										Logger::FatalLogLevel);
 			}
 			
       if(actionButton->isChecked())
@@ -54,7 +54,7 @@ namespace kex
 			}
 
 			
-			Logger::log(qPrintable(QString("%1 Selected").arg(choice)), this);
+			Logger::instance().log(qPrintable(QString("%1 Selected").arg(choice)), this);
 									
 			CreationWizard *wizard = new CreationWizard(parent, component);
 			
@@ -65,6 +65,6 @@ namespace kex
 			wizard->show();
     }
     
-		Logger::log("completed", this);
+		Logger::instance().log("completed", this);
   }
 }

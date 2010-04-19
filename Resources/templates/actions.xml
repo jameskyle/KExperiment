@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <action>
+    <name>30 Second Pause</name>
+    <label>Pauses for 30 seconds.</label>
+    <type>Rest</type>
+    <description>
+      When this action is inserted into a Event, a 30s pause is performed at
+      the point of its insertion.
+    </description>
+    <duration>30000</duration><!-- 30 seconds in milliseconds -->
+  </action>
+  
+  <action>
+    <name>One Minute Pause</name>
+    <label>Pauses for one minute.</label>
+    <type>Rest</type>
+    <description>
+      When this action is inserted into a Event, a one minute pause is 
+      performed at the point of its insertion.
+    </description>
+    <duration>60000</duration> <!-- one minute in milliseconds -->
+    <categories>
+      <item>Rest</item>
+      <item>Action</item>
+      <item>Pause</item>
+      <item>Template</item>
+    </categories>
+  </action>
+</root>

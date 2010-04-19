@@ -21,7 +21,7 @@ namespace kex
 						SIGNAL(launchComponentLibraryRequested(Types::ComponentType)), 
 						parent, SLOT(launchComponentLibrary(Types::ComponentType)));
 		
-		Logger::log("Initialized", this);
+		Logger::instance().log("Initialized", this);
   }
 	
 }

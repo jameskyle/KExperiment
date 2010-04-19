@@ -42,8 +42,8 @@ namespace kex
 				name = tr("Experiment");
 			default:
 				name = tr("Undefined Component Type");
-				Logger::log("Undefined Component!", this, 
-										Types::CriticalLogLevel);
+				Logger::instance().log("Undefined Component!", this, 
+										Logger::CriticalLogLevel);
 				break;
 		}
 		

@@ -7,6 +7,8 @@
 #include <Wizards/ComponentCreation/ComponentSelectionDialog.h>
 #include <ComponentLibrary.h>
 #include <LiveView.h>
+#include <Models/ComponentModel.h>
+
 #include "ui_MainWindow.h"
 
 namespace kex

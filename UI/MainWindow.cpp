@@ -110,6 +110,19 @@ namespace kex
 		actionLibraryDock->hide();
 		eventLibraryDock->hide();
 		trialLibraryDock->hide();
+		
+		// Set models for created libraries
+		ComponentModel *model = new ComponentModel(Config::ActionDirectory, this);
+		actionLibraryDock->setModel(model);
+
+		model = new ComponentModel(Config::EventDirectory, this);
+		eventLibraryDock->setModel(model);
+		
+		model = new ComponentModel(Config::TrialDirectory, this);
+		trialLibraryDock->setModel(model);
+		
+		model = new ComponentModel(Config::ExperimentDirectory, this);
+		experimentLibraryDock->setModel(model);
 	}
 	
 	void MainWindow::launchComponentLibrary(Types::ComponentType component)

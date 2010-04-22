@@ -25,7 +25,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="../../Resources/icons.qrc">:/other/images/other/Nuvola_apps_edu_science.png</pixmap>
+           <pixmap resource="../../Resources/resources.qrc">:/other/images/other/Nuvola_apps_edu_science.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -274,7 +274,7 @@
   </widget>
   <action name="actionRunExperiment">
    <property name="icon">
-    <iconset resource="../../Resources/icons.qrc">
+    <iconset resource="../../Resources/resources.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Play.png</normaloff>
      <normalon>:/toolbar/images/toolbar/Knob Play.png</normalon>:/toolbar/images/toolbar/Knob Play.png</iconset>
    </property>
@@ -290,7 +290,7 @@
   </action>
   <action name="actionPauseExperiment">
    <property name="icon">
-    <iconset resource="../../Resources/icons.qrc">
+    <iconset resource="../../Resources/resources.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Pause.png</normaloff>:/toolbar/images/toolbar/Knob Pause.png</iconset>
    </property>
    <property name="text">
@@ -302,7 +302,7 @@
   </action>
   <action name="actionStopExperiment">
    <property name="icon">
-    <iconset resource="../../Resources/icons.qrc">
+    <iconset resource="../../Resources/resources.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Stop.png</normaloff>:/toolbar/images/toolbar/Knob Stop.png</iconset>
    </property>
    <property name="text">
@@ -314,7 +314,7 @@
   </action>
   <action name="actionNextEvent">
    <property name="icon">
-    <iconset resource="../../Resources/icons.qrc">
+    <iconset resource="../../Resources/resources.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Fast Forward.png</normaloff>:/toolbar/images/toolbar/Knob Fast Forward.png</iconset>
    </property>
    <property name="text">
@@ -326,7 +326,7 @@
   </action>
   <action name="actionPreviousEvent">
    <property name="icon">
-    <iconset resource="../../Resources/icons.qrc">
+    <iconset resource="../../Resources/resources.qrc">
      <normaloff>:/toolbar/images/toolbar/Knob Fast Rewind.png</normaloff>:/toolbar/images/toolbar/Knob Fast Rewind.png</iconset>
    </property>
    <property name="text">
@@ -429,7 +429,8 @@ or Experiments.</string>
   </action>
  </widget>
  <resources>
-  <include location="../../Resources/icons.qrc"/>
+  <include location="../../Resources/resources.qrc"/>
+  <include location="../../Resources/resources.qrc"/>
   <include location="../../Resources/icons.qrc"/>
  </resources>
  <connections/>

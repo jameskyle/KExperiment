@@ -1,11 +1,11 @@
-#ifndef COMPONENTMODELINTERFACE_H
-#define COMPONENTMODELINTERFACE_H
-#include <QAbstractTableModel>
+#ifndef COMPONENTMODEL_H
+#define COMPONENTMODEL_H
+#include <QFileSystemModel>
 #include <QResource>
 #include <QStringList>
 #include <QXmlStreamReader>
 
-#include <Common/Uncopyable.h>
+#include <Common/Global.h>
 
 namespace kex
 {
@@ -19,8 +19,7 @@ namespace kex
 	* \date $LastChangedDate$
 	* \version $Rev$  \sa ComponentInterface
 	**/
-	class ComponentModelInterface : public QAbstractTableModel, 
-																  private Uncopyable
+	class ComponentModel : public QFileSystemModel
 	{
 	public:
 		/** \brief  Default constructor.
@@ -36,7 +35,8 @@ namespace kex
 		* \param parent pointer to the parent classe. 
 		* \version $Rev$  \sa ComponentInterface
 		**/
-		ComponentModelInterface(QObject *parent = 0);
+		ComponentModel(Config::ApplicationDataDirectoryType component,
+														QObject *parent = 0);
 		
 		/** \brief  Default destructor.
 		 * 
@@ -48,17 +48,9 @@ namespace kex
 		 * \date $LastChangedDate$
 		 * \version $Rev$
 		 **/
-		virtual ~ComponentModelInterface() {}
+		~ComponentModel() {}
 		
-		virtual void setData(const QStringList& resourceList) = 0;
-		virtual const QString templatePath() const = 0;
-		
-		int rowCount(const QModelIndex &parent) const;
-		int columnCount(const QModelIndex &index, int role) const;
-		QVariant data(const QModelIndex &index, int role) const;
-		QVariant headerData(int section, Qt::Orientation orientation,
-												int role) const;
-		
+		QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 	private:
 		QXmlStreamReader xmlReader;
 		

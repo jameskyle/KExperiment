@@ -6,7 +6,7 @@
 #include <Components/MetaData.h>
 #include <Utilities/Utilities.h>
 #include <Common/Global.h>
-
+#include <QTreeView>
 #include "MainWindow.h"
 
 int main (int argc, char *argv[])

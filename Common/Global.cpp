@@ -19,11 +19,11 @@ namespace kex
 		_directoryTypeList[ExperimentDirectory] = "Experiments";
 		_directoryTypeList[EventDirectory]			= "Events";
 		_directoryTypeList[TrialDirectory]			= "Trials";
-		_directoryTypeList[TemplateDirectory]		= "Templates";
   }
   
 	const QString 
-	Config::dataDirectoryPath(const ApplicationDataDirectoryType directoryType) const
+	Config::dataDirectoryPath(const ApplicationDataDirectoryType 
+														directoryType) const
 	{
 		QString path(storageLocation());
 		
@@ -36,9 +36,7 @@ namespace kex
 	Config::dataDirectoryList(const int dt) const
 	{
 		QStringList directoryList;
-		ComponentRegister *reg = &ComponentRegister::instance();
 		QMap<MetaDataType, QVariant> map;
-		QString root = dataDirectoryPath(TemplateDirectory);
 		
 		// add the core lists
 		foreach(ApplicationDataDirectoryType directoryType, 
@@ -57,8 +55,9 @@ namespace kex
 																				 QMap<Config::MetaDataType, 
 																					QVariant> metadata) 
 	{
-		bool found = ComponentRegister::instance()
-																		.componentList().contains(classid);
+		ComponentRegister *reg = &ComponentRegister::instance();
+
+		bool found = reg->componentList().contains(classid);
 		
 		if (found)
 		{

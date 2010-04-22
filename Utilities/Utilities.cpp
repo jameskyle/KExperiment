@@ -18,8 +18,7 @@ namespace kex
 																										Config::ActionDirectory |
 																										Config::ExperimentDirectory |
 																										Config::EventDirectory |
-																										Config::TrialDirectory |
-																										Config::TemplateDirectory));
+																										Config::TrialDirectory));
 			foreach(QString path, dataDirectoryList)
 			{
 				if (!dir.exists(path))
@@ -107,7 +106,7 @@ namespace kex
 				// we insist that all registered resources are present at
 				Q_ASSERT(noerr); 
 				
-				outFile.write(inFile.readAll(), inFile.size());
+				//outFile.write(inFile.readAll(), inFile.size());
 			}
 			// iterate over template files, write them out if they don't exist.			
 		}

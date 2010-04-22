@@ -42,7 +42,6 @@ namespace kex
 			ExperimentDirectory					= 0x4,
 			EventDirectory							= 0x8,
 			TrialDirectory						  = 0x10,
-			TemplateDirectory						= 0x20,
 		};
 		
 		/** \brief  Returns the storage location path for this application

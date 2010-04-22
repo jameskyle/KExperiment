@@ -2,7 +2,7 @@
 
 namespace kex
 {
-	ActionModel::ActionModel(QObject *parent) : ComponentModelInterface(parent)
+	ActionModel::ActionModel(QObject *parent) : QAbstractItemModel(parent)
 	{
 		// We always parse the default application templates first
 		

@@ -1,6 +1,6 @@
 #ifndef ACTIONMODEL_H
 #define ACTIONMODEL_H
-#include <Models/ComponentModelInterface.h>
+#include <Models/ComponentModel.h>
 
 namespace kex
 {
@@ -14,7 +14,7 @@ namespace kex
 	 * \date $LastChangedDate$
 	 * \version $Rev$  \sa Action ComponentInterface	
 	 **/
-	class ActionModel : public ComponentModelInterface
+	class ActionModel : public QAbstractItemModel
 	{
 	public:
 		ActionModel(QObject *parent = 0);

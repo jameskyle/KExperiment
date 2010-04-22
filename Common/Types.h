@@ -12,12 +12,6 @@ namespace kex
 			ExperimentType = 0x8,
 			UndefinedComponentType  = 0x16,
 		};
-			
-		enum DataDirectoryType {
-			LogDirectoryType								= 0x1,
-			ExperimentDirectoryType					= 0x2,
-			TemplateDirectoryType						= 0x4,
-		};
 	}
 }
 #endif

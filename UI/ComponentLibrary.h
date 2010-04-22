@@ -1,6 +1,7 @@
 #ifndef COMPONENTLIBRARY_H
 #define COMPONENTLIBRARY_H
 #include <QDockWidget>
+#include <Models/ComponentModel.h>
 
 #include "ui_LibraryDockWidget.h"
 
@@ -44,6 +45,8 @@ namespace kex
 		 * \version $Rev$
 		 **/
 		~ComponentLibrary();
+		
+		void setModel(ComponentModel *model);
 	};
 }
 #endif

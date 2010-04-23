@@ -24,8 +24,8 @@ namespace kex
   * \date 2010-04-01
   * \date $LastChangedDate$
   * \version $Rev$  \sa
-  **/	
-	
+  **/  
+  
   class BaseConfigurationPage : public QWizardPage
   {
     Q_OBJECT
@@ -54,25 +54,25 @@ namespace kex
       **/
       // void initializePage();
 
-			void initializePage();
+      void initializePage();
 
-	protected:
-		static const char DURATION_DECIMALS = 3;
+  protected:
+    static const char DURATION_DECIMALS = 3;
     static const double DURATION_STEPSIZE = 0.5;
-		
+    
     QLabel _nameLabel;  //!< label for the name value
     QLabel _labelLabel; //!< label for the Label value
 
     QLabel _nameValue;  //!< displays the value of the name field
-		QLabel _labelValue;  //!< displays the value of the label field
-		
-		QVBoxLayout _mainLayout; //!< top level layout
-		QHBoxLayout _nameLayout; //!< row  layout for the name attributes
-		QHBoxLayout _labelLayout; //!< row layout for the label attributes
-		
-		QToolButton _actionLibraryButton;  //!< library of all  actions
-		QToolButton _eventLibraryButton;  //!< library of all events
-		QToolButton _experimentLibraryButton;  //!< library of all experiments
+    QLabel _labelValue;  //!< displays the value of the label field
+    
+    QVBoxLayout _mainLayout; //!< top level layout
+    QHBoxLayout _nameLayout; //!< row  layout for the name attributes
+    QHBoxLayout _labelLayout; //!< row layout for the label attributes
+    
+    QToolButton _actionLibraryButton;  //!< library of all  actions
+    QToolButton _eventLibraryButton;  //!< library of all events
+    QToolButton _experimentLibraryButton;  //!< library of all experiments
 
     };
   }

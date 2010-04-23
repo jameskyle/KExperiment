@@ -82,7 +82,7 @@ namespace kex
     * 
     **/
     bool registerComponent(const QString& name, Creator creator);
-		
+    
     /** \brief Returns a list of Action types
     * 
     * Each Action has a type specifier. That type must be registered in
@@ -106,6 +106,6 @@ namespace kex
   #define REGISTER_COMPONENT(CLASSID, COMPONENT, METADATA) \
     ComponentRegister::instance().registerComponent(CLASSID, \
      boost::lambda::new_ptr<COMPONENT>()); \
-		Config::instance().registerComponentMetaData(CLASSID, METADATA);
+    Config::instance().registerComponentMetaData(CLASSID, METADATA);
 }
 #endif

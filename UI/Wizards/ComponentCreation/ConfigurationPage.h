@@ -28,38 +28,38 @@ namespace kex
   class ConfigurationPage : public BaseConfigurationPage
   {
     Q_OBJECT
-	public:
-		ConfigurationPage(QWidget *parent = 0, const Types::ComponentType component 
-											= Types::UndefinedComponentType);
-		~ConfigurationPage();
+  public:
+    ConfigurationPage(QWidget *parent = 0, const Types::ComponentType component 
+                      = Types::UndefinedComponentType);
+    ~ConfigurationPage();
 
-		void initializePage();
-		
-		QLabel         durationLabel;
-		QLabel				 componentListLabel;
+    void initializePage();
+    
+    QLabel         durationLabel;
+    QLabel         componentListLabel;
 
-		QListView			 componentListView;
-	
-		QDoubleSpinBox durationSpinBoxMsecs;
-		
-		QHBoxLayout*	 libraryToolButtonHLayout;
-		QHBoxLayout		 actionTypeHLayout;
-		QVBoxLayout		 componentListVLayout;
-		QHBoxLayout		 durationHLayout;
-	
-	private:
-		QHBoxLayout* getLibraryButtonLayout();
-		void setTitles();
-		
-		Types::ComponentType _component;
-		
-	signals:
-		void launchComponentLibraryRequested(Types::ComponentType component);
-		
-	private slots:
-		void dispatchLibraryRequest(const QString& libraryType);
-		
-	};
+    QListView       componentListView;
+  
+    QDoubleSpinBox durationSpinBoxMsecs;
+    
+    QHBoxLayout*   libraryToolButtonHLayout;
+    QHBoxLayout     actionTypeHLayout;
+    QVBoxLayout     componentListVLayout;
+    QHBoxLayout     durationHLayout;
+  
+  private:
+    QHBoxLayout* getLibraryButtonLayout();
+    void setTitles();
+    
+    Types::ComponentType _component;
+    
+  signals:
+    void launchComponentLibraryRequested(Types::ComponentType component);
+    
+  private slots:
+    void dispatchLibraryRequest(const QString& libraryType);
+    
+  };
 
 }
 #endif

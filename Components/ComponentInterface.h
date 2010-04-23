@@ -41,7 +41,7 @@ namespace kex
     * \date 2010-04-01
     **/
     virtual ~ComponentInterface () {}
-		
+    
     /** \brief Returns the name attribute.
     *
     * The name attribute serves as a unique identifier for every class

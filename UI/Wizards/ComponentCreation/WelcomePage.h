@@ -24,16 +24,16 @@ namespace kex
   class WelcomePage : public QWizardPage
   {
     Q_OBJECT
-	public:
-		WelcomePage(QWidget *parent = 0, const Types::ComponentType component 
-								= Types::UndefinedComponentType);
-		
-		~WelcomePage();
-		void initializePage();
-		
-	private:
-		Types::ComponentType _component;
-	};
+  public:
+    WelcomePage(QWidget *parent = 0, const Types::ComponentType component 
+                = Types::UndefinedComponentType);
+    
+    ~WelcomePage();
+    void initializePage();
+    
+  private:
+    Types::ComponentType _component;
+  };
     
 }
   #endif

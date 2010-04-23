@@ -29,15 +29,15 @@ namespace kex
   }
   
   bool ComponentRegister::registerComponent(const QString& name, 
-																						Creator creator)
+                                            Creator creator)
   {
-		bool found = _componentCreatorMap.contains(name);
-		
+    bool found = _componentCreatorMap.contains(name);
+    
     if(!found)
     {
       _componentCreatorMap[name] = creator;
     }
-		
-		return found;
+    
+    return found;
   }
 }

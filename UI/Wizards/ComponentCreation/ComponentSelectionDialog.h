@@ -25,7 +25,7 @@ namespace kex
   public:
     ComponentSelectionDialog(QWidget *parent = 0);
     ~ComponentSelectionDialog() {}
-	
+  
   private slots:
     void runWizard(int result);
   };

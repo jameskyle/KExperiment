@@ -7,46 +7,46 @@
 
 namespace kex
 {
-	/** \brief  Displays the specific component library
-	 * 
-	 * Copyright 2010 KSpace MRI. All Rights Reserved.
-	 *
-	 * \author James Kyle
-	 * \author $LastChangedBy$
-	 * \date 2010-4-7
-	 * \date $LastChangedDate$
-	 * \version $Rev$ 
-	 **/
-	class ComponentLibrary : public QDockWidget, private Ui::LibraryDockWidget
-	{
-	public:
-		/** \brief  Constructor for initializing library with a given window title
-		 * 
-		 * Copyright 2010 KSpace MRI. All Rights Reserved.
-		 * 
-		 * \author James Kyle
-		 * \author $LastChangedBy$
-		 * \date 2010-4-7
-		 * \date $LastChangedDate$
-		 * \param title the title text
-		 * \prarm parent the parent widget
-		* \version $Rev$  \sa QDockWidget
-		**/
-		ComponentLibrary(QWidget *parent = 0);
+  /** \brief  Displays the specific component library
+   * 
+   * Copyright 2010 KSpace MRI. All Rights Reserved.
+   *
+   * \author James Kyle
+   * \author $LastChangedBy$
+   * \date 2010-4-7
+   * \date $LastChangedDate$
+   * \version $Rev$ 
+   **/
+  class ComponentLibrary : public QDockWidget, private Ui::LibraryDockWidget
+  {
+  public:
+    /** \brief  Constructor for initializing library with a given window title
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-4-7
+     * \date $LastChangedDate$
+     * \param title the title text
+     * \prarm parent the parent widget
+    * \version $Rev$  \sa QDockWidget
+    **/
+    ComponentLibrary(QWidget *parent = 0);
 
-		/** \brief  Default destructor for the ComponentLibrary
-		 * 
-		 * Copyright 2010 KSpace MRI. All Rights Reserved.
-		 * 
-		 * \author James Kyle
-		 * \author $LastChangedBy$
-		 * \date 2010-4-7
-		 * \date $LastChangedDate$
-		 * \version $Rev$
-		 **/
-		~ComponentLibrary();
-		
-		void setModel(ComponentModel *model);
-	};
+    /** \brief  Default destructor for the ComponentLibrary
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-4-7
+     * \date $LastChangedDate$
+     * \version $Rev$
+     **/
+    ~ComponentLibrary();
+    
+    void setModel(ComponentModel *model);
+  };
 }
 #endif

@@ -3,45 +3,43 @@
 namespace kex
 {
   ComponentModel::ComponentModel(Config::ApplicationDataDirectoryType component,
-                                 QObject *parent) 
-  : QFileSystemModel(parent),
-    _filter("")
+                                 QObject *parent)
+  : QAbstractListModel(parent),
+    _rootPath(Config::instance().dataDirectoryPath(component))
   {
-    // set the root path according to the specified application directory
-    setRootPath(Config::instance().dataDirectoryPath(component));
-
+    _rootPath.setFilter(QDir::Files | QDir::NoSymLinks);
     // We only want *.xml files
-    setFilter(QDir::Files | QDir::NoSymLinks);
     QStringList filters;
     filters << "*.xml";
-    setNameFilters(filters);
+    _rootPath.setNameFilters(filters);
+    _rootPath.setSorting(QDir::Name);
+  }
+
+  int ComponentModel::rowCount(const QModelIndex &parent) const
+  {
+    return _rootPath.count();
   }
 
   QVariant ComponentModel::data(const QModelIndex &index, int role) const
   {
     QVariant result;
 
-    if (role == QFileSystemModel::FileIconRole)
+    if (role == Qt::DecorationRole)
     {
       QIcon icon(":/other/images/other/Science-64.png");
       result = icon;
     } else if (role == Qt::DisplayRole)
     {
-      result = QFileSystemModel::data(index, role);
+      result = _rootPath.entryList()[index.row()];
       QString st(result.toString());
       result = st.replace(".xml","").replace("_"," ");
-    } else
-    {
-      result = QFileSystemModel::data(index,role);
     }
 
     return result;
   }
-  
-  void ComponentModel::updateFilter(QString filter)
+
+  void ComponentModel::updateComponentList()
   {
-    _filter = filter;
-    emit layoutChanged();
-    Logger::instance().log("filter changed");
+    _rootPath.refresh();
   }
 }

@@ -20,26 +20,26 @@ namespace kex
     _directoryTypeList[EventDirectory]      = "Events";
     _directoryTypeList[TrialDirectory]      = "Trials";
   }
-  
-  const QString 
-  Config::dataDirectoryPath(const ApplicationDataDirectoryType 
+
+  const QString
+  Config::dataDirectoryPath(const ApplicationDataDirectoryType
                             directoryType) const
   {
     QString path(storageLocation());
-    
+
     path.append("/").append(_directoryTypeList[directoryType]);
-    
+
     return path;
   }
-    
+
   const QStringList
   Config::dataDirectoryList(const int dt) const
   {
     QStringList directoryList;
     QMap<MetaDataType, QVariant> map;
-    
+
     // add the core lists
-    foreach(ApplicationDataDirectoryType directoryType, 
+    foreach(ApplicationDataDirectoryType directoryType,
             _directoryTypeList.keys())
     {
       if ((dt & directoryType))
@@ -47,31 +47,42 @@ namespace kex
           directoryList << dataDirectoryPath(directoryType);
       }
     }
-    
+
     return directoryList;
   }
-  
-  bool Config::registerComponentMetaData(const QString& classid, 
-                                         QMap<Config::MetaDataType, 
-                                          QVariant> metadata) 
-  {
-    ComponentRegister *reg = &ComponentRegister::instance();
 
-    bool found = reg->componentList().contains(classid);
-    
-    if (found)
-    {
-      _componentMetaDataMap[classid] = metadata;
-    }
-    return found;
-  }
-  
-  const 
-  QMap<Config::MetaDataType, QVariant> Config::metaData(QString& key) const
+//  bool Config::registerComponentMetaData(const QString& classid,
+//                                         QMap<Config::MetaDataType,
+//                                          QVariant> metadata)
+//  {
+//    ComponentRegister *reg = &ComponentRegister::instance();
+//
+//    bool found = reg->componentList().contains(classid);
+//
+//    if (found)
+//    {
+//      _componentMetaDataMap[classid] = metadata;
+//    }
+//    return found;
+//  }
+
+//  const
+//  QMap<Config::MetaDataType, QVariant> Config::metaData(QString& key) const
+//  {
+//    return _componentMetaDataMap[key];
+//  }
+
+  void Config::addTemplate(ApplicationDataDirectoryType storagePath,
+                           QString temp)
   {
-    return _componentMetaDataMap[key];
+    _templates.insert(storagePath, temp);
   }
-  
+
+  const QStringList Config::templates(ApplicationDataDirectoryType t) const
+  {
+    return _templates.values(t);
+  }
+
 
   /**
    * TODO

@@ -7,17 +7,23 @@ namespace kex
   {
     setupUi(this);
     componentListView->setGridSize(QSize(-1,-1));
+    componentListView->setIconSize(QSize(32,32));
   }
-  
+
   ComponentLibrary::~ComponentLibrary() {
   }
-  
+
   void ComponentLibrary::setModel(ComponentModel *model)
   {
-    componentListView->setModel(model);
-    componentListView->setRootIndex(model->index(model->rootPath()));
-    
-    connect(filterLineEdit, SIGNAL(textChanged(QString)), 
-            model,          SLOT(updateFilter(QString)));
+    QSortFilterProxyModel *proxy = new QSortFilterProxyModel(this);
+
+    proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    proxy->setSourceModel(model);
+
+    componentListView->setModel(proxy);
+
+    connect(filterLineEdit, SIGNAL(textChanged(QString)),
+            proxy,          SLOT(setFilterFixedString(QString)));
   }
+
 }

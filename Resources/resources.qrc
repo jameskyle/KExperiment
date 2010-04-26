@@ -1,5 +1,5 @@
 <RCC>
-  <qresource prefix="other">
+  <qresource>
     <file>./images/other/lightning-icon.png</file>
     <file>./images/other/Event-256.png</file>
     <file>./images/other/Nuvola_apps_edu_science.png</file>
@@ -9,7 +9,7 @@
     <file>./images/other/add-icon.png</file>
     <file>./images/other/kspace_banner.png</file>
   </qresource>
-  <qresource prefix="toolbar">
+  <qresource>
     <file>./images/toolbar/Knob Add.png</file>
     <file>./images/toolbar/Knob Attention.png</file>
     <file>./images/toolbar/Knob Blue.png</file>
@@ -51,8 +51,8 @@
     <file>./images/toolbar/Knob Valid Green.png</file>
   </qresource>
 
-  <qresource>
-    <file>./templates/actions.xml</file>
-    <file>./templates/events.xml</file>
+  <qresource prefix="templates">
+    <file>./actions/Rest_30_Seconds.xml</file>
+    <file>./actions/Rest_60_Seconds.xml</file>
   </qresource>
 </RCC>

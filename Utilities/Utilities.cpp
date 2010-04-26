@@ -10,11 +10,11 @@ namespace kex
       Logger *logger;
       Config *config;
       QStringList dataDirectoryList;
-      
+
       logger = &Logger::instance();
       config = &Config::instance();
 
-      dataDirectoryList = config->dataDirectoryList((Config::LogDirectory | 
+      dataDirectoryList = config->dataDirectoryList((Config::LogDirectory |
                                                     Config::ActionDirectory |
                                                     Config::ExperimentDirectory |
                                                     Config::EventDirectory |
@@ -30,10 +30,10 @@ namespace kex
             QString info = QObject::tr("There was an error creating user template "
                               "directories. Please ensure that %1 exists and "
                               "write permissions are enabled.");
-            
+
             logger->log(qPrintable(msg.arg(path)), 0, Logger::CriticalLogLevel);
             logger->displayMessage(msg, info.arg(config->storageLocation()));
-            // we don't continue attempting directory creation if something 
+            // we don't continue attempting directory creation if something
             // fails
             break;
           } else
@@ -44,101 +44,100 @@ namespace kex
         }
       }
     }
-    
+
     void writeTemplateFiles()
     {
-      QStringList componentList;
-      Config *config;
-      ComponentRegister *reg;
-      Logger *logger;
-      
-      reg = &ComponentRegister::instance();
-      config = &Config::instance();
-      logger = &Logger::instance();
-      componentList = reg->componentList();
-      
-      // create directories if they've been deleted 
+      QStringList templates;
+      QList<Config::ApplicationDataDirectoryType> dirs;
+      Logger *logger = &Logger::instance();
+      Config *config = &Config::instance();
+
+      dirs << Config::ActionDirectory << Config::ExperimentDirectory
+           << Config::EventDirectory << Config::TrialDirectory;
+
+      // create directories if they've been deleted
       setupAppStorageEnvironment();
 
-      foreach(QString component, componentList)
+      foreach(Config::ApplicationDataDirectoryType t, dirs)
       {
-        QMap<Config::MetaDataType, QVariant> map;
-        QVariant resource;
-        QFile outFile; // the file we're writing out to
-        QFile inFile;  // the file we're reading from
-        
-        map = config->metaData(component);
-        resource = map[Config::TemplateResourcePath];
-        
-        // we only perform the action for components with a template entry
-        if (resource.isValid())
+        // retrieve all stored templates for data directory t
+        templates = config->templates(t);
+
+        foreach(QString f, templates)
         {
-          inFile.setFileName(resource.toString());
-          outFile.setFileName(map[Config::ComponentTemplatePath].toString());
-        } else 
-        {
-          QString msg("No template configured for: %1");
-          logger->log(qPrintable(msg.arg(component)));
-          continue;
+          QFile outFile;
+          QFile inFile;
+          QFileInfo fi(f);
+
+          inFile.setFileName(f);
+
+          outFile.setFileName((config->dataDirectoryPath(t) +
+                               "/" + fi.fileName()));
+
+          if (outFile.exists()) {continue;}
+
+            if (!outFile.open(QIODevice::ReadWrite))
+            {
+              QString msg = QObject::tr("Could not access file.");
+              QString info = QObject::tr("There was an error accessing a file."
+                                         "Please ensure the file exists and is "
+                                         "accessible: %1");
+
+              logger->log(qPrintable(msg));
+              logger->displayMessage(msg, info.arg(outFile.fileName()));
+              break;
+            }
+
+            bool noerr = inFile.open(QIODevice::ReadOnly);
+            // we insist that all registered resources are present at
+            Q_ASSERT(noerr);
+
+            outFile.write(inFile.readAll(), inFile.size());
         }
-        
-        // break the loop if file exists, we assume it's been overwritten or 
-        // customized.
-        if (outFile.exists())
-        {
-          continue;
-        }
-        
-        // quit and display error message if error is encountered
-        if (!outFile.open(QIODevice::ReadWrite))
-        {
-          QString msg = QObject::tr("Could not access file.");
-          QString info = QObject::tr("There was an error accessing a file."
-                                     "Please ensure the file exists and is "
-                                     "accessible: %1");
-          
-          logger->log(qPrintable(msg));
-          logger->displayMessage(msg, info.arg(outFile.fileName()));
-          break;
-        }
-        
-        bool noerr = inFile.open(QIODevice::ReadOnly);
-        // we insist that all registered resources are present at
-        Q_ASSERT(noerr); 
-        
-        //outFile.write(inFile.readAll(), inFile.size());
       }
-      // iterate over template files, write them out if they don't exist.      
     }
-    
+
     void registerComponents()
     {
       Config *config = &Config::instance();
-      QString path;
-      
+      QMap<QString, Config::ApplicationDataDirectoryType> resource_roots;
+      QMap<QString, Config::ApplicationDataDirectoryType>::iterator it;
+      QDir templates;
+      QString path = ":templates/%1";
+
+      // First we add all the component templates to our config::templates
+      // list
+      resource_roots["actions"]     = Config::ActionDirectory;
+      resource_roots["events"]      = Config::EventDirectory;
+      resource_roots["trials"]      = Config::TrialDirectory;
+      resource_roots["experiments"] = Config::ExperimentDirectory;
+
+      for (it = resource_roots.begin(); it != resource_roots.end(); ++it)
+      {
+        QString full_path = path.arg(it.key());
+
+        if (templates.exists(full_path))
+        {
+          templates.setPath(full_path);
+
+          foreach(QString st, templates.entryList())
+          {
+            QString resource_path = full_path;
+            resource_path.append("/").append(st);
+            config->addTemplate(it.value(), resource_path);
+            Logger::instance().log(qPrintable(resource_path));
+          }
+        }
+      }
+
       // Register the applications components and assign their metadata.
       // First the Action base class
-      QMap<Config::MetaDataType, QVariant> metaDataMap;
-      metaDataMap[Config::TemplateResourcePath] = ":/templates/actions.xml";
-      path = config->dataDirectoryPath(Config::ActionDirectory);
-
-      metaDataMap[Config::ComponentTemplatePath] = path.append("/")
-                                                       .append("kactions.xml");
-      REGISTER_COMPONENT("Action", Action, metaDataMap);
-      
-      // RestAction, a subclass of Action. It has no dedicated template, 
-      // so we clear the metadata
-      metaDataMap.clear();
-      REGISTER_COMPONENT("RestAction", RestAction, metaDataMap);
-        
-      metaDataMap.clear();
-      metaDataMap[Config::TemplateResourcePath] = ":/templates/events.xml";
-      path = config->dataDirectoryPath(Config::EventDirectory);
-      metaDataMap[Config::ComponentTemplatePath] = path.append("/")
-                                                      .append("kevents.xml");
-      REGISTER_COMPONENT("Event", Event, metaDataMap);
+      REGISTER_COMPONENT("Action",     Action);
+      REGISTER_COMPONENT("RestAction", RestAction);
+      REGISTER_COMPONENT("Event",      Event);
+   //   REGISTER_COMPONENT("Experiment", Experiment);
     }
-    
+
     void configureApplication()
     {
       // initialize the Config instance
@@ -148,13 +147,13 @@ namespace kex
                         kex::Config::instance().organizationName());
       QCoreApplication::setApplicationName(
                         kex::Config::instance().applicationName());
-      
+
       // register comoponents
       registerComponents();
-      
+
       // set up the application data storage
       setupAppStorageEnvironment();
-      
+
       // create template files if needed
       writeTemplateFiles();
     }

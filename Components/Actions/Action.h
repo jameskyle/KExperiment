@@ -25,6 +25,16 @@ namespace kex
   class Action : public ComponentInterface
   {
   public:
+    enum ActionType {
+      RestType  = 0x1,
+      TextType  = 0x2,
+      ImageType = 0x4,
+      AudioType = 0x8,
+      VideoType = 0x10,
+      AllTypes  = (RestType | TextType | ImageType | AudioType | VideoType),
+    };
+    
+    
     /** \brief Constructor for the Action class.
     * 
     * \author James Kyle KSpace MRI
@@ -32,39 +42,12 @@ namespace kex
     **/
     Action () : ComponentInterface() {}
     
-    /** \brief Destructor for the Action class.
+    /** \brief Destructor for the Actiqon class.
     * 
     * \author James Kyle KSpace MRI
     * \date 2010-04-01
     **/
     virtual ~Action () {}
-    
-    /** \brief Registers a Action type
-    * 
-    * Each Action has a type specifier. That type must be registered in
-    * order to appear in selections or filter options in Libraries.
-    * 
-    * \author James Kyle KSpace MRI
-    * \date 2010-04-01
-    * \param  type a string specifiying the type of single action
-    * 
-    * \sa registerComponentTypes() actionTypeList()
-    **/
-    static void addActionType(const QString& type);
-    
-    /** \brief Registers a list of Action types
-    * 
-    * Each Action has a type specifier. That type must be registered in
-    * order to appear in selections or filter options in Libraries. This 
-    * method registers a list of actions at a time.
-    * 
-    * \author James Kyle KSpace MRI
-    * \date 2010-04-01
-    * \param  type a string specifiying the type of single action
-    * 
-    * \sa registerComponentType() actionTypeList()
-    **/
-    static void addActionTypes(const QList<QString>& types);
     
     /** \brief Returns a list of Action types
     * 
@@ -78,13 +61,9 @@ namespace kex
     * 
     * \sa registerComponentTypes() registerComponentType()
     **/
-    static const QStringList& actionTypeList();
+    static const QStringList actionTypeList(ActionType t = AllTypes);
     
-    enum ActionType {RestType, ImageType, AudioType, VideoType};
-
-  protected:
-    static QStringList& _actionTypeList();  //!< list of types of actions
-    
+    static const QString getActionType(QString action);
   };
 }
 #endif

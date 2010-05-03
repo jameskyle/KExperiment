@@ -54,6 +54,22 @@ namespace kex
     void log(const char* msg, const QWidget *obj = 0, 
              LogLevelType level = DebugLogLevel);
     
+    /** \brief  Logs the provided message for the declared log level
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-2
+     * \date $LastChangedDate$
+     * \prarm msg message to be logged
+     * \param obj pointer to the object requesting a log
+     * \param level the desired log level [defaut] Debug
+     * \version $Rev$
+     **/
+    void log(const QString& msg, const QWidget *obj = 0, 
+                     Logger::LogLevelType level = DebugLogLevel);
+
     /** \brief  Displays the given message and info to the user
      * 
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -66,7 +82,11 @@ namespace kex
      * \prarm info The information portionof the QMessageBox
      * \version $Rev$  \sa QMessageBox
      **/
-    void displayMessage(const QString& text, const QString& info = "") const;
+    void displayMessage(const QString& text, 
+                        const QString& info = "",
+                        QMessageBox::StandardButton button = 
+                        QMessageBox::Ok, 
+                        Logger::LogLevelType level = DebugLogLevel) const;
     
   private:
     /** \brief  Default constructor

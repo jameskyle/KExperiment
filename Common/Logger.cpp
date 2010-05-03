@@ -38,13 +38,40 @@ namespace kex
     }
   }
   
-  void Logger::displayMessage(const QString& text, const QString& info) const
+  void Logger::log(const QString& msg, const QWidget *obj, 
+                   Logger::LogLevelType level)
+  {
+    log(qPrintable(msg), obj, level);
+  }
+  
+  void Logger::displayMessage(const QString& text, 
+                              const QString& info, 
+                              QMessageBox::StandardButton button,
+                              Logger::LogLevelType level) const
   {
     QMessageBox box;
     box.setText(text);
     box.setInformativeText(info);
+    box.setDefaultButton(button);
+    switch (level)
+    {
+      case Logger::DebugLogLevel:
+        box.setIcon(QMessageBox::Information);
+        break;
+      case Logger::WarningLogLevel:
+        box.setIcon(QMessageBox::Warning);
+        break;
+      case Logger::CriticalLogLevel:
+        box.setIcon(QMessageBox::Critical);
+        break;
+      case Logger::FatalLogLevel:
+        box.setIcon(QMessageBox::Critical);
+        break;
+      default:
+        qDebug() << "Log function passed an unknown LogLevel";
+        break;
+    }        
     box.exec();
+
   }
-
-
-}
+} // END_KEX_NAMESPACE

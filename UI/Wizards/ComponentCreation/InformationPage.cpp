@@ -21,7 +21,7 @@ namespace kex
   void InformationPage::initializePage()
   {
     BaseInformationPage::initializePage();
-    
+    QStringList actionTypes;
     QString name("Component");
     // We set up some variables for inserting a combo box in case of an ACTION
     // component
@@ -42,7 +42,8 @@ namespace kex
         actionTypeLabel->setBuddy(actionTypeComboBox);
         
         actionTypeComboBox->addItem(tr("Choose..."));
-        actionTypeComboBox->addItems(Action::actionTypeList());
+         actionTypes = Action::actionTypeList();
+        actionTypeComboBox->addItems(actionTypes);
         
         _mainLayout.insertLayout(extraLayoutPosition, 
                                  _actionTypeComboBoxHLayout);

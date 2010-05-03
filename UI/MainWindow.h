@@ -2,12 +2,19 @@
 #define MAINWINDOW_H
 #include <QObjectCleanupHandler>
 #include <QDebug>
+#include <QXmlStreamReader>
+#include <QXmlSchemaValidator>
+#include <QXmlSchema>
+#include <QDir>
+#include <QStringList>
 
 #include <Wizards/ComponentCreation/CreationWizard.h>
 #include <Wizards/ComponentCreation/ComponentSelectionDialog.h>
 #include <ComponentLibrary.h>
+#include <ComponentList.h>
 #include <LiveView.h>
 #include <Models/ComponentModel.h>
+#include <Utilities/Utilities.h>
 
 #include "ui_MainWindow.h"
 
@@ -33,7 +40,7 @@ namespace kex
     * \version $Rev$
     **/
     //void connectButtonToLibraryDock(QToolButton *button, );
-
+    
 
   
   private:
@@ -51,12 +58,27 @@ namespace kex
     **/
     void createLibraryDocks();
     
+    /** \brief  Populates the componentList from the xml component files.
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * Checked the DataDirectory/{actions,events,trials,experiments} 
+     * directories for template files and creates the relevant qobjects.
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-2
+     * \date $LastChangedDate$
+     * \version $Rev$  \sa ComponentInterface ComponentList
+     **/
+    void populateComponentList();
     
     ComponentLibrary *experimentLibraryDock;
     ComponentLibrary *actionLibraryDock;
     ComponentLibrary *eventLibraryDock;
     ComponentLibrary *trialLibraryDock;
-    
+    ComponentList    *componentList;
+
   public slots:
     void selectComponentWizard();
     void launchComponentLibrary(Types::ComponentType component);

@@ -2,30 +2,30 @@
 
 namespace kex
 {
-  QStringList& Action::_actionTypeList()
+  const QStringList Action::actionTypeList(ActionType t)
   {
-    static QStringList _list;
-    if(_list.isEmpty())
-    {
-      _list << "Rest" << "Text" << "Image" << "Video";
-    }
-    return _list;
+    QStringList actionTypes;
+    if (t & RestType)
+      actionTypes << "Rest";
+
+    if (t & TextType)
+      actionTypes << "Text";
+    
+    if (t & ImageType)
+      actionTypes << "Image";
+    
+    if (t & AudioType)
+      actionTypes << "Audio";
+    
+    if (t & VideoType)
+      actionTypes << "Video";
+    
+    return actionTypes;
   }
-  
-  const QStringList& Action::actionTypeList()
+    
+  const QString getActionType(QString& action)
   {
-    return _actionTypeList();
+    
   }
-  
-  void Action::addActionType(const QString& type)
-  {
-    _actionTypeList() << type;
-  }
-  
-  void Action::addActionTypes(const QList<QString>& types)
-  {
-    foreach(QString st, types) {
-      _actionTypeList().append(st);
-    }
-  }
+
 }

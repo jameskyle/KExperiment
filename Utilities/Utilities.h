@@ -11,9 +11,11 @@
 #include <QWidget>
 #include <QResource>
 #include <QVariant>
+#include <QXmlSchemaValidator>
+#include <QStringList>
 
 #include <Common/Global.h>
-#include <Components/ComponentRegister.h>
+#include <Components/ComponentFactory.h>
 
 namespace kex
 {
@@ -39,11 +41,11 @@ namespace kex
     void writeTemplateFiles();
 
 
-    /** \brief  Registers the comonents with the ComponentRegister
+    /** \brief  Registers the comonents with the ComponentFactory
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
-     * Each class should be registered with the ComponentRegister. As new classes
+     * Each class should be registered with the ComponentFactory. As new classes
      * are created, their factory methods and metadata can be set here. The
      * metadata ensures the application can properly find class related materials
      * such as QResource templates.
@@ -52,7 +54,7 @@ namespace kex
      * \author $LastChangedBy$
      * \date 2010-4-13
      * \date $LastChangedDate$
-     * \version $Rev$  \sa ComponentRegister
+     * \version $Rev$  \sa ComponentFactory
      **/
     void registerComponents();
 
@@ -70,7 +72,34 @@ namespace kex
      * \version $Rev$  \sa Config
      **/
     void configureApplication();
-
+    
+    /** \brief  Validates the provided file using the specified validator.
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * Returns true if file conforms to the validator schema.
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-3
+     * \date $LastChangedDate$
+     * \param file the file to be validated
+     * \prarm validator validator used to validate
+     * \version $Rev$ 
+     **/
+    bool isValidXml(QFile *file, const QXmlSchemaValidator *validator);
+    
+    /** \brief  Returns a list of paths to the component xml definition files
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-3
+     * \date $LastChangedDate$
+     * \version $Rev$  \sa validateXml()
+     **/
+    QStringList xmlFileComponentList();
 
    };
 

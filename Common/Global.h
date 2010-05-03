@@ -11,7 +11,7 @@
 #include <Utilities/Utilities.h>
 #include <Common/Uncopyable.h>
 #include <Common/Logger.h>
-#include <Components/ComponentRegister.h>
+#include <Components/ComponentFactory.h>
 
 namespace kex
 {
@@ -42,6 +42,7 @@ namespace kex
       ExperimentDirectory         = 0x4,
       EventDirectory              = 0x8,
       TrialDirectory              = 0x10,
+      AllDataDirectories          = (0x1 | 0x2 | 0x4 | 0x8 | 0x10),
     };
 
     /** \brief  Returns the storage location path for this application
@@ -118,15 +119,18 @@ namespace kex
     const QString domainName() const {return _domainName;}
     const QString applicationName() const {return _applicationName;}
     const QString storageLocation() const {return _storageLocation;}
+    const QString componentSchemaFile() const { return _componentSchemaFile;}
     const QStringList templates(ApplicationDataDirectoryType t) const;
     void addTemplate(ApplicationDataDirectoryType storagePath, QString temp);
-
+    
   private:
     QString _organizationName;
     QString _domainName;
     QString _applicationName;
     QString _storageLocation;
+    QList<ApplicationDataDirectoryType> _dataDirectoryList;
     QMultiMap<ApplicationDataDirectoryType, QString> _templates;
+    QString _componentSchemaFile;
 
     //!< map of class's application metadata
     //QMap<QString, QMap<MetaDataType, QVariant> > _componentMetaDataMap;

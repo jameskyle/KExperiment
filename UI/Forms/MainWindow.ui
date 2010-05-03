@@ -14,107 +14,178 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_10">
+   <layout class="QHBoxLayout" name="horizontalLayout_9">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_6">
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QLabel" name="experimentIcon">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="../../Resources/resources.qrc">:/other/images/other/Nuvola_apps_edu_science.png</pixmap>
-          </property>
-          <property name="scaledContents">
-           <bool>true</bool>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="experimentIcon">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>:/other/images/other/Nuvola_apps_edu_science.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QLabel" name="typeNameLabel">
+                <property name="text">
+                 <string>Component Type</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QLabel" name="componentNameLabel">
+                <property name="text">
+                 <string>Component Name</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QLabel" name="durationLabel">
+                <property name="text">
+                 <string>Duration</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="trialDuration">
+                <property name="text">
+                 <string>0:15.25</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QLabel" name="categoryNameLabel">
-              <property name="text">
-               <string>Category</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="descriptionLabel">
+                <property name="text">
+                 <string>Description</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>388</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </item>
             <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="experimentNameLabel">
-              <property name="text">
-               <string>Experiment Name</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="experimentDuration">
-              <property name="text">
-               <string>0:15.25</string>
+             <widget class="QTextEdit" name="experimentDescriptionTextEdit">
+              <property name="enabled">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
-             <widget class="QLabel" name="eventNameLabel">
-              <property name="text">
-               <string>Event Or Trial Name</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QLabel" name="instructionLabel">
+                <property name="text">
+                 <string>Instructions</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>388</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </item>
             <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="trialDuration">
-              <property name="text">
-               <string>0:15.25</string>
+             <widget class="QTextEdit" name="experimentInstructionTextEdit">
+              <property name="enabled">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -125,24 +196,24 @@
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
-           <widget class="QLabel" name="descriptionLabel">
+           <widget class="QLabel" name="treeViewLabel">
             <property name="text">
-             <string>Description</string>
+             <string>Tree View</string>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_6">
+           <spacer name="horizontalSpacer_4">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>388</width>
+              <width>40</width>
               <height>20</height>
              </size>
             </property>
@@ -151,64 +222,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QTextEdit" name="experimentDescriptionTextEdit">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <item>
-           <widget class="QLabel" name="instructionLabel">
-            <property name="text">
-             <string>Instructions</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>388</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTextEdit" name="experimentInstructionTextEdit">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
-        <item>
-         <widget class="QLabel" name="progressLabel">
-          <property name="text">
-           <string>Progress</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QProgressBar" name="progressBar">
-          <property name="value">
-           <number>24</number>
-          </property>
-         </widget>
+         <widget class="QTreeView" name="componentTreeView"/>
         </item>
        </layout>
       </item>
@@ -275,8 +289,8 @@
   <action name="actionRunExperiment">
    <property name="icon">
     <iconset resource="../../Resources/resources.qrc">
-     <normaloff>:/toolbar/images/toolbar/Knob Play.png</normaloff>
-     <normalon>:/toolbar/images/toolbar/Knob Play.png</normalon>:/toolbar/images/toolbar/Knob Play.png</iconset>
+     <normaloff>:/images/toolbar/Knob Play.png</normaloff>
+     <normalon>:/toolbar/images/toolbar/Knob Play.png</normalon>:/images/toolbar/Knob Play.png</iconset>
    </property>
    <property name="text">
     <string>Run</string>
@@ -291,7 +305,7 @@
   <action name="actionPauseExperiment">
    <property name="icon">
     <iconset resource="../../Resources/resources.qrc">
-     <normaloff>:/toolbar/images/toolbar/Knob Pause.png</normaloff>:/toolbar/images/toolbar/Knob Pause.png</iconset>
+     <normaloff>:/images/toolbar/Knob Pause.png</normaloff>:/images/toolbar/Knob Pause.png</iconset>
    </property>
    <property name="text">
     <string>Stop</string>
@@ -303,7 +317,7 @@
   <action name="actionStopExperiment">
    <property name="icon">
     <iconset resource="../../Resources/resources.qrc">
-     <normaloff>:/toolbar/images/toolbar/Knob Stop.png</normaloff>:/toolbar/images/toolbar/Knob Stop.png</iconset>
+     <normaloff>:/images/toolbar/Knob Stop.png</normaloff>:/images/toolbar/Knob Stop.png</iconset>
    </property>
    <property name="text">
     <string>Stop</string>
@@ -315,7 +329,7 @@
   <action name="actionNextEvent">
    <property name="icon">
     <iconset resource="../../Resources/resources.qrc">
-     <normaloff>:/toolbar/images/toolbar/Knob Fast Forward.png</normaloff>:/toolbar/images/toolbar/Knob Fast Forward.png</iconset>
+     <normaloff>:/images/toolbar/Knob Fast Forward.png</normaloff>:/images/toolbar/Knob Fast Forward.png</iconset>
    </property>
    <property name="text">
     <string>Next Event</string>
@@ -327,7 +341,7 @@
   <action name="actionPreviousEvent">
    <property name="icon">
     <iconset resource="../../Resources/resources.qrc">
-     <normaloff>:/toolbar/images/toolbar/Knob Fast Rewind.png</normaloff>:/toolbar/images/toolbar/Knob Fast Rewind.png</iconset>
+     <normaloff>:/images/toolbar/Knob Fast Rewind.png</normaloff>:/images/toolbar/Knob Fast Rewind.png</iconset>
    </property>
    <property name="text">
     <string>Previous Event</string>
@@ -431,7 +445,7 @@ or Experiments.</string>
  <resources>
   <include location="../../Resources/resources.qrc"/>
   <include location="../../Resources/resources.qrc"/>
-  <include location="../../Resources/icons.qrc"/>
+  <include location="../../Resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

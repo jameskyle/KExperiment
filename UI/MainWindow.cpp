@@ -4,16 +4,20 @@ namespace kex
 {
   MainWindow::MainWindow(QMainWindow *parent) 
     : QMainWindow(parent),
-      experimentLibraryDock(0),
-      actionLibraryDock(0),
-      eventLibraryDock(0),
-      trialLibraryDock(0)
+      experimentLibraryDock(new ComponentLibrary(this)),
+      actionLibraryDock(new ComponentLibrary(this)),
+      eventLibraryDock(new ComponentLibrary(this)),
+      trialLibraryDock(new ComponentLibrary(this)),
+      componentList(new ComponentList)
   {    
     setupUi(this); // set up the Qt Designer Gui
     
     // Set up some defaults
     setUnifiedTitleAndToolBarOnMac(true);
-
+    
+    // read in xml templates and cache objects in list
+    populateComponentList();
+    
     // create create and configure docks.
     createLibraryDocks();
     
@@ -24,7 +28,10 @@ namespace kex
 
   MainWindow::~MainWindow()
   {
-    
+    if (componentList)
+    {
+      delete componentList;
+    }
   }
   
   void MainWindow::showLiveView()
@@ -50,17 +57,6 @@ namespace kex
   
   void MainWindow::createLibraryDocks() 
   {
-    // verify the pointers are 0, this method should only be called on startup
-    Q_ASSERT(!experimentLibraryDock);
-    Q_ASSERT(!actionLibraryDock);
-    Q_ASSERT(!eventLibraryDock);
-    Q_ASSERT(!trialLibraryDock);
-    
-    experimentLibraryDock = new ComponentLibrary(this);
-    actionLibraryDock = new ComponentLibrary(this);
-    eventLibraryDock = new ComponentLibrary(this);
-    trialLibraryDock = new ComponentLibrary(this);
-    
     // Assert that pointer creation was successful
     Q_CHECK_PTR(experimentLibraryDock);
     Q_CHECK_PTR(actionLibraryDock);
@@ -181,4 +177,19 @@ namespace kex
     }
 
   }
-}
+  
+  void MainWindow::populateComponentList()
+  {
+    ComponentFactory    *factory = &ComponentFactory::instance();
+    ComponentInterface  *interface(0);
+    QStringList         xmlFiles(Utilities::xmlFileComponentList());
+    
+    foreach(QString path, xmlFiles)
+    {
+      QFile file(path);
+      interface = factory->createFromXml(file);
+    }
+  }
+} // END_KEX_NAMESPACE
+
+

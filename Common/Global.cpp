@@ -11,7 +11,8 @@ namespace kex
     _applicationName("KExperiment"),
     _storageLocation(QString("%1/%2")
       .arg(QDesktopServices::storageLocation(QDesktopServices::DataLocation))
-      .arg(_applicationName))
+      .arg(_applicationName)),
+    _componentSchemaFile(":/schemas/DataTypes.xsd")
   {
     // populate the directory type list
     _directoryTypeList[LogDirectory]        = "Log";
@@ -55,7 +56,7 @@ namespace kex
 //                                         QMap<Config::MetaDataType,
 //                                          QVariant> metadata)
 //  {
-//    ComponentRegister *reg = &ComponentRegister::instance();
+//    ComponentFactory *reg = &ComponentFactory::instance();
 //
 //    bool found = reg->componentList().contains(classid);
 //

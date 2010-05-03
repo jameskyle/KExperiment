@@ -132,7 +132,7 @@ namespace kex
 
       // Register the applications components and assign their metadata.
       // First the Action base class
-      REGISTER_COMPONENT("Action",     Action);
+//      REGISTER_COMPONENT("Action",     Action);
       REGISTER_COMPONENT("RestAction", RestAction);
       REGISTER_COMPONENT("Event",      Event);
    //   REGISTER_COMPONENT("Experiment", Experiment);
@@ -157,6 +157,53 @@ namespace kex
       // create template files if needed
       writeTemplateFiles();
     }
-
-  }
-}
+    
+    bool isValidXml(QFile *file, const QXmlSchemaValidator *validator)
+    {
+      bool valid = false;
+      Logger *logger = &Logger::instance();
+      
+      if (validator->validate(file))
+      {
+        valid = true;
+      } else
+      {
+        QString msg("Utilities::validateXml");
+        QString info("The component file is invalid xml: %1");
+        logger->displayMessage(msg, info.arg(file->fileName()), QMessageBox::Ok);
+      }
+      // reset the file to the zero position
+      file->seek(0);
+      
+      return valid;
+    }
+    
+    QStringList xmlFileComponentList()
+    {
+      QStringList         dirList;
+      QStringList         xmlList;
+      Config              *config = &Config::instance();
+      
+      dirList = config->dataDirectoryList(Config::AllDataDirectories & 
+                                          ~Config::LogDirectory);
+      
+      foreach(QString path, dirList)
+      {
+        QDir dir(path);
+        QStringList filters;
+        QStringList fileList;
+        
+        filters << "*.xml";
+        dir.setNameFilters(filters);
+        fileList = dir.entryList(QDir::Files);
+        
+        foreach(QString file, fileList)
+        {
+          QString fullPath("%1/%2");
+          xmlList << fullPath.arg(path).arg(file);
+        }
+      }
+      return xmlList;
+    }
+  } // END_UTILITIES
+} // END_KEX_NAMESPACE

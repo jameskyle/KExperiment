@@ -1,0 +1,12 @@
+ui_*
+*.o
+moc_*
+qrc_*
+Makefile
+*.app
+*.xcodeproj
+*.DS_Store
+build
+*.xcodeproj
+*.tmproj
+Info.plist

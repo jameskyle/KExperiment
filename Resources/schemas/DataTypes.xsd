@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema  elementFormDefault="qualified" 
+      xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!-- application information -->
+  <xs:annotation>
+    <xs:appinfo>KExperiment Component Schema</xs:appinfo>
+    <xs:documentation xml:lang="en">
+      The following specifications define the required and optional elements for a well 
+      formed component definition. It covers the action, event, trial, and experiment 
+      components and all associated attributes and elements.
+    </xs:documentation>
+  </xs:annotation>
+  
+  <!-- define basic elements -->
+  <xs:element name="name" type="xs:string" />
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="item" type="xs:string" />
+  <xs:element name="duration" type="durationType" />
+  <xs:element name="instructions" type="xs:string" />
+  
+  <!-- define complex elements, custom types -->
+  <xs:element name="action" type="actionType" />
+  <xs:element name="event" type="eventType" />
+  <xs:element name="trial" type="trialType" />
+  <xs:element name="experiment" type="experimentType" />
+  <xs:element name="categories" type="categoryType" />
+  
+  <!--define attributes-->
+  <!-- used to declare the action type -->
+  <xs:attribute name="type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="rest" />
+        <xs:enumeration value="image" />
+        <xs:enumeration value="video" />
+        <xs:enumeration value="text" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  
+  <!-- used to declare the time units used. default: msecs -->
+  <xs:attribute name="unit" default="msecs">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="secs" />
+        <xs:enumeration value="ksecs" />
+        <xs:enumeration value="msecs" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  
+  <!--abstract types-->
+  <xs:complexType abstract="true" name="component">
+    <xs:sequence>
+      <xs:element ref="name" minOccurs="0" />
+      <xs:element ref="label"  minOccurs="0" />
+      <xs:element ref="description"  minOccurs="0" /> 
+      <xs:element ref="categories" minOccurs="0" />      
+    </xs:sequence>
+  </xs:complexType>
+  
+  <!-- element types -->
+  <xs:complexType name="durationType">
+    <xs:simpleContent>
+      <xs:extension base="xs:integer">
+        <xs:attribute ref="unit" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <!-- component types -->
+  <xs:complexType name="categoryType">
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="actionType">
+    <xs:complexContent>
+      <xs:extension base="component">
+        <xs:sequence>
+          <xs:element ref="duration" minOccurs="0" />
+        </xs:sequence>
+      <xs:attribute ref="type" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="eventType">
+    <xs:complexContent>
+      <xs:extension base="component">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element ref="action" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="trialType">
+    <xs:complexContent>
+      <xs:extension base="component">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element ref="event" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="experimentType" >
+    <xs:complexContent>
+      <xs:extension base="component">
+        <xs:sequence maxOccurs="unbounded">
+          <xs:element ref="trial" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element ref="instructions" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>     
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

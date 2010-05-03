@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="../schemas/DataTypes.xsd">
+  <name>Foo</name>
+  <label>Bar</label>
+  <description>described</description>
+  <action type="image">
+    <name>30 Second Pause</name>
+    <label>Pauses for 30 seconds.</label>
+    <description>
+          When this action is inserted into a Event, a 30s pause is performed at
+          the point of its insertion.
+      </description>
+    <duration>30000</duration> <!-- 30 seconds in milliseconds -->
+  </action>
+  <action type="rest">
+    <!-- we can reference previous template declarations 
+         by simply specifying the name -->
+    <name>60 Second Pause</name> 
+  </action>
+</event>

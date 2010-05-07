@@ -205,5 +205,30 @@ namespace kex
       }
       return xmlList;
     }
+    
+    QString componentNameFromBaseName(const QString& baseName)
+    {
+      QString componentName(baseName);
+      QString output;
+      // remove .xml extenstion and replace '_' with a space
+      componentName.replace("_", " ");
+      
+      // insert a space before each camelcase, the size and character position
+      // of fileName and componentName before the loop are the same, so we can
+      // iterate over fileName for the char values.
+      for(int i = 0;i < componentName.count(); ++i)
+      {
+        if (baseName[i].isUpper())
+        {
+          output.append(" ").append(componentName[i]);
+        } else
+        {
+          output.append(componentName[i]);
+        }
+
+      }
+      return output.simplified();
+    }
+
   } // END_UTILITIES
 } // END_KEX_NAMESPACE

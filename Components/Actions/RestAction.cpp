@@ -5,7 +5,7 @@ namespace kex
   /**
    * TODO
    */
-  RestAction::RestAction(QObject *parent) : OutputAction(parent)
+  RestAction::RestAction(QObject *parent) : OutputComponent(parent)
   {
   }
 
@@ -17,13 +17,6 @@ namespace kex
     
   }
 
-  /**
-   * TODO
-   */
-  void RestAction::log(QString& msg)
-  {
-    
-  }
   /**
    * TODO
    */

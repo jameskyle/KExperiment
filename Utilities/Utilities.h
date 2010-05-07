@@ -100,7 +100,24 @@ namespace kex
      * \version $Rev$  \sa validateXml()
      **/
     QStringList xmlFileComponentList();
-
+    
+    /** \brief  Translates the given fileName string to a valid compnent name.
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * Al underscores in a comoponent name are converted to spaces
+     * and the .xml extension is removed. Also, camelcase names are expanded 
+     * inserting a space before each capital letter.
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-4
+     * \date $LastChangedDate$
+     * \param fileName a string representing the component's template file name
+     * \return QString the component name
+     * \version $Rev$
+     **/
+    QString componentNameFromBaseName(const QString& fileName);
    };
 
 }

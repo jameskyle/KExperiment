@@ -4,8 +4,6 @@ namespace kex
 {
   Event::~Event()
   {
-    while(!_actionList.isEmpty()) {
-      delete _actionList.takeFirst();
-    }
+    qDeleteAll(_actionList.begin(), _actionList.end());
   }
 }

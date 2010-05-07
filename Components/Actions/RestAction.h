@@ -1,18 +1,17 @@
 #ifndef RESTACTION
 #define RESTACTION
-#include "OutputAction.h"
+#include "Components/OutputComponent.h"
+#include "Action.h"
 
 namespace kex
 {
-  class RestAction : public OutputAction
+  class RestAction : public OutputComponent, public Action
   {
     Q_OBJECT
     public:
       RestAction(QObject *parent = 0);
       ~RestAction();
     
-      void log(QString& msg);
-            
     public slots:
       void begin();
       void abort();

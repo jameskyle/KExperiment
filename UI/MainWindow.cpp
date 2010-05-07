@@ -30,6 +30,7 @@ namespace kex
   {
     if (componentList)
     {
+      qDeleteAll(componentList->begin(), componentList->end());
       delete componentList;
     }
   }

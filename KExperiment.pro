@@ -29,6 +29,7 @@ HEADERS += Common/Global.h \
            Common/Uncopyable.h \
            Common/Logger.h \
            Components/ComponentInterface.h \
+           Components/ComponentDataPrivate.h \
            Components/ComponentFactory.h \
            Models/ComponentModel.h \
            Models/Action/ActionModel.h \
@@ -38,7 +39,7 @@ HEADERS += Common/Global.h \
            UI/MainWindow.h \
            Utilities/Utilities.h \
            Components/Actions/Action.h \
-           Components/Actions/OutputAction.h \
+           Components/OutputComponent.h \
            Components/Actions/RestAction.h \
            Components/Events/Event.h \
            Components/Experiment/Experiment.h \
@@ -58,9 +59,10 @@ FORMS += UI/Forms/builderFrame.ui \
          UI/Forms/MainWindow.ui \
          UI/Forms/ViewerFrame.ui
 SOURCES += main.cpp \
-           qrc_icons.cpp \
            Common/Global.cpp \
            Common/Logger.cpp \
+           Components/ComponentInterface.cpp \
+           Components/ComponentDataPrivate.cpp \
            Components/ComponentFactory.cpp \
            Components/MetaData.cpp \
            Models/ComponentModel.cpp \
@@ -70,7 +72,7 @@ SOURCES += main.cpp \
            UI/MainWindow.cpp \
            Utilities/Utilities.cpp \
            Components/Actions/Action.cpp \
-           Components/Actions/OutputAction.cpp \
+           Components/OutputComponent.cpp \
            Components/Actions/RestAction.cpp \
            Components/Events/Event.cpp \
            Components/Experiment/Experiment.cpp \

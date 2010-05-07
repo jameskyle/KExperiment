@@ -26,7 +26,7 @@ namespace kex
 
     if (role == Qt::DecorationRole)
     {
-      QIcon icon(":/other/images/other/Science-64.png");
+      QIcon icon(":/images/other/Science-64.png");
       result = icon;
     } else if (role == Qt::DisplayRole)
     {

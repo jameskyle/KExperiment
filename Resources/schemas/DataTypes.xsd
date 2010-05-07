@@ -19,6 +19,8 @@
   <xs:element name="item" type="xs:string" />
   <xs:element name="duration" type="durationType" />
   <xs:element name="instructions" type="xs:string" />
+  <xs:element name="file" type="xs:string" />
+  <xs:element name="text" type="xs:string" />
   
   <!-- define complex elements, custom types -->
   <xs:element name="action" type="actionType" />
@@ -26,6 +28,7 @@
   <xs:element name="trial" type="trialType" />
   <xs:element name="experiment" type="experimentType" />
   <xs:element name="categories" type="categoryType" />
+  
   
   <!--define attributes-->
   <!-- used to declare the action type -->
@@ -39,6 +42,8 @@
       </xs:restriction>
     </xs:simpleType>
   </xs:attribute>
+   
+   <xs:attribute name="template" type="xs:boolean" />
   
   <!-- used to declare the time units used. default: msecs -->
   <xs:attribute name="unit" default="msecs">
@@ -59,6 +64,7 @@
       <xs:element ref="description"  minOccurs="0" /> 
       <xs:element ref="categories" minOccurs="0" />      
     </xs:sequence>
+    <xs:attribute ref="template" use="optional" fixed="true" />
   </xs:complexType>
   
   <!-- element types -->
@@ -82,6 +88,8 @@
       <xs:extension base="component">
         <xs:sequence>
           <xs:element ref="duration" minOccurs="0" />
+          <xs:element ref="file" minOccurs="0" />
+          <xs:element ref="text" minOccurs="0" />
         </xs:sequence>
       <xs:attribute ref="type" use="required" />
       </xs:extension>

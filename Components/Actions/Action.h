@@ -31,6 +31,7 @@ namespace kex
       ImageType = 0x4,
       AudioType = 0x8,
       VideoType = 0x10,
+      UnknownType = 0x20,
       AllTypes  = (RestType | TextType | ImageType | AudioType | VideoType),
     };
     
@@ -63,7 +64,9 @@ namespace kex
     **/
     static const QStringList actionTypeList(ActionType t = AllTypes);
     
-    static const QString getActionType(QString action);
+    static ActionType getActionType(const QString& action);
+    static QString getActionString(ActionType actionType);
+    
   };
 }
 #endif

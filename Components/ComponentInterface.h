@@ -1,8 +1,12 @@
 #ifndef COMPONENTINTERFACE_H
 #define COMPONENTINTERFACE_H
 #include <QStringList>
+#include <QTextStream>
+
+#include <typeinfo>
 
 #include <Common/Uncopyable.h>
+#include <ComponentDataPrivate.h>
 
 namespace kex
 {
@@ -20,7 +24,7 @@ namespace kex
   * \date $LastChangedDate$
   * \version $Rev$  \sa
   **/
-  class ComponentInterface : private Uncopyable
+  class ComponentInterface
   {
   public:
     /** \brief This is the constructor for the Action base class.
@@ -31,8 +35,34 @@ namespace kex
     * \author James Kyle KSpace MRI
     * \date 2010-04-01
     **/
-    ComponentInterface () : _name(""), _description(""), _label(""), _category("") {}
-
+    ComponentInterface();
+    
+    /** \brief  Copy constructor for the ComponentInterface
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-6
+     * \date $LastChangedDate$
+     * \param component the component to be copied
+     * \version $Rev$
+     **/
+    ComponentInterface(const ComponentInterface &component);
+    
+    /** \brief  Assignment operator.
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-6
+     * \date $LastChangedDate$
+     * \param component the component being assigned
+     * \version $Rev$
+     **/
+    ComponentInterface& operator=(const ComponentInterface &component);
+    
     /** \brief This is the destructor for the Action base class
     *
     * Performs basic clean up required by the Action base class
@@ -40,7 +70,7 @@ namespace kex
     * \author James Kyle KSpace MRI
     * \date 2010-04-01
     **/
-    virtual ~ComponentInterface () {}
+    virtual ~ComponentInterface ();
     
     /** \brief Returns the name attribute.
     *
@@ -52,7 +82,7 @@ namespace kex
     * \return Returns the name of the Action.
     * \sa QList
     **/
-    const QString name() const {return _name;}
+    const QString name() const;
 
     /** \brief Returns the description for the Action class.
     *
@@ -64,7 +94,7 @@ namespace kex
     * \return QString of maximum size of 512 characters.
     * \sa QString
     **/
-    const QString description() const {return _description;}
+    const QString description() const;
 
     /** \brief Returns the label for an Action class.
     *
@@ -75,7 +105,7 @@ namespace kex
     * \return Returns a QString containing a brief description of the Action.
     * \sa QString
     **/
-    const QString label() const {return _label;}
+    const QString label() const;
 
     /** \brief Returns the category for the Action class.
     *
@@ -87,8 +117,10 @@ namespace kex
     * \return Returns a QString of maximum 56 characters.
     * \sa QString
     **/
-    const QString category() const {return _category;}
+    const QString mainCategory() const;
 
+    void setMainCategory(const QString& cat);
+    
     /** \brief Sets the name attribute of the Action class.
     *
     * The name attribute serves as a unique identifier for each Action
@@ -99,7 +131,7 @@ namespace kex
     * \param  name the user provided name for the Action.
     * \sa QString name()
     **/
-    void setName(const QString& name) {_name = name;}
+    void setName(const QString& name);
 
     /** \brief Sets the description for the Action class.
     *
@@ -113,7 +145,7 @@ namespace kex
     * \return description of return value
     * \sa QString description()
     **/
-    void setDescription(const QString& desc) {_description = desc;}
+    void setDescription(const QString& desc);
 
     /** \brief Sets the label of an Action class.
     *
@@ -125,7 +157,7 @@ namespace kex
     * \param  label the user provided label for a an Action.
     * \sa QString label()
     **/
-    void setLabel(const QString& label) {_label = label;}
+    void setLabel(const QString& label);
 
     /** \brief Sets the category for the Action instance.
     *
@@ -137,20 +169,43 @@ namespace kex
     * 56 characters.
     * \sa QString category()
     **/
-    void setCategory(const QString& category) {_category = category;}
-
-
-    static const quint32 MAX_DURATION = 1800000; //!< maximum run time
+    void addCategory(const QString& category);
     
+    void removeCategory(const QString& category);
+    
+    virtual const quint32 durationMSecs() const;
+    
+    virtual void setDurationMSecs(quint32 duration);
+      
+    virtual const QString toString() const;
+    
+    static const quint32 MAX_DURATION = 1800000; //!< maximum run time
+
   private:
-    /*
-      TODO doc for private vars
-    */
-    QString _name; //!< name of the component
-    QString _description; //!< detailed description of the component
-    QString _label; //!< brief description of the component
-    QString _category; //!< main group identifier
-    QStringList _tagList; //!< list of associated tags for sorting/filtering
+    /** \brief  Detaches from shared component data.
+     * 
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * Ensures this instance of the component is the only one referring to this
+     * specific data. Copy-on-Write.
+     * 
+     * If multiple components share common data, this component dereferences 
+     * the data and gets a copy of the data. Nothing is done if there is only
+     * a single reference.
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-6
+     * \date $LastChangedDate$
+     * \version $Rev$  \sa ComponentDataPrivate
+     **/
+    void detach();
+    class ComponentDataPrivate *d;
+    
+  public:
+    typedef ComponentDataPrivate* DataPtr;
+    inline DataPtr &data_ptr() {return d;}
     
   };
 }

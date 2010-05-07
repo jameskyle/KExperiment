@@ -10,8 +10,8 @@
 
 #include <Wizards/ComponentCreation/CreationWizard.h>
 #include <Wizards/ComponentCreation/ComponentSelectionDialog.h>
+#include <Components/ComponentList.h>
 #include <ComponentLibrary.h>
-#include <ComponentList.h>
 #include <LiveView.h>
 #include <Models/ComponentModel.h>
 #include <Utilities/Utilities.h>
@@ -26,11 +26,11 @@ namespace kex
   public:
     MainWindow(QMainWindow *parent = 0);
     ~MainWindow();
-    
+
     /** \brief  Connects the button to the provided component type library
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
-     * 
+     *
      * \author James Kyle
      * \author $LastChangedBy$
      * \date 2010-4-7
@@ -40,16 +40,16 @@ namespace kex
     * \version $Rev$
     **/
     //void connectButtonToLibraryDock(QToolButton *button, );
-    
 
-  
+
+
   private:
     /** \brief  Creates an Experiment Library dock widget
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
      * Returns a ComponentLibraryDockWidget configured for the Expeirment class
-     * 
+     *
      * \author James Kyle
      * \author $LastChangedBy$
      * \date 2010-4-7
@@ -57,14 +57,14 @@ namespace kex
     * \version $Rev$  \sa ComponentLibraryDockWidget
     **/
     void createLibraryDocks();
-    
+
     /** \brief  Populates the componentList from the xml component files.
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
-     * Checked the DataDirectory/{actions,events,trials,experiments} 
+     * Checked the DataDirectory/{actions,events,trials,experiments}
      * directories for template files and creates the relevant qobjects.
-     * 
+     *
      * \author James Kyle
      * \author $LastChangedBy$
      * \date 2010-5-2
@@ -72,7 +72,7 @@ namespace kex
      * \version $Rev$  \sa ComponentInterface ComponentList
      **/
     void populateComponentList();
-    
+
     ComponentLibrary *experimentLibraryDock;
     ComponentLibrary *actionLibraryDock;
     ComponentLibrary *eventLibraryDock;
@@ -82,7 +82,7 @@ namespace kex
   public slots:
     void selectComponentWizard();
     void launchComponentLibrary(Types::ComponentType component);
-    
+
     void showLiveView();
     void log() const;
   };

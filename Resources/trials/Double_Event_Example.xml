@@ -2,9 +2,14 @@
 <trial xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../schemas/DataTypes.xsd">
     <event>
+      <header>
         <name>Double Pause Event</name>
+      </header>
     </event>
+
     <event>
+      <header>
         <name>Single Pause Event</name>
+      </header>
     </event>
 </trial>

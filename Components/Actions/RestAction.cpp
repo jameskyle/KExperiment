@@ -5,7 +5,7 @@ namespace kex
   /**
    * TODO
    */
-  RestAction::RestAction(QObject *parent) : OutputComponent(parent)
+  RestAction::RestAction(QObject *parent) : OutputComponent(parent), Action()
   {
   }
 

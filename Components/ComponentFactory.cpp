@@ -115,7 +115,7 @@ namespace kex
         if (rootComponent->name().isEmpty())
         {
           rootComponent->setName(Utilities::componentNameFromBaseName(
-                                                                      xmlFileInfo.baseName()));
+                                            xmlFileInfo.baseName()));
         }
         
         // debug output of class string for each created component.
@@ -136,21 +136,16 @@ namespace kex
     // this method should never be passed a non-action element
     Q_ASSERT(reader->name().toString() == "action");
     
-    ComponentInterface *component(0);
-    QString            componentKey;
-    Logger *logger = &Logger::instance();
-    QFile     *file         = qobject_cast<QFile *>(reader->device());
-    Q_CHECK_PTR(file);
+    ComponentInterface   *component(0);
+    Logger               *logger = &Logger::instance();
+    quint32              duration; // for rest actions
+    QString              mainCategory,
+                         componentKey,
+                         file, // for image, video, and audio actions
+                         text; // for text actions
 
-    QString   name;
-    QString   label;
-    QString   description;
-    quint32   duration;
     QXmlStreamAttributes attr(reader->attributes());
-    QString   isTemplate(attr.value(QString(""),
-                                    QString("template")).toString());
-    QString mainCategory;
-    QStringList categories;
+
 
     switch (type)
     {
@@ -162,7 +157,24 @@ namespace kex
         componentKey = "";
         break;
     }
-
+    
+    // test for valid component specifier and set mainCategory.
+    // throw error and return if invalid
+    if (!componentKey.isEmpty())
+    {
+      component = create(componentKey);
+      component->setMainCategory(mainCategory);
+      
+    } else
+    {
+      QString msg("ComponentFactory::parseAction: Action"
+                  "type '%1' not implemented for xml creation");
+      
+      logger->log(msg.arg(Action::getActionString(type)));
+      return component; // break out of the function, return invalid pointer
+    }
+    
+    
     while (!reader->atEnd() && !reader->hasError() && 
            !(reader->isEndElement() && reader->name() == "action"))
     {
@@ -170,22 +182,15 @@ namespace kex
 
       if (token == QXmlStreamReader::StartElement)
       {
-        if (reader->name()        == "name")
+        if (reader->name() == "header")
         {
-          name = reader->readElementText();
-
-        } else if (reader->name() == "label")
-        {
-          label = reader->readElementText();
-
-        } else if (reader->name() == "description")
-        {
-          description = reader->readElementText();
-
+          readXmlComponentHeader(reader, component);
+          
         } else if (reader->name() == "duration")
         {
-          // Only ActionType components have a duration field enforced by the
-          // xml schema
+          // Only ActionType components have a duration field; enforced by the
+          // xml schema. Other components duration is determined by the sume of
+          // its member actions
 
           // we must check the unit specification to do conversions
           // default: milliseconds
@@ -204,6 +209,83 @@ namespace kex
           {
             duration = value.toInt() * 1000 * 1000;
           }
+          
+        } else if (reader->name() == "file")
+        {
+          file = reader->name().toString();
+          
+        } else if (reader->name() == "text")
+        {
+          text = reader->name().toString();
+        }
+      }
+      
+      // depending on action type, we pull out the valid values. e.g. file,
+      // text, or duration.
+      // We ignore tags that do not match the action type
+      
+      switch (type)
+      {
+        case Action::RestType:
+        {
+          // has a duration tag
+          RestAction *rest = dynamic_cast<RestAction *>(component);
+          if (rest)
+          {
+            // a duration of 0
+            rest->setDurationMSecs(duration);
+          } else {
+            QString msg("ComponentFactory::parseAction");
+            QString info("\n\tFailed to upcast to RestAction");
+            logger->log(msg.append(info));
+          }
+        }
+          break;
+        case Action::TextType:
+          
+          break;
+
+        default:
+          break;
+      }
+    }
+    
+    Q_CHECK_PTR(component);
+    
+    return component;
+  }
+
+  void ComponentFactory::readXmlComponentHeader(QXmlStreamReader* reader, 
+                              ComponentInterface *component)
+  {
+    Q_ASSERT(reader->name() == "header");
+    Q_CHECK_PTR(component);
+
+    QString                     name, 
+                                label, 
+                                description;
+    QStringList                 categories;
+    QXmlStreamReader::TokenType token;
+    
+    while (!reader->atEnd() && !reader->hasError() && 
+           !(reader->isEndElement() && reader->name() == "header"))
+    {
+      token = reader->readNext();
+      
+      if (token == QXmlStreamReader::StartElement)
+      {
+        if (reader->name()        == "name")
+        {
+          name = reader->readElementText();
+          
+        } else if (reader->name() == "label")
+        {
+          label = reader->readElementText();
+          
+        } else if (reader->name() == "description")
+        {
+          description = reader->readElementText();
+          
         } else if (reader->name().toString() == "categories")
         {
           reader->readNext();
@@ -220,67 +302,39 @@ namespace kex
       }
     }
     
-    // Check for an invalid component. an empty key means the class has 
-    // not been registered.
-    if (!componentKey.isEmpty())
+    // Components are Copy-on-Write (CoW). We check each for a non-empty
+    // value and assign it if necessary
+    if (!name.isEmpty())
     {
-      if (!name.isEmpty())
-      {
-        // If the name contains a string, we do a lookup in the 
-        // ComponentList as this denotes a template style action
-        ComponentList *componentList = &ComponentList::instance();
-
-        component = componentList->find(name);
-      }
+      ComponentInterface* t_component = ComponentList::instance().find(name);
       
-      // if the component is not found, 0 is returned. We check for this and
-      // create a default component if necessary
-      if (!component)
+      if (!t_component)
       {
-        component = create(componentKey);
-      }
-      
-      // if we don't have a valid pointer by now, it is likely a logic error
-      Q_CHECK_PTR(component);
-      // Components are Copy-on-Write (CoW). We check each for a non-empty
-      // value and assign it if necessary
-      if (!name.isEmpty())
-      {
+        // a return of 0 means the component was not found, thus the 
+        // name contents is deemed to be an override any default generated
+        // names
         component->setName(name);
+      } else {
+        // This is a template component, so we copy its base values over
+        *component = *t_component;
       }
-      if (!label.isEmpty())
-      {
-        component->setLabel(label);
-      }
-      if (!description.isEmpty())
-      {
-        component->setDescription(description);
-      }
-      
-      // default for duration is 0, the CoW checks to make sure the values are
-      //  not equal which is sufficient in this case
-      component->setDurationMSecs(duration);
-      
-      if (!mainCategory.isEmpty())
-      {
-        component->setMainCategory(mainCategory);
-      }
-
-      // add categories
-      foreach(QString cat, categories)
-      {
-        component->addCategory(cat);
-      }
-    } else
-    {
-      QString msg("ComponentFactory::parseAction: Action"
-                  "type '%1' not implemented for xml creation");
-
-      logger->log(msg.arg(Action::getActionString(type)));
     }
-
-
-    return component;
+    
+    if (!label.isEmpty())
+    {
+      component->setLabel(label);
+    }
+    if (!description.isEmpty())
+    {
+      component->setDescription(description);
+    }
+    
+    // add categories
+    foreach(QString cat, categories)
+    {
+      component->addCategory(cat);
+    }
+    
   }
 
   ComponentFactory& ComponentFactory::instance()

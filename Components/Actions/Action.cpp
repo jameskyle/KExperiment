@@ -79,5 +79,17 @@ namespace kex
     }
     return result;
   }
-
+  
+  bool Action::setDurationMSecs(quint32 duration) 
+  {
+    bool isValid(false);
+    if (duration <= Action::MAX_DURATION)
+    {
+      _durationMSecs = duration;
+      isValid = true;
+    }
+    
+    return isValid;
+  }
+  
 }

@@ -41,6 +41,10 @@ HEADERS += Common/Global.h \
            Components/Actions/Action.h \
            Components/OutputComponent.h \
            Components/Actions/RestAction.h \
+           Components/Actions/TextAction.h \
+           Components/Actions/ImageAction.h \
+           Components/Actions/AudioAction.h \
+           Components/Actions/VideoAction.h \
            Components/Events/Event.h \
            Components/Experiment/Experiment.h \
            Components/ComponentList.h \
@@ -62,7 +66,6 @@ SOURCES += main.cpp \
            Common/Global.cpp \
            Common/Logger.cpp \
            Components/ComponentInterface.cpp \
-           Components/ComponentDataPrivate.cpp \
            Components/ComponentFactory.cpp \
            Components/MetaData.cpp \
            Models/ComponentModel.cpp \
@@ -74,6 +77,10 @@ SOURCES += main.cpp \
            Components/Actions/Action.cpp \
            Components/OutputComponent.cpp \
            Components/Actions/RestAction.cpp \
+           Components/Actions/TextAction.cpp \
+           Components/Actions/ImageAction.cpp \
+           Components/Actions/AudioAction.cpp \
+           Components/Actions/VideoAction.cpp \
            Components/Events/Event.cpp \
            Components/Experiment/Experiment.cpp \
            Components/ComponentList.cpp \

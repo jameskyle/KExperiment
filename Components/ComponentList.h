@@ -28,6 +28,7 @@ namespace kex
      * \date 2010-5-2
      * \date $LastChangedDate$
      * \param componentName the name of the component to search for.
+     * \return ComponentInterface* pointer to found component or 0 if not found
      * \version $Rev$ 
      **/
     ComponentInterface* find(const QString& componentName) const;

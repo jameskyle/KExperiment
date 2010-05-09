@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="file:../schemas/DataTypes.xsd">
-    <label>An example experiment.</label>
-    <description>Description for the example experiment.</description>
-    <categories>
-        <item>Experiment</item>
-        <item>Examples</item>
-    </categories>
+    <header>
+        <label>An example experiment.</label>
+        <description>Description for the example experiment.</description>
+        <categories>
+            <item>Experiment</item>
+            <item>Examples</item>
+        </categories>
+    </header>
+ 
     <instructions>
         Some very detailed instructions.
     </instructions>
     <trial>
-        <name>Double Event Example</name>
+        <header>
+            <name>Double Event Example</name>    
+        </header>
     </trial>
 </experiment>

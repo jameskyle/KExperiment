@@ -45,7 +45,7 @@ namespace kex
   void ComponentInterface::detach()
   {
     // we only perform the operation for references greater than one.
-    if (!(d->ref == 1))
+    if (d->ref != 1)
     {
       ComponentDataPrivate *x = new ComponentDataPrivate(
                                     *static_cast<ComponentDataPrivate *>(d));
@@ -134,14 +134,4 @@ namespace kex
   {
     return d->durationMSecs;
   }
-
-  void ComponentInterface::setDurationMSecs(quint32 duration) 
-  {
-    if (d->durationMSecs != duration)
-    {
-      detach();
-      d->durationMSecs = duration;
-    }
-  }
-
 }

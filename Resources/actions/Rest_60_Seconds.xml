@@ -3,11 +3,14 @@
 <action xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../schemas/DataTypes.xsd"
   type="rest">
-  <name>foo</name>
-  <label>Pauses for 60 seconds.</label>
-  <description>
-    When this action is inserted into a Event, a 60s pause is performed at
-    the point of its insertion.
-  </description>
+  <header>
+    <name>foo</name>
+    <label>Pauses for 60 seconds.</label>
+    <description>
+      When this action is inserted into a Event, a 60s pause is performed at
+      the point of its insertion.
+    </description>  
+  </header>
+  
   <duration>60000</duration> <!-- 60 seconds in milliseconds -->
 </action>

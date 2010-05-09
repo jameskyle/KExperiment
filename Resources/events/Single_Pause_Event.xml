@@ -2,6 +2,8 @@
 <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="..//schemas/DataTypes.xsd">
     <action type="rest">
-        <name>Rest 30 Seconds</name>
+        <header>
+            <name>Rest 30 Seconds</name>    
+        </header>
     </action>
 </event>

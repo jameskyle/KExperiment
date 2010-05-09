@@ -42,8 +42,6 @@
       </xs:restriction>
     </xs:simpleType>
   </xs:attribute>
-   
-   <xs:attribute name="template" type="xs:boolean" />
   
   <!-- used to declare the time units used. default: msecs -->
   <xs:attribute name="unit" default="msecs">
@@ -57,15 +55,12 @@
   </xs:attribute>
   
   <!--abstract types-->
-  <xs:complexType abstract="true" name="component">
+  <xs:complexType abstract="true" name="component" >
     <xs:sequence>
-      <xs:element ref="name" minOccurs="0" />
-      <xs:element ref="label"  minOccurs="0" />
-      <xs:element ref="description"  minOccurs="0" /> 
-      <xs:element ref="categories" minOccurs="0" />      
+      <xs:element ref="header" minOccurs="0" />
     </xs:sequence>
-    <xs:attribute ref="template" use="optional" fixed="true" />
   </xs:complexType>
+  
   
   <!-- element types -->
   <xs:complexType name="durationType">
@@ -75,6 +70,16 @@
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
+  
+  <xs:complexType name="headerType ">
+    <xs:sequence>
+        <xs:element ref="name" minOccurs="0" />
+        <xs:element ref="label" minOccurs="0" />  
+        <xs:element ref="description"  minOccurs="0" /> 
+        <xs:element ref="categories" minOccurs="0" />         
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="header" type="headerType" />
   
   <!-- component types -->
   <xs:complexType name="categoryType">

@@ -41,7 +41,7 @@ namespace kex
     * \author James Kyle KSpace MRI
     * \date 2010-04-01
     **/
-    Action () : ComponentInterface() {}
+    Action () : ComponentInterface(), _durationMSecs(0) {}
     
     /** \brief Destructor for the Actiqon class.
     * 
@@ -49,6 +49,9 @@ namespace kex
     * \date 2010-04-01
     **/
     virtual ~Action () {}
+    
+    virtual bool setDurationMSecs(quint32 duration);
+    virtual quint32 durationMSecs(){ return _durationMSecs;}
     
     /** \brief Returns a list of Action types
     * 
@@ -66,6 +69,9 @@ namespace kex
     
     static ActionType getActionType(const QString& action);
     static QString getActionString(ActionType actionType);
+    
+  private:
+    quint32 _durationMSecs;
     
   };
 }

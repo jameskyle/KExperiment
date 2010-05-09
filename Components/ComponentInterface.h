@@ -174,12 +174,10 @@ namespace kex
     void removeCategory(const QString& category);
     
     virtual const quint32 durationMSecs() const;
-    
-    virtual void setDurationMSecs(quint32 duration);
-      
+          
     virtual const QString toString() const;
     
-    static const quint32 MAX_DURATION = 1800000; //!< maximum run time
+    static const quint32 MAX_DURATION = 1800000; //!< maximum run time, 30m
 
   private:
     /** \brief  Detaches from shared component data.

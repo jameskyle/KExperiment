@@ -117,12 +117,15 @@ namespace kex
     * /sa registerComponentTypes() registerComponentType()
     **/
     const QStringList componentList();
-
+    
   private:
     ComponentFactory() {}    //!< private constructor
 
     ComponentInterface* parseAction(QXmlStreamReader *reader,
                                     Action::ActionType type);
+    
+    void readXmlComponentHeader(QXmlStreamReader* reader, 
+                                ComponentInterface *component);
 
     QMap<QString, Creator> _componentCreatorMap;
 

@@ -8,7 +8,8 @@ namespace kex
       actionLibraryDock(new ComponentLibrary(this)),
       eventLibraryDock(new ComponentLibrary(this)),
       trialLibraryDock(new ComponentLibrary(this)),
-      componentList(new ComponentList)
+      componentList(&ComponentList::instance()),
+      mapper(new QDataWidgetMapper)
   {    
     setupUi(this); // set up the Qt Designer Gui
     
@@ -21,17 +22,16 @@ namespace kex
     // create create and configure docks.
     createLibraryDocks();
     
-    // Creation Wizard
-    connect( actionNew, SIGNAL(triggered()),
-      this, SLOT(selectComponentWizard()) );
+    setUpWidgetMapper();
+    
+    makeActionConnections();
   }
 
   MainWindow::~MainWindow()
   {
-    if (componentList)
+    if (mapper)
     {
-      qDeleteAll(componentList->begin(), componentList->end());
-      delete componentList;
+      delete mapper;
     }
   }
   
@@ -41,6 +41,38 @@ namespace kex
     
   }
   
+  void MainWindow::setUpWidgetMapper()
+  {
+    // set up the data mapper for displaying
+    ComponentModel *model = new ComponentModel(ComponentInterface::AllComponents, 
+                                               this);
+    mapper->setModel(model);
+    mapper->addMapping(componentNameLabel, 0, "text");
+    mapper->addMapping(typeNameLabel, 1, "text");
+    // TODO add label to display column 2
+    mapper->addMapping(componentDescriptionTextEdit, 3, "plainText");
+    mapper->addMapping(componentDurationLabel, 4, "text");
+    mapper->addMapping(componentIcon, 5, "pixmap");
+
+    mapper->toFirst();
+  }
+  
+  void MainWindow::makeActionConnections()
+  {
+    // Creation Wizard
+    // TODO make this configuration similar to those for the menuView
+    connect( actionNew, SIGNAL(triggered()),
+            this, SLOT(selectComponentWizard()) );
+    
+    // Library Docks
+    // Add menu items for docks
+    menuView->addAction(actionLibraryDock->toggleViewAction());
+    menuView->addAction(eventLibraryDock->toggleViewAction());
+    menuView->addAction(trialLibraryDock->toggleViewAction());
+    menuView->addAction(experimentLibraryDock->toggleViewAction());
+    menuView->addSeparator();
+  }
+
   void MainWindow::selectComponentWizard()
   {
     ComponentSelectionDialog *selectionDialog = 
@@ -49,11 +81,6 @@ namespace kex
             SLOT(deleteLater()));
     
     selectionDialog->show();
-  }
-  
-  void MainWindow::log() const
-  {
-    qDebug() << "triggered\n";
   }
   
   void MainWindow::createLibraryDocks() 
@@ -96,35 +123,29 @@ namespace kex
     tabifyDockWidget(actionLibraryDock, eventLibraryDock);
     tabifyDockWidget(actionLibraryDock, trialLibraryDock);
     
-    // Add menu items for docks
-    menuView->addAction(actionLibraryDock->toggleViewAction());
-    menuView->addAction(eventLibraryDock->toggleViewAction());
-    menuView->addAction(trialLibraryDock->toggleViewAction());
-    menuView->addAction(experimentLibraryDock->toggleViewAction());
-    menuView->addSeparator();
-    
     // Hide the right docks by default
     actionLibraryDock->hide();
     eventLibraryDock->hide();
     trialLibraryDock->hide();
+    experimentLibraryDock->hide();
     
     // Set models for created libraries
-    ComponentModel *model = new ComponentModel(Config::ActionDirectory, 
+   ComponentModel *model = new ComponentModel(ComponentInterface::ActionType, 
                                                actionLibraryDock);
-    actionLibraryDock->setModel(model);
+   actionLibraryDock->setModel(model);
 
-    model = new ComponentModel(Config::EventDirectory, eventLibraryDock);
-    eventLibraryDock->setModel(model);
+   model = new ComponentModel(ComponentInterface::EventType, eventLibraryDock);
+   eventLibraryDock->setModel(model);
     
-    model = new ComponentModel(Config::TrialDirectory, trialLibraryDock);
-    trialLibraryDock->setModel(model);
+   model = new ComponentModel(ComponentInterface::TrialType, trialLibraryDock);
+   trialLibraryDock->setModel(model);
     
-    model = new ComponentModel(Config::ExperimentDirectory, 
+  model = new ComponentModel(ComponentInterface::AllComponents, 
                                experimentLibraryDock);
-    experimentLibraryDock->setModel(model);
+  experimentLibraryDock->setModel(model);
   }
   
-  void MainWindow::launchComponentLibrary(Types::ComponentType component)
+  void MainWindow::launchComponentLibrary(ComponentInterface::ComponentType component)
   {
     Logger::instance().log("Launch Library called", this);
     ComponentLibrary *library;
@@ -132,20 +153,21 @@ namespace kex
 
     switch (component)
     {
-      case Types::ActionType:
+      case ComponentInterface::ActionType:
         library = actionLibraryDock;
         break;
-      case Types::EventType:
+      case ComponentInterface::EventType:
         library = eventLibraryDock;
         break;
-      case Types::TrialType:
+      case ComponentInterface::TrialType:
         library = trialLibraryDock;
         break;
-      case Types::ExperimentType:
+      case ComponentInterface::ExperimentType:
         library = experimentLibraryDock;
         break;
       default:
-        Logger::instance().log("Launch of Undefined Component Library requested", this);
+        Logger::instance().log("Launch of Undefined Component "
+                               "Library requested", this);
       break;
     }
     Q_CHECK_PTR(library);
@@ -181,14 +203,43 @@ namespace kex
   
   void MainWindow::populateComponentList()
   {
-    ComponentFactory    *factory = &ComponentFactory::instance();
-    ComponentInterface  *interface(0);
     QStringList         xmlFiles(Utilities::xmlFileComponentList());
+    ComponentDomParser dom;
     
     foreach(QString path, xmlFiles)
     {
-      QFile file(path);
-      interface = factory->createFromXml(file);
+      dom.readFile(path);
+      AbstractComponent::Pointer comp(dom.component());
+      // if the component did not specify a name, we set it to the expanded
+      // file name
+      QString name = comp->name();
+      if (name.isEmpty())
+      {
+        QFileInfo info(path);
+        name = Utilities::componentNameFromBaseName(info.baseName());
+        comp->setName(name);
+      }
+      
+      // Add the component to our global component list
+      componentList->append(comp);
+      foreach(AbstractComponent::Pointer p, comp->children())
+      {
+        qDebug() << "root name: " << p->name() << "children: " << 
+        p->children().count();
+        foreach(AbstractComponent::Pointer pp, p->children())
+        {
+          qDebug() << "first child name: " << pp->name() << "children: " << 
+          pp->children().count();
+          
+          foreach(AbstractComponent::Pointer ppp, pp->children())
+          {
+            qDebug() << "first child name: " << ppp->name() << "children: " << 
+            ppp->children().count();
+            
+          }
+          
+        }
+      }
     }
   }
 } // END_KEX_NAMESPACE

@@ -125,17 +125,9 @@ namespace kex
             QString resource_path = full_path;
             resource_path.append("/").append(st);
             config->addTemplate(it.value(), resource_path);
-            Logger::instance().log(qPrintable(resource_path));
           }
         }
       }
-
-      // Register the applications components and assign their metadata.
-      // First the Action base class
-//      REGISTER_COMPONENT("Action",     Action);
-      REGISTER_COMPONENT("RestAction", RestAction);
-      REGISTER_COMPONENT("Event",      Event);
-   //   REGISTER_COMPONENT("Experiment", Experiment);
     }
 
     void configureApplication()
@@ -228,6 +220,12 @@ namespace kex
 
       }
       return output.simplified();
+    }
+    
+    bool sortComponentQList(const AbstractComponent::Pointer &c1, 
+                            const AbstractComponent::Pointer &c2)
+    {
+      return c1->name() < c2->name();
     }
 
   } // END_UTILITIES

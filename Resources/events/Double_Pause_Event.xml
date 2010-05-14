@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
-<event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="../schemas/DataTypes.xsd">
+
+<event>
   <header>
-    <name>Foo</name>
     <label>Bar</label>
     <description>described</description>
   </header>
-  
+
   <action type="image">
     <header>
       <name>30 Second Pause</name>
@@ -20,12 +18,12 @@
 
     <duration>30000</duration> <!-- 30 seconds in milliseconds -->
   </action>
-  
-  <action type="rest">
-    <!-- we can reference previous template declarations 
+
+  <action type="rest" template="true">
+    <!-- we can reference previous template declarations
     by simply specifying the name -->
     <header>
-      <name>60 Second Pause</name> 
+      <name>60 Second Pause</name>
     </header>
   </action>
 </event>

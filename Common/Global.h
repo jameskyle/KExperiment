@@ -7,7 +7,6 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 
-#include <Common/Types.h>
 #include <Utilities/Utilities.h>
 #include <Common/Uncopyable.h>
 #include <Common/Logger.h>
@@ -55,7 +54,7 @@ namespace kex
      * \date $LastChangedDate$
      * \param directoryType the type of directory
      * \return QString holds the path tot he directory
-     * \version $Rev$  \sa Types::DataDirectoryType
+     * \version $Rev$  \sa ComponentInterface::DataDirectoryType
      **/
     const QString
     dataDirectoryPath(const ApplicationDataDirectoryType directoryType) const;
@@ -73,7 +72,7 @@ namespace kex
      * \date 2010-4-10
      * \date $LastChangedDate$
      * \version $Rev$
-     * \sa Types::DataDirectoryType
+     * \sa ComponentInterface::DataDirectoryType
      * \sa Utilities::setupAppStorageEnvironment
      **/
     const QStringList dataDirectoryList(const int dt) const;

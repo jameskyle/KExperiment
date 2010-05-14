@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<action type="rest">
+  <header>
+    <label>Pauses for 10 seconds.</label>
+    <description>
+      When this action is inserted into a Event, a 10 pause is performed at
+      the point of its insertion.
+    </description>
+  </header>
+  <duration unit="secs">10</duration> <!-- 30 seconds in milliseconds -->
+</action>

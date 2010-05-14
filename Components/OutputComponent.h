@@ -1,5 +1,6 @@
 #ifndef OUTPUTCOMPONENT_H
 #define OUTPUTCOMPONENT_H
+
 #include <QObject>
 
 

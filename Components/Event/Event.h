@@ -3,12 +3,11 @@
 #include <QString>
 #include <QList>
 
-#include <Components/ComponentInterface.h>
+#include "Components/AggregateComponent.h"
 
 namespace kex
 {
-  /** \brief  An Event is a special type of Action that is composed of other
-  * basic actions.
+  /** \brief  A collection of Action type components.
   * 
   * An Event a type of action that is a collection of other basic actions. It
   * has the same basic properties of an action. An Event runs all of its 
@@ -24,8 +23,9 @@ namespace kex
   * \date $LastChangedDate$
   * \version $Rev$  \sa Action OutputAction RestAction
   **/
-  class Event : public ComponentInterface
+  class Event : public AggregateComponent
   {
+    Q_OBJECT
   public:
     /** \brief Constructor for the Event class.
     * 
@@ -36,7 +36,7 @@ namespace kex
     * \date 2010-04-01
     * \sa Action()
     **/
-    Event () : ComponentInterface() {}
+    Event (QObject *parent = 0) : AggregateComponent(parent) {}
     
     /** \brief The destructor for the Event class
     * 
@@ -46,10 +46,11 @@ namespace kex
     * \date 2010-04-01
     * \sa ~Action()
     **/
-    virtual ~Event ();
+    ~Event () {}
     
-  private:
-    QList<ComponentInterface *> _actionList;
+  public slots:
+    void begin() {}
+    void abort() {}
   };
 }
 #endif

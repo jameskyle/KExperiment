@@ -1,20 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <experiment>
     <header>
-        <label>An example experiment.</label>
+        <label>An second example experiment.</label>
         <description>Description for the example experiment.</description>
         <categories>
             <item>Experiment</item>
             <item>Examples</item>
         </categories>
     </header>
- 
+
     <instructions>
         Some very detailed instructions.
     </instructions>
     <trial template="true">
         <header>
-            <name>Double Event Example</name>    
+            <name>Double Event Example</name>
         </header>
     </trial>
 </experiment>

@@ -1,12 +1,15 @@
 #ifndef COMPONENTINTERFACE_H
 #define COMPONENTINTERFACE_H
+
 #include <QStringList>
 #include <QTextStream>
+#include <QVariant>
+#include <QIcon>
 
 #include <typeinfo>
 
-#include <Common/Uncopyable.h>
-#include <ComponentDataPrivate.h>
+#include "Common/Uncopyable.h"
+#include "ComponentDataPrivate.h"
 
 namespace kex
 {
@@ -27,6 +30,24 @@ namespace kex
   class ComponentInterface
   {
   public:
+    enum ComponentType
+    {
+      RestActionType            = 0x1,
+      TextActionType            = 0x1 << 1,
+      ImageActionType           = 0x1 << 2,
+      AudioActionType           = 0x1 << 3,
+      VideoActionType           = 0x1 << 4,
+      EventType                 = 0x1 << 5,
+      TrialType                 = 0x1 << 6,
+      ExperimentType            = 0x1 << 7,
+      ActionType                = (RestActionType | TextActionType |
+                                   ImageActionType | AudioActionType |
+                                   VideoActionType),
+      
+      AllComponents             = (ActionType | EventType | 
+                                   TrialType | ExperimentType),
+    };
+    
     /** \brief This is the constructor for the Action base class.
     *
     * Instantiates the Action class with all attributes set to an empty
@@ -118,7 +139,7 @@ namespace kex
     * \sa QString
     **/
     const QString mainCategory() const;
-
+    
     void setMainCategory(const QString& cat);
     
     /** \brief Sets the name attribute of the Action class.
@@ -174,11 +195,46 @@ namespace kex
     void removeCategory(const QString& category);
     
     virtual const quint32 durationMSecs() const;
-          
+
     virtual const QString toString() const;
+            
+    /** \brief  Returns the type of component this AbstractComponent represents.
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * <#(detailed descriptoin)#>
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-10
+     * \date $LastChangedDate$
+     * \param <#(name)#> <#(description)#>
+     * \prarm <#(name)#> <#(description)#>
+     * \version $Rev$  \sa <#(see also)#>
+     **/
+    ComponentType componentType() const {return _componentType;}
+    /** \brief  Holds the type of component represented.
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * This stores a mask for the various component types represented. For 
+     * a componentType equal to ComponentInterface::EventType the method
+     * toComponent() would return a pointer to a new Event object.
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-10
+     * \date $LastChangedDate$
+     * \param t the type of component
+     * \version $Rev$  \sa componentType()
+     **/
+    void setComponentType(ComponentInterface::ComponentType t);
+
+    const QIcon icon();
+    void setIcon(const QIcon& icon);
     
     static const quint32 MAX_DURATION = 1800000; //!< maximum run time, 30m
-
+    static const QString componentTypeToString(ComponentType t);
   private:
     /** \brief  Detaches from shared component data.
      * 
@@ -200,7 +256,8 @@ namespace kex
      **/
     void detach();
     class ComponentDataPrivate *d;
-    
+    ComponentType _componentType;
+
   public:
     typedef ComponentDataPrivate* DataPtr;
     inline DataPtr &data_ptr() {return d;}

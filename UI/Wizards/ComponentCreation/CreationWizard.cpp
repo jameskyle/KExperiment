@@ -2,14 +2,15 @@
 
 namespace kex
 {
-  CreationWizard::CreationWizard(QWidget *parent, const Types::ComponentType component)
+  CreationWizard::CreationWizard(const ComponentInterface::ComponentType component,
+                                 QWidget *parent)
     : QWizard(parent)
   {
     setObjectName("CreationWizard");
-    setPage(Page_Welcome, new WelcomePage(this, component));
-    setPage(Page_Finished, new FinishedPage(this, component));
-    setPage(Page_Information, new InformationPage(this, component));
-    setPage(Page_Configuration, new ConfigurationPage(this, component));
+    setPage(Page_Welcome, new WelcomePage(component, this));
+    setPage(Page_Finished, new FinishedPage(component, this));
+    setPage(Page_Information, new InformationPage(component, this));
+    setPage(Page_Configuration, new ConfigurationPage(component, this));
 
     // we want the combobox's text values rather than integer id's
     setDefaultProperty("QComboBox", "currentText", "currentIndexChanged");
@@ -18,8 +19,8 @@ namespace kex
     // Connect the configuration launch library signal the wizards launch
     // library signal
     connect(page(Page_Configuration), 
-            SIGNAL(launchComponentLibraryRequested(Types::ComponentType)), 
-            parent, SLOT(launchComponentLibrary(Types::ComponentType)));
+            SIGNAL(launchComponentLibraryRequested(ComponentInterface::ComponentType)), 
+            parent, SLOT(launchComponentLibrary(ComponentInterface::ComponentType)));
     
     Logger::instance().log("Initialized", this);
   }

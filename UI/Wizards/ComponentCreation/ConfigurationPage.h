@@ -8,10 +8,10 @@
 #include <QSignalMapper>
 
 #include <Wizards/ComponentCreation/BaseConfigurationPage.h>
-#include <Components/Events/Event.h>
-#include <LiveView.h>
-#include <MainWindow.h>
-#include <Utilities/Utilities.h>
+#include "Components/Event/Event.h"
+#include "LiveView.h"
+#include "MainWindow.h"
+#include "Utilities/Utilities.h"
 
 namespace kex
 {
@@ -29,8 +29,8 @@ namespace kex
   {
     Q_OBJECT
   public:
-    ConfigurationPage(QWidget *parent = 0, const Types::ComponentType component 
-                      = Types::UndefinedComponentType);
+    ConfigurationPage(const ComponentInterface::ComponentType component,
+                      QWidget *parent = 0);
     ~ConfigurationPage();
 
     void initializePage();
@@ -51,10 +51,10 @@ namespace kex
     QHBoxLayout* getLibraryButtonLayout();
     void setTitles();
     
-    Types::ComponentType _component;
+    ComponentInterface::ComponentType _component;
     
   signals:
-    void launchComponentLibraryRequested(Types::ComponentType component);
+    void launchComponentLibraryRequested(ComponentInterface::ComponentType component);
     
   private slots:
     void dispatchLibraryRequest(const QString& libraryType);

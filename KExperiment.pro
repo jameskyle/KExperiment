@@ -6,6 +6,8 @@ TEMPLATE = app
 TARGET =
 
 QT +=  xmlpatterns
+QT += xml
+
 DEPENDPATH += . \
               Common \
               Components \
@@ -13,8 +15,9 @@ DEPENDPATH += . \
               UI \
               Utilities \
               Components/Actions \
-              Components/Events \
+              Components/Event \
               Components/Experiment \
+              Components/Trial \
               UI/Forms \
               UI/Wizards/ComponentCreation \
               UI/Wizards/ComponentCreation/Trial
@@ -28,7 +31,10 @@ HEADERS += Common/Global.h \
            Common/Types.h \
            Common/Uncopyable.h \
            Common/Logger.h \
+           Components/AbstractComponent.h \
+           Components/AggregateComponent.h \
            Components/ComponentInterface.h \
+           Components/ComponentDomParser.h \
            Components/ComponentDataPrivate.h \
            Components/ComponentFactory.h \
            Models/ComponentModel.h \
@@ -45,7 +51,8 @@ HEADERS += Common/Global.h \
            Components/Actions/ImageAction.h \
            Components/Actions/AudioAction.h \
            Components/Actions/VideoAction.h \
-           Components/Events/Event.h \
+           Components/Event/Event.h \
+           Components/Trial/Trial.h \
            Components/Experiment/Experiment.h \
            Components/ComponentList.h \
            UI/Wizards/ComponentCreation/BaseConfigurationPage.h \
@@ -66,6 +73,9 @@ SOURCES += main.cpp \
            Common/Global.cpp \
            Common/Logger.cpp \
            Components/ComponentInterface.cpp \
+           Components/AbstractComponent.cpp \
+           Components/AggregateComponent.cpp \
+           Components/ComponentDomParser.cpp \
            Components/ComponentFactory.cpp \
            Components/MetaData.cpp \
            Models/ComponentModel.cpp \
@@ -81,7 +91,8 @@ SOURCES += main.cpp \
            Components/Actions/ImageAction.cpp \
            Components/Actions/AudioAction.cpp \
            Components/Actions/VideoAction.cpp \
-           Components/Events/Event.cpp \
+           Components/Event/Event.cpp \
+           Components/Trial/Trial.cpp \
            Components/Experiment/Experiment.cpp \
            Components/ComponentList.cpp \
            UI/Wizards/ComponentCreation/BaseConfigurationPage.cpp \

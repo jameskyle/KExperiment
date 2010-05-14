@@ -1,6 +1,6 @@
 #ifndef ACTIONMODEL_H
 #define ACTIONMODEL_H
-#include <Models/ComponentModel.h>
+#include "Models/ComponentModel.h"
 
 namespace kex
 {

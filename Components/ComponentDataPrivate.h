@@ -13,9 +13,8 @@ namespace kex
    * \date $LastChangedDate$
    * \version $Rev$  \sa ComponentInterface
    **/
-  class ComponentDataPrivate
+  struct ComponentDataPrivate
   {
-  public:
     /** \brief  Default constructor.
      * 
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -36,8 +35,7 @@ namespace kex
     QString     label; //!< brief description of the component
     QString     mainCategory; //!< main group identifier
     QStringList categoryList; //!< list of all categories for component
-    QStringList tagList; //!< list of associated tags for sorting/filtering
-    quint32     durationMSecs; //!< duration of component
+    QIcon       icon;
   };
 }
 #endif

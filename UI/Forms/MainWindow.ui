@@ -22,7 +22,19 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QLabel" name="experimentIcon">
+           <widget class="QLabel" name="componentIcon">
+            <property name="minimumSize">
+             <size>
+              <width>64</width>
+              <height>64</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>64</width>
+              <height>64</height>
+             </size>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -107,7 +119,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QLabel" name="trialDuration">
+               <widget class="QLabel" name="componentDurationLabel">
                 <property name="text">
                  <string>0:15.25</string>
                 </property>
@@ -148,7 +160,7 @@
              </layout>
             </item>
             <item>
-             <widget class="QTextEdit" name="experimentDescriptionTextEdit">
+             <widget class="QTextEdit" name="componentDescriptionTextEdit">
               <property name="enabled">
                <bool>true</bool>
               </property>

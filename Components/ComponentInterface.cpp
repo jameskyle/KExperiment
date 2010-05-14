@@ -5,6 +5,7 @@ namespace kex
   ComponentInterface::ComponentInterface() : d(new ComponentDataPrivate)
   {
     d->ref.ref();
+    d->icon = QIcon(":/images/other/Science-64.png");
   }
 
   ComponentInterface::~ComponentInterface()
@@ -130,8 +131,52 @@ namespace kex
     d->categoryList.removeAll(category);
   }
   
+  const QIcon ComponentInterface::icon()
+  {
+    return d->icon;
+  }
+  
+  void ComponentInterface::setIcon(const QIcon& icon)
+  {
+    // QIcon has no  == operator, so we just detach
+    // TODO figure out a way to determine equivelence for QIcon
+    detach();
+    d->icon = icon;
+  }
+  
   const quint32 ComponentInterface::durationMSecs() const
   {
-    return d->durationMSecs;
+    return 0;
   }
+  
+  void ComponentInterface::setComponentType(ComponentInterface::ComponentType t)
+  {
+    _componentType = t;
+  }
+  
+  const QString ComponentInterface::componentTypeToString(ComponentType t)
+  {
+    QString typeString;
+    switch (t)
+    {
+      case ActionType:
+        typeString = "Action";
+        break;
+      case EventType:
+        typeString = "Event";
+        break;
+      case TrialType:
+        typeString = "Trial";
+        break;
+      case ExperimentType:
+        typeString = "Experiment";
+        break;
+      default:
+        typeString = "Undefined";
+        break;
+    }
+    
+    return typeString;
+  }
+
 }

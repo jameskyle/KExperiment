@@ -33,8 +33,8 @@ namespace kex
       * \prarm component the specific component to configure page by
       *  \version $Rev$  \sa BaseConfigurationPage()
       **/
-     InformationPage(QWidget *parent, const Types::ComponentType component 
-                     = Types::UndefinedComponentType);
+     InformationPage(const ComponentInterface::ComponentType component,
+                     QWidget *parent = 0);
      ~InformationPage();
       
      void initializePage();

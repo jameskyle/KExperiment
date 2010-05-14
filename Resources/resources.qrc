@@ -52,12 +52,15 @@
   </qresource>
 
   <qresource prefix="templates">
+    <file>./actions/Rest_10_Seconds.xml</file>
     <file>./actions/Rest_30_Seconds.xml</file>
     <file>./actions/Rest_60_Seconds.xml</file>
     <file>./events/Double_Pause_Event.xml</file>
     <file>./events/Single_Pause_Event.xml</file>
     <file>./trials/Double_Event_Example.xml</file>
+    <file>./trials/Single_Event_Example.xml</file>
     <file>./experiments/Example_Experiment.xml</file>
+    <file>./experiments/Example_Experiment2.xml</file>
   </qresource>
   <qresource >
     <file>./schemas/DataTypes.xsd</file>

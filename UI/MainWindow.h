@@ -7,10 +7,12 @@
 #include <QXmlSchema>
 #include <QDir>
 #include <QStringList>
+#include <QDataWidgetMapper>
 
 #include <Wizards/ComponentCreation/CreationWizard.h>
 #include <Wizards/ComponentCreation/ComponentSelectionDialog.h>
 #include <Components/ComponentList.h>
+#include <Components/AbstractComponent.h>
 #include <ComponentLibrary.h>
 #include <LiveView.h>
 #include <Models/ComponentModel.h>
@@ -72,19 +74,23 @@ namespace kex
      * \version $Rev$  \sa ComponentInterface ComponentList
      **/
     void populateComponentList();
-
+    
+    void setUpWidgetMapper();
+    
+    void makeActionConnections();
+    
     ComponentLibrary *experimentLibraryDock;
     ComponentLibrary *actionLibraryDock;
     ComponentLibrary *eventLibraryDock;
     ComponentLibrary *trialLibraryDock;
     ComponentList    *componentList;
+    QDataWidgetMapper *mapper;
 
   public slots:
     void selectComponentWizard();
-    void launchComponentLibrary(Types::ComponentType component);
+    void launchComponentLibrary(ComponentInterface::ComponentType component);
 
     void showLiveView();
-    void log() const;
   };
 }
 

@@ -2,8 +2,8 @@
 
 namespace kex
 {
-  ConfigurationPage::ConfigurationPage(QWidget *parent, 
-                                       const Types::ComponentType component)
+  ConfigurationPage::ConfigurationPage(const ComponentInterface::ComponentType component,
+                                       QWidget *parent)
     : BaseConfigurationPage(parent),
       libraryToolButtonHLayout(0),
       _component(component)
@@ -30,9 +30,9 @@ namespace kex
 
     libraryToolButtonHLayout->addStretch();
     
-    if (_component & (Types::EventType | 
-                      Types::TrialType | 
-                      Types::ExperimentType))
+    if (_component & (ComponentInterface::EventType | 
+                      ComponentInterface::TrialType | 
+                      ComponentInterface::ExperimentType))
     {
       button = new QToolButton(this);
       button->setText(tr("Action Library"));
@@ -41,7 +41,7 @@ namespace kex
       signalMapper->setMapping(button, "action");
     }
     
-    if (_component & (Types::TrialType | Types::ExperimentType))
+    if (_component & (ComponentInterface::TrialType | ComponentInterface::ExperimentType))
     {
       button = new QToolButton(this);
       button->setText(tr("Event Library"));
@@ -50,7 +50,7 @@ namespace kex
       signalMapper->setMapping(button, "event");
     }
     
-    if (_component & Types::ExperimentType)
+    if (_component & ComponentInterface::ExperimentType)
     {
       button = new QToolButton(this);
       button->setText(tr("Trial Library"));
@@ -71,16 +71,16 @@ namespace kex
     
     switch (_component)
     {
-      case Types::ActionType:
+      case ComponentInterface::ActionType:
         name = "Action";
         break;
-      case Types::EventType:
+      case ComponentInterface::EventType:
         name = "Event";
         break;
-      case Types::TrialType:
+      case ComponentInterface::TrialType:
         name = "Trial";
         break;
-      case Types::ExperimentType:
+      case ComponentInterface::ExperimentType:
         name = "Experiment";
     }
     
@@ -96,9 +96,9 @@ namespace kex
     Q_ASSERT(field("name").isValid());
     Q_ASSERT(field("label").isValid());
     
-    if(_component & Types::ActionType)
+    if(_component & ComponentInterface::ActionType)
     {
-      Logger::instance().log("Configuring for Types::ActionType", this);
+      Logger::instance().log("Configuring for ComponentInterface::ActionType", this);
       
       Q_ASSERT(field("action").isValid());
       actionTypeHLayout.addWidget(new QLabel(tr("Action Type:"), this));
@@ -107,7 +107,7 @@ namespace kex
       _mainLayout.addLayout(&actionTypeHLayout);
     }
     
-    if(_component & (Types::ActionType | Types::EventType | Types::TrialType | Types::ExperimentType))
+    if(_component & (ComponentInterface::ActionType | ComponentInterface::EventType | ComponentInterface::TrialType | ComponentInterface::ExperimentType))
     {
       Logger::instance().log("Adding duration spinbox", this);
       
@@ -124,7 +124,7 @@ namespace kex
       durationHLayout.addWidget(&durationSpinBoxMsecs);
     }
     
-    if(_component & (Types::EventType | Types::TrialType | Types::ExperimentType))
+    if(_component & (ComponentInterface::EventType | ComponentInterface::TrialType | ComponentInterface::ExperimentType))
     {
       Logger::instance().log("Adding comonent list and library buttons", this);
       
@@ -149,13 +149,13 @@ namespace kex
     
     if (libraryType == "action")
     {
-      emit launchComponentLibraryRequested(Types::ActionType);
+      emit launchComponentLibraryRequested(ComponentInterface::ActionType);
     } else if (libraryType == "event")
     {
-      emit launchComponentLibraryRequested(Types::EventType);
+      emit launchComponentLibraryRequested(ComponentInterface::EventType);
     } else if (libraryType == "trial")
     {
-      emit launchComponentLibraryRequested(Types::TrialType);
+      emit launchComponentLibraryRequested(ComponentInterface::TrialType);
     }
   }
 }

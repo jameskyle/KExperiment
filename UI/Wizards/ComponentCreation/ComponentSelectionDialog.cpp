@@ -5,10 +5,11 @@ namespace kex
   ComponentSelectionDialog::ComponentSelectionDialog(QWidget *parent)
     : QDialog(parent)
   {
+    setupUi(this);
+
     Q_CHECK_PTR(actionButton);
     Q_CHECK_PTR(parent);
-
-    setupUi(this);
+    
     setObjectName("ComponentSelectionDialog");
 
     actionButton->setChecked(true);
@@ -21,7 +22,7 @@ namespace kex
   {
     if(result == QDialog::Accepted)
     {
-      Types::ComponentType component = Types::UndefinedComponentType;
+      ComponentInterface::ComponentType component;
       QWidget *parent = qobject_cast<QWidget *>(this->parent());
       
       QString choice("Undefined");
@@ -34,29 +35,29 @@ namespace kex
       
       if(actionButton->isChecked())
       {
-        component = Types::ActionType;
+        component = ComponentInterface::ActionType;
         choice = "ActionButton";
       }
       else if(eventButton->isChecked())
       {
-        component = Types::EventType;
+        component = ComponentInterface::EventType;
         choice = "EventButton";
       }
       else if(trialButton->isChecked())
       {
-        component = Types::TrialType;
+        component = ComponentInterface::TrialType;
         choice = "TrialButton";
       }
       else if(experimentButton->isChecked())
       {
-        component = Types::ExperimentType;
+        component = ComponentInterface::ExperimentType;
         choice = "ExperimentButton";
       }
 
       
       Logger::instance().log(qPrintable(QString("%1 Selected").arg(choice)), this);
                   
-      CreationWizard *wizard = new CreationWizard(parent, component);
+      CreationWizard *wizard = new CreationWizard(component, parent);
       
       Q_CHECK_PTR(wizard);
       connect(wizard, SIGNAL(finished(int)), wizard, SLOT(deleteLater()) );

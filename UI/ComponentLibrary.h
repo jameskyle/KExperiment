@@ -3,7 +3,7 @@
 #include <QDockWidget>
 #include <QSortFilterProxyModel>
 
-#include <Models/ComponentModel.h>
+#include "Models/ComponentModel.h"
 
 #include "ui_LibraryDockWidget.h"
 

@@ -1,12 +1,13 @@
 #ifndef COMPONENTMODEL_H
 #define COMPONENTMODEL_H
-#include <QAbstractListModel>
+#include <QAbstractTableModel>
 #include <QResource>
 #include <QStringList>
-#include <QXmlStreamReader>
 #include <QIcon>
 
-#include <Common/Global.h>
+#include "Common/Global.h"
+#include "Components/ComponentList.h"
+#include "Components/ComponentInterface.h"
 
 namespace kex
 {
@@ -20,7 +21,7 @@ namespace kex
   * \date $LastChangedDate$
   * \version $Rev$  \sa ComponentInterface
   **/
-  class ComponentModel : public QAbstractListModel
+  class ComponentModel : public QAbstractTableModel
   {
     Q_OBJECT
 
@@ -35,11 +36,13 @@ namespace kex
     * \author $LastChangedBy$
     * \date 2010-4-12
     * \date $LastChangedDate$
+    * \param types a mask of the types of components
     * \param parent pointer to the parent classe.
-    * \version $Rev$  \sa ComponentInterface
+    * \version $Rev$  
+    * \sa ComponentInterface ComponentInterface::ComponentType
     **/
-    ComponentModel(Config::ApplicationDataDirectoryType component,
-                            QObject *parent = 0);
+    ComponentModel(int types = ComponentInterface::AllComponents, 
+                   QObject *parent = 0);
 
     /** \brief  Default destructor.
      *
@@ -54,13 +57,14 @@ namespace kex
     ~ComponentModel() {}
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role) const;
+    
   private:
-    QXmlStreamReader xmlReader;
-    QDir _rootPath;
-
+    const ComponentList::ComponentQList *_componentList;
   public slots:
     void updateComponentList();
   };

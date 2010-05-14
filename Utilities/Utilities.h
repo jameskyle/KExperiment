@@ -118,6 +118,9 @@ namespace kex
      * \version $Rev$
      **/
     QString componentNameFromBaseName(const QString& fileName);
+    
+    bool sortComponentQList(const AbstractComponent::Pointer &c1, 
+                            const AbstractComponent::Pointer &c2);
    };
 
 }

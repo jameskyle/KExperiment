@@ -8,16 +8,18 @@
 #include <QStringList>
 #include <QMap>
 #include <QVariant>
-#include <QXmlStreamReader>
-#include <QXmlSchemaValidator>
-#include <QXmlSchema>
 
 #include "ComponentInterface.h"
-#include "ComponentList.h"
-#include "Events/Event.h"
 #include "Actions/RestAction.h"
+#include "Actions/TextAction.h"
+#include "Actions/ImageAction.h"
+#include "Actions/AudioAction.h"
+#include "Actions/VideoAction.h"
+#include "Event/Event.h"
+#include "Trial/Trial.h"
+#include "Experiment/Experiment.h"
+#include "ComponentDomParser.h"
 
-#include <Common/Types.h>
 #include <Common/Global.h>
 
 class ComponentInterface;
@@ -71,38 +73,9 @@ namespace kex
     *
     * \sa ComponentInterface
     **/
-    ComponentInterface* create(QString key);
-
-    /** \brief  Creates a component based on the provided xml document.
-     *
-     * Copyright 2010 KSpace MRI. All Rights Reserved.
-     *
-     * \author James Kyle
-     * \author $LastChangedBy$
-     * \date 2010-5-3
-     * \date $LastChangedDate$
-     * \param xml the xml file to be parsed
-     * \return ComponentInterface* pointer to the newly created object
-     * \version $Rev$  \sa create(QString& key)
-     **/
-    ComponentInterface* createFromXml(QFile& xml);
-
-    ~ComponentFactory () {}
-
-    /** \brief Registers an Action type
-    *
-    * This is an instance version of the static registerComponentType. Each
-    * Action has a type specifier. That type must be registered in
-    * order to appear in selections or filter options in Libraries. It also
-    * registers the creation function for that specific Action.
-    *
-    * \author James Kyle KSpace MRI
-    * \date 2010-04-02
-    * \param  type a string specifiying the type of single action
-    * \param creator the function to be used for instnatiation
-    *
-    **/
-    bool registerComponent(const QString& name, Creator creator);
+    ComponentInterface* create(ComponentInterface::ComponentType key) const;
+    ComponentInterface* create(ComponentInterface::ComponentType key,
+                               const QString& templateName) const;
 
     /** \brief Returns a list of Action types
     *
@@ -116,23 +89,18 @@ namespace kex
     *
     * /sa registerComponentTypes() registerComponentType()
     **/
-    const QStringList componentList();
+    const QList<ComponentInterface::ComponentType> componentList();
     
   private:
-    ComponentFactory() {}    //!< private constructor
+    ~ComponentFactory () {}
+    ComponentFactory();    //!< private constructor
 
-    ComponentInterface* parseAction(QXmlStreamReader *reader,
-                                    Action::ActionType type);
-    
-    void readXmlComponentHeader(QXmlStreamReader* reader, 
-                                ComponentInterface *component);
-
-    QMap<QString, Creator> _componentCreatorMap;
+    QMap<ComponentInterface::ComponentType, Creator> _componentCreatorMap;
 
   };
 
-  #define REGISTER_COMPONENT(CLASSID, COMPONENT) \
+/*  #define REGISTER_COMPONENT(CLASSID, COMPONENT) \
     ComponentFactory::instance().registerComponent(CLASSID, \
-     boost::lambda::new_ptr<COMPONENT>());
+     boost::lambda::new_ptr<COMPONENT>()); */
 }
 #endif

@@ -1,19 +1,22 @@
 #ifndef COMPONENTLIST_H
 #define COMPONENTLIST_H
 
-#include <QList>
-#include <QListIterator>
 #include <QString>
+#include <QSet>
+#include <QList>
 
-#include <Components/ComponentInterface.h>
-#include <Common/Uncopyable.h>
-#include <Common/Logger.h>
+#include "ComponentInterface.h"
+#include "AbstractComponent.h"
+#include "Common/Uncopyable.h"
+#include "Utilities/Utilities.h"
+#include "Common/Logger.h"
 
 namespace kex
 {
-  class ComponentList : public QList<ComponentInterface *>, private Uncopyable
+  class ComponentList : private Uncopyable
   {
   public:
+    typedef QList< AbstractComponent::Pointer > ComponentQList;
     static ComponentList& instance();
     
     /** \brief  Given the component name, returns a reference to that component.
@@ -31,9 +34,21 @@ namespace kex
      * \return ComponentInterface* pointer to found component or 0 if not found
      * \version $Rev$ 
      **/
-    ComponentInterface* find(const QString& componentName) const;
+    QSharedPointer<ComponentInterface> find(const QString& componentName) const;
     
-    void append(ComponentInterface* interface);
+    const ComponentQList* filter(int types) const;
+    
+    bool remove(AbstractComponent::Pointer comp);
+    
+    void append(AbstractComponent::Pointer interface);
+    
+    int count() const;
+    
+    const ComponentQList* toList() const;
+  private:
+    QSet< AbstractComponent::Pointer > _componentList;
+    ComponentList() {}
+    ~ComponentList() {}
   };  
 }
 

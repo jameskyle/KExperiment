@@ -43,6 +43,15 @@
     </xs:simpleType>
   </xs:attribute>
   
+  <xs:attribute name="template">
+    <xs:simpleType>
+      <xs:restriction base="xs:string" >
+        <xs:enumeration value="true" />
+        <xs:enumeration value="false" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  
   <!-- used to declare the time units used. default: msecs -->
   <xs:attribute name="unit" default="msecs">
     <xs:simpleType>
@@ -59,6 +68,7 @@
     <xs:sequence>
       <xs:element ref="header" minOccurs="0" />
     </xs:sequence>
+    <xs:attribute ref="template"/>
   </xs:complexType>
   
   

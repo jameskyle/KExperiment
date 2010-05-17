@@ -71,7 +71,7 @@ namespace kex
      * \author $LastChangedBy$
      * \date 2010-5-2
      * \date $LastChangedDate$
-     * \version $Rev$  \sa ComponentInterface ComponentList
+     * \version $Rev$  \sa OutputComponent ComponentList
      **/
     void populateComponentList();
     
@@ -88,7 +88,7 @@ namespace kex
 
   public slots:
     void selectComponentWizard();
-    void launchComponentLibrary(ComponentInterface::ComponentType component);
+    void launchComponentLibrary(OutputComponent::ComponentTypes component);
 
     void showLiveView();
   };

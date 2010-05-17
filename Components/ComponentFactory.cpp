@@ -5,54 +5,55 @@ namespace kex
   ComponentFactory::ComponentFactory() 
   {
     // Map components to their constructors.
-    _componentCreatorMap[ComponentInterface::RestActionType] = 
+    _componentCreatorMap[OutputComponent::RestActionType] = 
       boost::lambda::new_ptr<RestAction>();
     
-    _componentCreatorMap[ComponentInterface::TextActionType] = 
+    _componentCreatorMap[OutputComponent::TextActionType] = 
     boost::lambda::new_ptr<TextAction>();
     
-    _componentCreatorMap[ComponentInterface::ImageActionType] = 
+    _componentCreatorMap[OutputComponent::ImageActionType] = 
     boost::lambda::new_ptr<ImageAction>();
     
-    _componentCreatorMap[ComponentInterface::AudioActionType] = 
+    _componentCreatorMap[OutputComponent::AudioActionType] = 
     boost::lambda::new_ptr<AudioAction>();
     
-    _componentCreatorMap[ComponentInterface::VideoActionType] = 
+    _componentCreatorMap[OutputComponent::VideoActionType] = 
     boost::lambda::new_ptr<VideoAction>();
     
-    _componentCreatorMap[ComponentInterface::EventType] = 
+    _componentCreatorMap[OutputComponent::EventType] = 
     boost::lambda::new_ptr<Event>();
 
-    _componentCreatorMap[ComponentInterface::TrialType] = 
+    _componentCreatorMap[OutputComponent::TrialType] = 
     boost::lambda::new_ptr<Trial>();
 
-    _componentCreatorMap[ComponentInterface::ExperimentType] = 
+    _componentCreatorMap[OutputComponent::ExperimentType] = 
     boost::lambda::new_ptr<Experiment>();
 
   }
   
-  ComponentInterface* 
-  ComponentFactory::create(ComponentInterface::ComponentType key) const
+  OutputComponent* 
+  ComponentFactory::create(OutputComponent::ComponentTypes key) const
   {
-    QMap<ComponentInterface::ComponentType, Creator>::const_iterator it;
-    ComponentInterface *component = 0;
+    QMap<OutputComponent::ComponentTypes, Creator>::const_iterator it;
+    OutputComponent *component = 0;
 
     it = _componentCreatorMap.find(key);
 
     if(it != _componentCreatorMap.end() && (*it))
     {
       component = (*it)();
+      component->setComponentType(key);
     }
 
     return component;
   }
   
-  ComponentInterface*
-  ComponentFactory::create(ComponentInterface::ComponentType key,
+  OutputComponent*
+  ComponentFactory::create(OutputComponent::ComponentTypes key,
                            const QString& templateName) const
   {
-    QMap<ComponentInterface::ComponentType, Creator>::const_iterator it;
-    ComponentInterface *component = 0;
+    QMap<OutputComponent::ComponentTypes, Creator>::const_iterator it;
+    OutputComponent *component = 0;
     
     it = _componentCreatorMap.find(key);
     
@@ -70,7 +71,7 @@ namespace kex
     return factory;
   }
 
-  const QList<ComponentInterface::ComponentType> ComponentFactory::componentList()
+  const QList<OutputComponent::ComponentTypes> ComponentFactory::componentList()
   {
     return _componentCreatorMap.keys();
   }

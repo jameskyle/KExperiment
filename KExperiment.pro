@@ -28,12 +28,8 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS += Common/Global.h \
-           Common/Types.h \
            Common/Uncopyable.h \
            Common/Logger.h \
-           Components/AbstractComponent.h \
-           Components/AggregateComponent.h \
-           Components/ComponentInterface.h \
            Components/ComponentDomParser.h \
            Components/ComponentDataPrivate.h \
            Components/ComponentFactory.h \
@@ -72,9 +68,6 @@ FORMS += UI/Forms/builderFrame.ui \
 SOURCES += main.cpp \
            Common/Global.cpp \
            Common/Logger.cpp \
-           Components/ComponentInterface.cpp \
-           Components/AbstractComponent.cpp \
-           Components/AggregateComponent.cpp \
            Components/ComponentDomParser.cpp \
            Components/ComponentFactory.cpp \
            Components/MetaData.cpp \

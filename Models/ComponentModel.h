@@ -7,7 +7,7 @@
 
 #include "Common/Global.h"
 #include "Components/ComponentList.h"
-#include "Components/ComponentInterface.h"
+#include "Components/OutputComponent.h"
 
 namespace kex
 {
@@ -19,7 +19,7 @@ namespace kex
   * \author $LastChangedBy$
   * \date 2010-4-12
   * \date $LastChangedDate$
-  * \version $Rev$  \sa ComponentInterface
+  * \version $Rev$  \sa OutputComponent
   **/
   class ComponentModel : public QAbstractTableModel
   {
@@ -39,9 +39,10 @@ namespace kex
     * \param types a mask of the types of components
     * \param parent pointer to the parent classe.
     * \version $Rev$  
-    * \sa ComponentInterface ComponentInterface::ComponentType
+    * \sa OutputComponent OutputComponent::ComponentTypes
     **/
-    ComponentModel(int types = ComponentInterface::AllComponents, 
+    ComponentModel(OutputComponent::ComponentTypes types = 
+                   OutputComponent::AllComponents, 
                    QObject *parent = 0);
 
     /** \brief  Default destructor.
@@ -64,7 +65,7 @@ namespace kex
                         int role) const;
     
   private:
-    const ComponentList::ComponentQList *_componentList;
+    const ComponentList::ComponentQList _componentList;
   public slots:
     void updateComponentList();
   };

@@ -43,7 +43,7 @@ namespace kex
     * \param  parent Sets the parent QWidget. default = 0
     * \sa setupPages()
     **/
-    CreationWizard(const ComponentInterface::ComponentType component,
+    CreationWizard(const OutputComponent::ComponentTypes component,
                    QWidget *parent = 0);
     
     ~CreationWizard() {}

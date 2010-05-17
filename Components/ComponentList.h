@@ -5,7 +5,7 @@
 #include <QSet>
 #include <QList>
 
-#include "ComponentInterface.h"
+#include "OutputComponent.h"
 #include "AbstractComponent.h"
 #include "Common/Uncopyable.h"
 #include "Utilities/Utilities.h"
@@ -16,7 +16,7 @@ namespace kex
   class ComponentList : private Uncopyable
   {
   public:
-    typedef QList< AbstractComponent::Pointer > ComponentQList;
+    typedef QList<OutputComponent*> ComponentQList;
     static ComponentList& instance();
     
     /** \brief  Given the component name, returns a reference to that component.
@@ -31,24 +31,24 @@ namespace kex
      * \date 2010-5-2
      * \date $LastChangedDate$
      * \param componentName the name of the component to search for.
-     * \return ComponentInterface* pointer to found component or 0 if not found
+     * \return OutputComponent* pointer to found component or 0 if not found
      * \version $Rev$ 
      **/
-    QSharedPointer<ComponentInterface> find(const QString& componentName) const;
+    OutputComponent* find(const QString& componentName) const;
     
-    const ComponentQList* filter(int types) const;
+    const ComponentQList filter(OutputComponent::ComponentTypes types) const;
     
-    bool remove(AbstractComponent::Pointer comp);
+    bool remove(OutputComponent* comp);
     
-    void append(AbstractComponent::Pointer interface);
+    void append(OutputComponent* interface);
     
     int count() const;
     
-    const ComponentQList* toList() const;
+    const ComponentQList toList() const;
   private:
-    QSet< AbstractComponent::Pointer > _componentList;
+    QSet< OutputComponent* > _componentList;
     ComponentList() {}
-    ~ComponentList() {}
+    ~ComponentList();
   };  
 }
 

@@ -1,9 +1,12 @@
 #ifndef COMPONENTDATAPRIVATE_H
 #define COMPONENTDATAPRIVATE_H
 
+#include <QIcon>
+#include <QStringList>
+
 namespace kex
 {
-  /** \brief  Holds the private data of a ComponentInterface object 
+  /** \brief  Holds the private data of a OutputComponent object 
    * 
    * Copyright 2010 KSpace MRI. All Rights Reserved.
    *
@@ -11,7 +14,7 @@ namespace kex
    * \author $LastChangedBy$
    * \date 2010-5-6
    * \date $LastChangedDate$
-   * \version $Rev$  \sa ComponentInterface
+   * \version $Rev$  \sa OutputComponent
    **/
   struct ComponentDataPrivate
   {

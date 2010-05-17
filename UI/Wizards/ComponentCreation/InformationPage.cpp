@@ -2,7 +2,7 @@
 
 namespace kex
 {
-  InformationPage::InformationPage(const ComponentInterface::ComponentType component,
+  InformationPage::InformationPage(const OutputComponent::ComponentTypes component,
                                    QWidget *parent) 
   : BaseInformationPage(parent),
     _component(component),
@@ -31,7 +31,7 @@ namespace kex
     
     switch (_component)
     {
-      case ComponentInterface::ActionType:
+      case OutputComponent::ActionType:
         name = "Action";
         _actionTypeComboBoxHLayout = new QHBoxLayout;
         actionTypeComboBox = new QComboBox(this);
@@ -52,13 +52,13 @@ namespace kex
         
         registerField("action", actionTypeComboBox);
         break;
-      case ComponentInterface::EventType:
+      case OutputComponent::EventType:
         name = "Event";
         break;
-      case ComponentInterface::TrialType:
+      case OutputComponent::TrialType:
         name = "Trial";
         break;
-      case ComponentInterface::ExperimentType:
+      case OutputComponent::ExperimentType:
         name = "Experiment";
         break;        
     }

@@ -6,9 +6,11 @@
 
 namespace kex
 {
-  class TextAction : public OutputComponent, public Action
+  class TextAction : public Action
   {
     Q_OBJECT
+    Q_PROPERTY(QString text READ text WRITE setText)
+    
   public:
     TextAction(QObject *parent = 0);
     ~TextAction();

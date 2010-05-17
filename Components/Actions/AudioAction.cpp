@@ -5,7 +5,7 @@ namespace kex
   /**
    * TODO
    */
-  AudioAction::AudioAction(QObject *parent) : OutputComponent(parent), Action()
+  AudioAction::AudioAction(QObject *parent) : Action(parent)
   {
   }
   

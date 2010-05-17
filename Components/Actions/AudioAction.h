@@ -8,14 +8,16 @@
 
 namespace kex
 {
-  class AudioAction : public OutputComponent, public Action
+  class AudioAction : public Action
   {
     Q_OBJECT
+    Q_PROPERTY(QString file WRITE setFile READ file)
+    
   public:
     AudioAction(QObject *parent = 0);
     ~AudioAction();
 
-    const QFile& file() const {return _audioFile;}
+    const QString file() const {return _audioFile.fileName();}
     bool setFile(const QString& filePath);
     
   private:

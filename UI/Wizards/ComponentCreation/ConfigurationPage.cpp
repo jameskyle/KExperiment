@@ -2,7 +2,7 @@
 
 namespace kex
 {
-  ConfigurationPage::ConfigurationPage(const ComponentInterface::ComponentType component,
+  ConfigurationPage::ConfigurationPage(const OutputComponent::ComponentTypes component,
                                        QWidget *parent)
     : BaseConfigurationPage(parent),
       libraryToolButtonHLayout(0),
@@ -30,9 +30,9 @@ namespace kex
 
     libraryToolButtonHLayout->addStretch();
     
-    if (_component & (ComponentInterface::EventType | 
-                      ComponentInterface::TrialType | 
-                      ComponentInterface::ExperimentType))
+    if (_component & (OutputComponent::EventType | 
+                      OutputComponent::TrialType | 
+                      OutputComponent::ExperimentType))
     {
       button = new QToolButton(this);
       button->setText(tr("Action Library"));
@@ -41,7 +41,7 @@ namespace kex
       signalMapper->setMapping(button, "action");
     }
     
-    if (_component & (ComponentInterface::TrialType | ComponentInterface::ExperimentType))
+    if (_component & (OutputComponent::TrialType | OutputComponent::ExperimentType))
     {
       button = new QToolButton(this);
       button->setText(tr("Event Library"));
@@ -50,7 +50,7 @@ namespace kex
       signalMapper->setMapping(button, "event");
     }
     
-    if (_component & ComponentInterface::ExperimentType)
+    if (_component & OutputComponent::ExperimentType)
     {
       button = new QToolButton(this);
       button->setText(tr("Trial Library"));
@@ -71,16 +71,16 @@ namespace kex
     
     switch (_component)
     {
-      case ComponentInterface::ActionType:
+      case OutputComponent::ActionType:
         name = "Action";
         break;
-      case ComponentInterface::EventType:
+      case OutputComponent::EventType:
         name = "Event";
         break;
-      case ComponentInterface::TrialType:
+      case OutputComponent::TrialType:
         name = "Trial";
         break;
-      case ComponentInterface::ExperimentType:
+      case OutputComponent::ExperimentType:
         name = "Experiment";
     }
     
@@ -96,9 +96,9 @@ namespace kex
     Q_ASSERT(field("name").isValid());
     Q_ASSERT(field("label").isValid());
     
-    if(_component & ComponentInterface::ActionType)
+    if(_component & OutputComponent::ActionType)
     {
-      Logger::instance().log("Configuring for ComponentInterface::ActionType", this);
+      Logger::instance().log("Configuring for OutputComponent::ActionType", this);
       
       Q_ASSERT(field("action").isValid());
       actionTypeHLayout.addWidget(new QLabel(tr("Action Type:"), this));
@@ -107,7 +107,7 @@ namespace kex
       _mainLayout.addLayout(&actionTypeHLayout);
     }
     
-    if(_component & (ComponentInterface::ActionType | ComponentInterface::EventType | ComponentInterface::TrialType | ComponentInterface::ExperimentType))
+    if(_component & (OutputComponent::ActionType | OutputComponent::EventType | OutputComponent::TrialType | OutputComponent::ExperimentType))
     {
       Logger::instance().log("Adding duration spinbox", this);
       
@@ -124,7 +124,7 @@ namespace kex
       durationHLayout.addWidget(&durationSpinBoxMsecs);
     }
     
-    if(_component & (ComponentInterface::EventType | ComponentInterface::TrialType | ComponentInterface::ExperimentType))
+    if(_component & (OutputComponent::EventType | OutputComponent::TrialType | OutputComponent::ExperimentType))
     {
       Logger::instance().log("Adding comonent list and library buttons", this);
       
@@ -149,13 +149,13 @@ namespace kex
     
     if (libraryType == "action")
     {
-      emit launchComponentLibraryRequested(ComponentInterface::ActionType);
+      emit launchComponentLibraryRequested(OutputComponent::ActionType);
     } else if (libraryType == "event")
     {
-      emit launchComponentLibraryRequested(ComponentInterface::EventType);
+      emit launchComponentLibraryRequested(OutputComponent::EventType);
     } else if (libraryType == "trial")
     {
-      emit launchComponentLibraryRequested(ComponentInterface::TrialType);
+      emit launchComponentLibraryRequested(OutputComponent::TrialType);
     }
   }
 }

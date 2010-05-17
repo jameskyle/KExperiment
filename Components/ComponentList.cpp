@@ -1,19 +1,24 @@
 #include "ComponentList.h"
 
 namespace kex {
+  ComponentList::~ComponentList() 
+  {
+    qDeleteAll(_componentList.begin(), _componentList.end());
+  }
+
   ComponentList& ComponentList::instance()
   {
     static ComponentList componentList;
     return componentList;
   }
 
-  QSharedPointer<ComponentInterface>
+  OutputComponent*
   ComponentList::find(const QString& componentName) const
   {
-    QSharedPointer<ComponentInterface> component(0);
-    QSharedPointer<ComponentInterface> currentComponent(0);
+    OutputComponent* component(0);
+    OutputComponent* currentComponent(0);
 
-    QSetIterator< AbstractComponent::Pointer > i(_componentList);
+    QSetIterator< OutputComponent* > i(_componentList);
 
     while (i.hasNext())
     {
@@ -27,7 +32,7 @@ namespace kex {
     return component;
   }
 
-  void ComponentList::append(AbstractComponent::Pointer interface)
+  void ComponentList::append(OutputComponent* interface)
   {
     if (_componentList.contains(interface))
     {
@@ -43,36 +48,35 @@ namespace kex {
     }
   }
 
-  bool ComponentList::remove(AbstractComponent::Pointer comp)
+  bool ComponentList::remove(OutputComponent* comp)
   {
-    bool success(false);
-    // we enforce only a single occurance of a component in the list. limited
-    // by name
+    // when we remove a component from the global list, we delete it
     if (_componentList.contains(comp))
     {
-      success = _componentList.remove(comp);
+      comp->deleteLater();
     }
-
-    return success;
+    return _componentList.remove(comp);
   }
-
-  const ComponentList::ComponentQList* ComponentList::filter(int types) const
-  {
-    ComponentQList  *filteredList;
-    filteredList = new ComponentQList;
-    AbstractComponent::Pointer temp;
     
-    QSetIterator< AbstractComponent::Pointer > i(_componentList);
+  const ComponentList::ComponentQList 
+  ComponentList::filter(OutputComponent::ComponentTypes types) const
+  {
+    ComponentQList  filteredList;
+    OutputComponent* temp;
+    
+    QSetIterator< OutputComponent* > i(_componentList);
     while (i.hasNext())
     {
       temp = i.next();
       if (temp->componentType() & types )
       {
-        filteredList->append(temp);
+        filteredList.append(temp);
       }
     }
-    qSort(filteredList->begin(), filteredList->end(), 
-          Utilities::sortComponentQList);
+    
+//    qSort(filteredList.begin(), filteredList.end(), 
+//          Utilities::sortComponentQList);
+    
     return filteredList;
   }
 
@@ -81,12 +85,11 @@ namespace kex {
     return _componentList.count();
   }
 
-  const ComponentList::ComponentQList* ComponentList::toList() const
+  const ComponentList::ComponentQList ComponentList::toList() const
   {
-    ComponentQList* qlist;
-    qlist = new ComponentQList(_componentList.toList());
+    ComponentQList qlist = _componentList.toList();
 
-    qSort(qlist->begin(), qlist->end(), Utilities::sortComponentQList);
+//    qSort(qlist.begin(), qlist.end(), Utilities::sortComponentQList);
     return qlist;
   }
 

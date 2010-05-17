@@ -4,7 +4,7 @@
 #include <QString>
 #include <QList>
 
-#include "Components/ComponentInterface.h"
+#include "Components/OutputComponent.h"
 #include "Components/OutputComponent.h"
 
 namespace kex
@@ -19,7 +19,7 @@ namespace kex
    * \date $LastChangedDate$
    * \version $Rev$  \sa Action OutputAction RestAction
    **/
-  class AggregateComponent : public OutputComponent, public ComponentInterface
+  class AggregateComponent : public OutputComponent
   {
   public:
     /** \brief Constructor for the AggregateComponent class.
@@ -28,8 +28,7 @@ namespace kex
      * \date 2010-04-01
      * \sa Action()
      **/
-    AggregateComponent (QObject *parent = 0) : OutputComponent(parent), 
-    ComponentInterface() {}
+    AggregateComponent (QObject *parent = 0) : OutputComponent(parent) {}
     
     /** \brief The destructor for the AggregateComponent class
      * 
@@ -40,7 +39,7 @@ namespace kex
     virtual ~AggregateComponent ();
     
   private:
-    QList<ComponentInterface *> _componentList;
+    QList<OutputComponent *> _componentList;
   };
 }
 #endif

@@ -5,7 +5,7 @@ namespace kex
   /**
    * TODO
    */
-  ImageAction::ImageAction(QObject *parent) : OutputComponent(parent), Action()
+  ImageAction::ImageAction(QObject *parent) : Action(parent)
   {
   }
 

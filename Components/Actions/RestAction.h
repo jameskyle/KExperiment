@@ -6,7 +6,7 @@
 
 namespace kex
 {
-  class RestAction : public OutputComponent, public Action
+  class RestAction : public Action
   {
     Q_OBJECT
   public:

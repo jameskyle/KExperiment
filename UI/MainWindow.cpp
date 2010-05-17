@@ -44,7 +44,7 @@ namespace kex
   void MainWindow::setUpWidgetMapper()
   {
     // set up the data mapper for displaying
-    ComponentModel *model = new ComponentModel(ComponentInterface::AllComponents, 
+    ComponentModel *model = new ComponentModel(OutputComponent::AllComponents, 
                                                this);
     mapper->setModel(model);
     mapper->addMapping(componentNameLabel, 0, "text");
@@ -130,22 +130,22 @@ namespace kex
     experimentLibraryDock->hide();
     
     // Set models for created libraries
-   ComponentModel *model = new ComponentModel(ComponentInterface::ActionType, 
+   ComponentModel *model = new ComponentModel(OutputComponent::ActionType, 
                                                actionLibraryDock);
    actionLibraryDock->setModel(model);
 
-   model = new ComponentModel(ComponentInterface::EventType, eventLibraryDock);
+   model = new ComponentModel(OutputComponent::EventType, eventLibraryDock);
    eventLibraryDock->setModel(model);
     
-   model = new ComponentModel(ComponentInterface::TrialType, trialLibraryDock);
+   model = new ComponentModel(OutputComponent::TrialType, trialLibraryDock);
    trialLibraryDock->setModel(model);
     
-  model = new ComponentModel(ComponentInterface::AllComponents, 
+  model = new ComponentModel(OutputComponent::AllComponents, 
                                experimentLibraryDock);
   experimentLibraryDock->setModel(model);
   }
   
-  void MainWindow::launchComponentLibrary(ComponentInterface::ComponentType component)
+  void MainWindow::launchComponentLibrary(OutputComponent::ComponentTypes component)
   {
     Logger::instance().log("Launch Library called", this);
     ComponentLibrary *library;
@@ -153,16 +153,16 @@ namespace kex
 
     switch (component)
     {
-      case ComponentInterface::ActionType:
+      case OutputComponent::ActionType:
         library = actionLibraryDock;
         break;
-      case ComponentInterface::EventType:
+      case OutputComponent::EventType:
         library = eventLibraryDock;
         break;
-      case ComponentInterface::TrialType:
+      case OutputComponent::TrialType:
         library = trialLibraryDock;
         break;
-      case ComponentInterface::ExperimentType:
+      case OutputComponent::ExperimentType:
         library = experimentLibraryDock;
         break;
       default:
@@ -209,7 +209,7 @@ namespace kex
     foreach(QString path, xmlFiles)
     {
       dom.readFile(path);
-      AbstractComponent::Pointer comp(dom.component());
+      OutputComponent *comp = dom.component();
       // if the component did not specify a name, we set it to the expanded
       // file name
       QString name = comp->name();
@@ -222,16 +222,16 @@ namespace kex
       
       // Add the component to our global component list
       componentList->append(comp);
-      foreach(AbstractComponent::Pointer p, comp->children())
+      foreach(OutputComponent *p, comp->childComponents())
       {
         qDebug() << "root name: " << p->name() << "children: " << 
         p->children().count();
-        foreach(AbstractComponent::Pointer pp, p->children())
+        foreach(OutputComponent *pp, p->childComponents())
         {
           qDebug() << "first child name: " << pp->name() << "children: " << 
           pp->children().count();
           
-          foreach(AbstractComponent::Pointer ppp, pp->children())
+          foreach(OutputComponent *ppp, pp->childComponents())
           {
             qDebug() << "first child name: " << ppp->name() << "children: " << 
             ppp->children().count();

@@ -22,7 +22,7 @@ namespace kex
   {
     if(result == QDialog::Accepted)
     {
-      ComponentInterface::ComponentType component;
+      OutputComponent::ComponentTypes component;
       QWidget *parent = qobject_cast<QWidget *>(this->parent());
       
       QString choice("Undefined");
@@ -35,22 +35,22 @@ namespace kex
       
       if(actionButton->isChecked())
       {
-        component = ComponentInterface::ActionType;
+        component = OutputComponent::ActionType;
         choice = "ActionButton";
       }
       else if(eventButton->isChecked())
       {
-        component = ComponentInterface::EventType;
+        component = OutputComponent::EventType;
         choice = "EventButton";
       }
       else if(trialButton->isChecked())
       {
-        component = ComponentInterface::TrialType;
+        component = OutputComponent::TrialType;
         choice = "TrialButton";
       }
       else if(experimentButton->isChecked())
       {
-        component = ComponentInterface::ExperimentType;
+        component = OutputComponent::ExperimentType;
         choice = "ExperimentButton";
       }
 

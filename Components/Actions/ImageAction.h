@@ -8,14 +8,16 @@
 
 namespace kex
 {
-  class ImageAction : public OutputComponent, public Action
+  class ImageAction : public Action
   {
     Q_OBJECT
+    Q_PROPERTY(QString file READ file WRITE setFile)
+    
   public:
     ImageAction(QObject *parent = 0);
     ~ImageAction();
 
-    const QFile& file() const { return _imageFile;}
+    const QString file() const { return _imageFile.fileName();}
     bool setFile(const QString& filePath);
 
   private:

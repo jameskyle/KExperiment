@@ -2,7 +2,8 @@
 
 namespace kex
 {
-  ComponentModel::ComponentModel(int types, QObject *parent) 
+  ComponentModel::ComponentModel(OutputComponent::ComponentTypes types, 
+                                 QObject *parent) 
     : QAbstractTableModel(parent),
       _componentList(ComponentList::instance().filter(types))
   {
@@ -10,7 +11,7 @@ namespace kex
 
   int ComponentModel::rowCount(const QModelIndex & /* parent */) const
   {
-    return _componentList->count();
+    return _componentList.count();
   }
 
   int ComponentModel::columnCount(const QModelIndex & /*parent */) const
@@ -31,16 +32,16 @@ namespace kex
     QVariant result;
     if (role == Qt::DecorationRole)
     {
-      AbstractComponent::Pointer comp = (*_componentList)[index.row()];
+      OutputComponent *comp = _componentList[index.row()];
       result = comp->icon();
     } else if (role == Qt::DisplayRole)
     {
-      if (index.row()     < _componentList->count() &&
+      if (index.row()     < _componentList.count() &&
           index.row()     >= 0 &&
           index.column()  >= 0 &&
           index.column()  < columnCount())
       {
-        AbstractComponent::Pointer comp = (*_componentList)[index.row()];
+        OutputComponent *comp = _componentList[index.row()];
         
         if (index.column() == 0)
         {

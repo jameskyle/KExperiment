@@ -2,84 +2,27 @@
 
 namespace kex
 {
-  const QStringList Action::actionTypeList(ActionType t)
+  const QStringList Action::actionTypeList(OutputComponent::ComponentTypes t)
   {
     QStringList actionTypes;
-    if (t & RestType)
+    if (t & OutputComponent::RestActionType)
       actionTypes << "Rest";
 
-    if (t & TextType)
+    if (t & OutputComponent::TextActionType)
       actionTypes << "Text";
     
-    if (t & ImageType)
+    if (t & OutputComponent::ImageActionType)
       actionTypes << "Image";
     
-    if (t & AudioType)
+    if (t & OutputComponent::AudioActionType)
       actionTypes << "Audio";
     
-    if (t & VideoType)
+    if (t & OutputComponent::VideoActionType)
       actionTypes << "Video";
     
     return actionTypes;
   }
     
-  Action::ActionType Action::getActionType(const QString& action)
-  {
-    ActionType actionType;
-    QString a = action.toLower();
-    
-    if (a == "rest")
-    {
-      actionType = RestType;
-    } else if (a == "text")
-    {
-      actionType = TextType;
-    } else if (a == "image")
-    {
-      actionType = ImageType;
-    } else if (a == "audio")
-    {
-      actionType = AudioType;
-    } else if (a == "video")
-    {
-      actionType = VideoType;
-    } else
-    {
-      actionType = UnknownType;
-    }
-
-    
-    return actionType;
-  }
-  
-  QString Action::getActionString(ActionType actionType)
-  {
-    QString result("");
-    
-    switch (actionType)
-    {
-      case RestType:
-        result = "rest";
-        break;
-      case TextType:
-        result = "text";
-        break;
-      case ImageType:
-        result = "image";
-        break;
-      case AudioType:
-        result = "audio";
-        break;
-      case VideoType:
-        result = "video";
-        break;
-      default:
-        result = "unknown";
-        break;
-    }
-    return result;
-  }
-  
   bool Action::setDurationMSecs(quint32 duration) 
   {
     bool isValid(false);

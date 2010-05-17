@@ -12,6 +12,11 @@ namespace kex
     Experiment(QObject *parent = 0) : AggregateComponent(parent) {}
     ~Experiment() {}
     
+    const QString instructions() const {return _instructions;}
+    void setInstructions(const QString& inst) {_instructions = inst;}
+    
+  private:
+    QString _instructions;
   public slots:
     void begin() {}
     void abort() {}

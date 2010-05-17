@@ -2,7 +2,7 @@
 
 namespace kex
 {
-  CreationWizard::CreationWizard(const ComponentInterface::ComponentType component,
+  CreationWizard::CreationWizard(const OutputComponent::ComponentTypes component,
                                  QWidget *parent)
     : QWizard(parent)
   {
@@ -19,8 +19,8 @@ namespace kex
     // Connect the configuration launch library signal the wizards launch
     // library signal
     connect(page(Page_Configuration), 
-            SIGNAL(launchComponentLibraryRequested(ComponentInterface::ComponentType)), 
-            parent, SLOT(launchComponentLibrary(ComponentInterface::ComponentType)));
+            SIGNAL(launchComponentLibraryRequested(OutputComponent::ComponentTypes)), 
+            parent, SLOT(launchComponentLibrary(OutputComponent::ComponentTypes)));
     
     Logger::instance().log("Initialized", this);
   }

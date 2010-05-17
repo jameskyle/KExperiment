@@ -14,9 +14,9 @@
 #include <QXmlSchemaValidator>
 #include <QStringList>
 
-#include <Common/Global.h>
-#include <Components/ComponentFactory.h>
-
+#include "Common/Global.h"
+#include "Components/ComponentFactory.h"
+#include "Components/OutputComponent.h"
 namespace kex
 {
   namespace Utilities
@@ -119,9 +119,9 @@ namespace kex
      **/
     QString componentNameFromBaseName(const QString& fileName);
     
-    bool sortComponentQList(const AbstractComponent::Pointer &c1, 
-                            const AbstractComponent::Pointer &c2);
-   };
+    bool sortComponentQList(const OutputComponent* c1, 
+                            const OutputComponent* *c2);
+  };
 
 }
 #endif

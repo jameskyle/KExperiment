@@ -5,7 +5,7 @@ namespace kex
   /**
    * TODO
    */
-  TextAction::TextAction(QObject *parent) : OutputComponent(parent), Action()
+  TextAction::TextAction(QObject *parent) : Action(parent)
   {
   }
 

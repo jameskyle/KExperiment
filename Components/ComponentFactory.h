@@ -9,7 +9,7 @@
 #include <QMap>
 #include <QVariant>
 
-#include "ComponentInterface.h"
+#include "OutputComponent.h"
 #include "Actions/RestAction.h"
 #include "Actions/TextAction.h"
 #include "Actions/ImageAction.h"
@@ -22,14 +22,14 @@
 
 #include <Common/Global.h>
 
-class ComponentInterface;
+class OutputComponent;
 
 namespace kex
 {
   //!< factor creator pointer
-  typedef boost::function<ComponentInterface* ()> Creator;
+  typedef boost::function<OutputComponent* ()> Creator;
 
-  /** \brief  Factory for the ComponentInterface interface
+  /** \brief  Factory for the OutputComponent interface
   *
   * This singleton class creates specific Actions given the appropriate
   * registered identifier.
@@ -55,7 +55,7 @@ namespace kex
     * \date 2010-04-02
     * \return ComponentFactory a reference to the ComponentFactory object.
     *
-    * \sa ComponentInterface
+    * \sa OutputComponent
     **/
     static ComponentFactory& instance();
 
@@ -63,18 +63,18 @@ namespace kex
     * method
     *
     * Provides a pointer to a newly created object of type 'key'. The object
-    * must be derived from the ComponentInterface and be registered before.
+    * must be derived from the OutputComponent and be registered before.
     *
     * \author James Kyle KSpace MRI
     * \date 2010-04-02
     * \param  key the mapped key to the registered component.
     *
-    * \return ComponentInterface* pointer to the newly created object
+    * \return OutputComponent* pointer to the newly created object
     *
-    * \sa ComponentInterface
+    * \sa OutputComponent
     **/
-    ComponentInterface* create(ComponentInterface::ComponentType key) const;
-    ComponentInterface* create(ComponentInterface::ComponentType key,
+    OutputComponent* create(OutputComponent::ComponentTypes key) const;
+    OutputComponent* create(OutputComponent::ComponentTypes key,
                                const QString& templateName) const;
 
     /** \brief Returns a list of Action types
@@ -89,13 +89,13 @@ namespace kex
     *
     * /sa registerComponentTypes() registerComponentType()
     **/
-    const QList<ComponentInterface::ComponentType> componentList();
+    const QList<OutputComponent::ComponentTypes> componentList();
     
   private:
     ~ComponentFactory () {}
     ComponentFactory();    //!< private constructor
 
-    QMap<ComponentInterface::ComponentType, Creator> _componentCreatorMap;
+    QMap<OutputComponent::ComponentTypes, Creator> _componentCreatorMap;
 
   };
 

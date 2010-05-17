@@ -2,7 +2,7 @@
 
 namespace kex
 {
-  FinishedPage::FinishedPage(const ComponentInterface::ComponentType component,
+  FinishedPage::FinishedPage(const OutputComponent::ComponentTypes component,
                              QWidget *parent)
   : QWizardPage(parent),
   _component(component)
@@ -27,16 +27,16 @@ namespace kex
     
     switch (_component)
     {
-      case ComponentInterface::ActionType:
+      case OutputComponent::ActionType:
         name = tr("Action");
         break;
-      case ComponentInterface::EventType:
+      case OutputComponent::EventType:
         name = tr("Event");
         break;
-      case ComponentInterface::TrialType:
+      case OutputComponent::TrialType:
         name = tr("Trial");
         break;
-      case ComponentInterface::ExperimentType:
+      case OutputComponent::ExperimentType:
         name = tr("Experiment");
     }
     

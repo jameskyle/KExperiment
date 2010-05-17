@@ -29,7 +29,7 @@ namespace kex
   {
     Q_OBJECT
   public:
-    ConfigurationPage(const ComponentInterface::ComponentType component,
+    ConfigurationPage(const OutputComponent::ComponentTypes component,
                       QWidget *parent = 0);
     ~ConfigurationPage();
 
@@ -51,10 +51,10 @@ namespace kex
     QHBoxLayout* getLibraryButtonLayout();
     void setTitles();
     
-    ComponentInterface::ComponentType _component;
+    OutputComponent::ComponentTypes _component;
     
   signals:
-    void launchComponentLibraryRequested(ComponentInterface::ComponentType component);
+    void launchComponentLibraryRequested(OutputComponent::ComponentTypes component);
     
   private slots:
     void dispatchLibraryRequest(const QString& libraryType);

@@ -222,10 +222,10 @@ namespace kex
       return output.simplified();
     }
     
-    bool sortComponentQList(const AbstractComponent::Pointer &c1, 
-                            const AbstractComponent::Pointer &c2)
+    bool sortComponentQList(const OutputComponent* c1, 
+                            const OutputComponent* c2)
     {
-      return c1->name() < c2->name();
+      return (c1->name() < c2->name());
     }
 
   } // END_UTILITIES

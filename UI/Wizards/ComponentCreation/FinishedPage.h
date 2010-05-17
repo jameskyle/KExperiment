@@ -26,14 +26,14 @@ namespace kex
   {
     Q_OBJECT
   public:
-    FinishedPage(const ComponentInterface::ComponentType component,
+    FinishedPage(const OutputComponent::ComponentTypes component,
                  QWidget *parent = 0);
     
     ~FinishedPage();
     void initializePage();
     
   private:
-    ComponentInterface::ComponentType _component;
+    OutputComponent::ComponentTypes _component;
   };
   
 }

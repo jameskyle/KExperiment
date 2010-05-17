@@ -12,7 +12,7 @@ namespace kex
    * \author $LastChangedBy$
    * \date 2010-4-12
    * \date $LastChangedDate$
-   * \version $Rev$  \sa Action ComponentInterface  
+   * \version $Rev$  \sa Action OutputComponent  
    **/
   class ActionModel : public QAbstractItemModel
   {

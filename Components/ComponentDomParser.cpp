@@ -27,8 +27,6 @@ namespace kex
   {
     QFile file(_fileName);
     
-    _rootComponent = AbstractComponent::Pointer(new AbstractComponent);
-    
     Logger *logger = &Logger::instance();
 
     if (!file.open(QFile::ReadOnly | QFile::Text))
@@ -71,13 +69,57 @@ namespace kex
       file.close();
       return false;
     }
-
-    parseElement(root, _rootComponent.data());
+    
+    _rootComponent = createComponent(root);
+    parseElement(root, _rootComponent);
     
     file.close();
     return true;
   }
-
+  
+  OutputComponent* 
+  ComponentDomParser::createComponent(const QDomElement& root) const
+  {
+    Q_ASSERT(isValidElement(root));
+    
+    QString rootName = root.tagName();
+    OutputComponent::ComponentTypes c_type;
+    
+    // assign type of component to create
+    if (rootName == "action")
+    {
+      QString t = root.attribute("type").simplified();
+      
+      if (t == "rest")
+      {
+        c_type = OutputComponent::RestActionType;
+      } else if (t == "text")
+      {
+        c_type = OutputComponent::TextActionType;
+      } else if (t == "image")
+      {
+        c_type = OutputComponent::ImageActionType;
+      } else if (t == "audio")
+      {
+        c_type = OutputComponent::AudioActionType;
+      } else if (t == "video")
+      {
+        c_type = OutputComponent::VideoActionType;
+      }
+    } else if (rootName == "event")
+    {
+      c_type = OutputComponent::EventType;
+    } else if (rootName == "trial")
+    {
+      c_type = OutputComponent::TrialType;
+    } else if (rootName == "experiment")
+    {
+      c_type = OutputComponent::ExperimentType;
+    }
+    
+    return ComponentFactory::instance().create(c_type);
+  }
+  
   bool ComponentDomParser::isValidElement(const QDomElement &element) const
   {
     bool isValid(false);
@@ -102,17 +144,16 @@ namespace kex
   }
 
   void ComponentDomParser::parseElement(const QDomElement &element,
-                                        AbstractComponent* component) const
+                                        OutputComponent* component) const
   {
     // should only receive valid elements.
     Q_ASSERT(isValidElement(element));
-    Q_CHECK_PTR(component);
-
+    
+    
     setMainCategory(element, component);
 
     if (element.tagName() == "action")
     {
-      component->setComponentType(ComponentInterface::ActionType);
       parseActionElement(element, component);
 
     } else if (element.tagName() == "header")
@@ -122,8 +163,6 @@ namespace kex
     else if (element.tagName() == "event")
     {
       QDomNode child = element.firstChild();
-
-      component->setComponentType(ComponentInterface::EventType);
 
       while (!child.isNull())
       {
@@ -140,8 +179,6 @@ namespace kex
     } else if (element.tagName() == "trial")
     {
       QDomNode child = element.firstChild();
-
-      component->setComponentType(ComponentInterface::TrialType);
 
       while (!child.isNull())
       {
@@ -161,8 +198,6 @@ namespace kex
     {
       QDomNode child = element.firstChild();
 
-      component->setComponentType(ComponentInterface::ExperimentType);
-
       while (!child.isNull())
       {
         if (child.toElement().tagName() == "trial" ||
@@ -173,10 +208,17 @@ namespace kex
         } else if (child.toElement().tagName() == "header")
         {
           parseHeaderElement(child.toElement(), component);
+          
         } else if (child.toElement().tagName() == "instructions")
         {
-          QVariant v(child.toElement().text());
-          component->setValue("instructions", v);
+          QString v(child.toElement().text());
+          
+          Experiment* temp = qobject_cast<Experiment *>(component);
+          Q_CHECK_PTR(temp);
+          if (temp)
+          {
+            temp->setInstructions(v);
+          }
         }
         child = child.nextSibling();
       }
@@ -185,7 +227,7 @@ namespace kex
 
   void 
   ComponentDomParser::parseHeaderElement(const QDomElement &element,
-                                         AbstractComponent* component) const
+                                         OutputComponent* component) const
   {
     Q_ASSERT(element.tagName() == "header");
     Q_CHECK_PTR(component);
@@ -230,13 +272,14 @@ namespace kex
 
   void 
   ComponentDomParser::parseActionElement(const QDomElement &element,
-                                         AbstractComponent* component) const
+                                         OutputComponent* component) const
   {
     Q_ASSERT(element.tagName() == "action");
     Q_CHECK_PTR(component);
 
     QDomNode child  = element.firstChild();
-
+    bool propertySetSuccess(false);
+    
     while (!child.isNull())
     {
       // Actions have no children components, so we don't check for them
@@ -254,32 +297,33 @@ namespace kex
         // default: milliseconds
         QString units(child.toElement().attribute("unit", "msecs"));
 
-        component->setAttribute("units", units);
         QVariant value(child.toElement().text());
         quint32 duration = value.toInt();
-
+        
         // msecs is the default value.
         if (units == "secs")
         {
+          component->setProperty("units", Action::SecondType);
           duration = duration * 1000;
 
         } else if (units == "ksecs")
         {
+          component->setProperty("units", Action::KiloSecondType);
           duration = duration * 1000 * 1000;
+        } else // default msecs
+        {
+          component->setProperty("units", Action::MilliSecondType);
         }
-      
-        value.setValue(duration);
-        component->setValue("duration", value);
+
+        component->setProperty("durationMSecs", duration);
 
       } else if (child.toElement().tagName() == "file")
       {
-        QVariant fileName(child.toElement().text());
-        component->setValue("file", fileName);
+        component->setProperty("file", child.toElement().text());
 
       } else if (child.toElement().tagName() == "text")
       {
-        QVariant text(child.toElement().text());
-        component->setValue("text", text);
+        component->setProperty("text", child.toElement().text());
       }
       // TODO add checks for other action types
 
@@ -288,7 +332,7 @@ namespace kex
   }
 
   void ComponentDomParser::setMainCategory(const QDomElement &element,
-                                           AbstractComponent* component) const
+                                           OutputComponent* component) const
   {
     QString cat;
     Logger *logger = &Logger::instance();
@@ -328,13 +372,12 @@ namespace kex
   }
   
   void ComponentDomParser::createChildComponent(const QDomElement &element, 
-                                           AbstractComponent *comp) const
+                                           OutputComponent *comp) const
   {
     Q_CHECK_PTR(comp);
     Q_ASSERT(isValidElement(element));
     
-    AbstractComponent::Pointer c(new AbstractComponent);
-    parseElement(element, c.data());
-    comp->appendChild(c);
+    OutputComponent* child = createComponent(element);
+    comp->appendChild(child);
   }
 }

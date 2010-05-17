@@ -7,10 +7,10 @@
 #include <QList>
 #include <QVariant>
 
-#include "ComponentInterface.h"
+#include "OutputComponent.h"
+#include "ComponentFactory.h"
 #include "ComponentList.h"
 #include "Common/Logger.h"
-#include "AbstractComponent.h"
 
 namespace kex
 {
@@ -22,7 +22,7 @@ namespace kex
    * \author $LaAbstractComponent* parentstChangedBy$
    * \date 2010-5-10
    * \date $LastChangedDate$
-   * \version $Rev$  \sa ComponentInterface
+   * \version $Rev$  \sa OutputComponent
    **/
   
   class ComponentDomParser
@@ -34,24 +34,26 @@ namespace kex
     bool readFile(const QString &fileName);
     bool readFile();
     
-    AbstractComponent::Pointer component() const {return _rootComponent;}
+    OutputComponent* component() const {return _rootComponent;}
         
   private:
-    AbstractComponent::Pointer _rootComponent;
+    OutputComponent* _rootComponent;
     QString _fileName;
     bool isValidElement(const QDomElement &root) const;
     void parseHeaderElement(const QDomElement &element, 
-                            AbstractComponent* component) const;
+                            OutputComponent* component) const;
 
     void parseElement(const QDomElement &element, 
-                      AbstractComponent* component) const;
+                      OutputComponent* component) const;
     void parseActionElement(const QDomElement &element, 
-                            AbstractComponent* component) const;
+                            OutputComponent* component) const;
     void setMainCategory(const QDomElement &element,
-                         AbstractComponent* component) const;
+                         OutputComponent* component) const;
     
     void createChildComponent(const QDomElement &element,
-                              AbstractComponent *comp) const;
+                              OutputComponent *comp) const;
+    
+    OutputComponent* createComponent(const QDomElement& root) const;
 
     
   };

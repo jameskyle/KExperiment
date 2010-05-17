@@ -5,7 +5,7 @@ namespace kex
   /**
    * TODO
    */
-  VideoAction::VideoAction(QObject *parent) : OutputComponent(parent), Action()
+  VideoAction::VideoAction(QObject *parent) : Action(parent)
   {
   }
 

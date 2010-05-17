@@ -8,14 +8,16 @@
 
 namespace kex
 {
-  class VideoAction : public OutputComponent, public Action
+  class VideoAction : public Action
   {
     Q_OBJECT
+    Q_PROPERTY(QString file READ file WRITE setFile)
+    
   public:
     VideoAction(QObject *parent = 0);
     ~VideoAction();
     
-    const QFile& file() const { return _videoFile;}
+    const QString file() const { return _videoFile.fileName();}
     bool setFile(const QString& filePath);
 
   private:

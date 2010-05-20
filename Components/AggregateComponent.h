@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <QList>
+#include <QDebug>
 
-#include "Components/OutputComponent.h"
 #include "Components/OutputComponent.h"
 
 namespace kex
@@ -21,6 +21,8 @@ namespace kex
    **/
   class AggregateComponent : public OutputComponent
   {
+    Q_OBJECT
+
   public:
     /** \brief Constructor for the AggregateComponent class.
      * 
@@ -28,8 +30,10 @@ namespace kex
      * \date 2010-04-01
      * \sa Action()
      **/
-    AggregateComponent (QObject *parent = 0) : OutputComponent(parent) {}
+    AggregateComponent (QObject *parent = 0);
     
+    virtual void updateFromTemplate(const SharedPointer t);    
+
     /** \brief The destructor for the AggregateComponent class
      * 
      * \author James Kyle KSpace MRI
@@ -38,8 +42,20 @@ namespace kex
      **/
     virtual ~AggregateComponent ();
     
+    virtual quint32 durationMSecs() const;
+    QList<OutputComponent::SharedPointer> childComponents() const;
+    void appendChild(OutputComponent::SharedPointer child);
+    
+    void insertChild(int index, OutputComponent* comp);
+    void insertChild(int index, OutputComponent::SharedPointer comp);
+
+    void removeChild(int index);
+    bool hasChildren() const;
+    int numChildren() const;
+    SharedPointer child(int row) const;
+    
   private:
-    QList<OutputComponent *> _componentList;
+    QList<SharedPointer> _childComponents;
   };
 }
 #endif

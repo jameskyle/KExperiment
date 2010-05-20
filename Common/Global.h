@@ -6,11 +6,10 @@
 #include <QMultiMap>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QVariant>
 
-#include <Utilities/Utilities.h>
 #include <Common/Uncopyable.h>
 #include <Common/Logger.h>
-#include <Components/ComponentFactory.h>
 
 namespace kex
 {
@@ -26,23 +25,27 @@ namespace kex
    **/
   class Config : private Uncopyable
   {
+    Q_FLAGS(ApplicationDataDirectoryType ApplicationDataDirectoryTypes)
   public:
     static Config& instance();
 
 
     enum MetaDataType {
       TemplateResourcePaths      = 0x1,
-      CustomDirectoryPath        = 0x2,
+      CustomDirectoryPath        = 0x1 << 1,
     };
 
     enum ApplicationDataDirectoryType {
       LogDirectory                = 0x1,
-      ActionDirectory             = 0x2,
-      ExperimentDirectory         = 0x4,
-      EventDirectory              = 0x8,
-      TrialDirectory              = 0x10,
-      AllDataDirectories          = (0x1 | 0x2 | 0x4 | 0x8 | 0x10),
+      ActionDirectory             = 0x1 << 1,
+      ExperimentDirectory         = 0x1 << 2,
+      EventDirectory              = 0x1 << 3,
+      TrialDirectory              = 0x1 << 4,
+      AllDataDirectories          = (LogDirectory | ActionDirectory |
+                                     ExperimentDirectory | EventDirectory |
+                                     TrialDirectory),
     };
+    Q_DECLARE_FLAGS(ApplicationDataDirectoryTypes, ApplicationDataDirectoryType)
 
     /** \brief  Returns the storage location path for this application
      *
@@ -57,7 +60,7 @@ namespace kex
      * \version $Rev$  \sa OutputComponent::DataDirectoryType
      **/
     const QString
-    dataDirectoryPath(const ApplicationDataDirectoryType directoryType) const;
+    dataDirectoryPath(const ApplicationDataDirectoryTypes directoryType) const;
 
     /** \brief  Returns a list of all data directories
      *
@@ -75,7 +78,7 @@ namespace kex
      * \sa OutputComponent::DataDirectoryType
      * \sa Utilities::setupAppStorageEnvironment
      **/
-    const QStringList dataDirectoryList(const int dt) const;
+    const QStringList dataDirectoryList(ApplicationDataDirectoryTypes dt) const;
 
     /** \brief  Registers metadata associated with the requested class.
      *
@@ -119,27 +122,29 @@ namespace kex
     const QString applicationName() const {return _applicationName;}
     const QString storageLocation() const {return _storageLocation;}
     const QString componentSchemaFile() const { return _componentSchemaFile;}
-    const QStringList templates(ApplicationDataDirectoryType t) const;
-    void addTemplate(ApplicationDataDirectoryType storagePath, QString temp);
-    
+    const QStringList templates(ApplicationDataDirectoryTypes t) const;
+    void addTemplate(ApplicationDataDirectoryTypes storagePath, QString temp);
+
   private:
     QString _organizationName;
     QString _domainName;
     QString _applicationName;
     QString _storageLocation;
-    QList<ApplicationDataDirectoryType> _dataDirectoryList;
-    QMultiMap<ApplicationDataDirectoryType, QString> _templates;
+    QList<ApplicationDataDirectoryTypes> _dataDirectoryList;
+    QMultiMap<ApplicationDataDirectoryTypes, QString> _templates;
     QString _componentSchemaFile;
 
     //!< map of class's application metadata
     //QMap<QString, QMap<MetaDataType, QVariant> > _componentMetaDataMap;
 
-    // map between an ApplicationDataDirectoryType and its name
-    QMap<ApplicationDataDirectoryType, QString> _directoryTypeList;
+    // map between an ApplicationDataDirectoryTypes and its name
+    QMap<ApplicationDataDirectoryTypes, QString> _directoryTypeList;
 
     Config();
     ~Config() {}
   };
-}
+  // FIXME http://tinyurl.com/2ga3sdx
+  //Q_DECLARE_OPERATORS_FOR_FLAGS(Config::ApplicationDataDirectoryTypes)
+};
 
 #endif

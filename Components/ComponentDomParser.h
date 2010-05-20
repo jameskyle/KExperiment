@@ -8,6 +8,7 @@
 #include <QVariant>
 
 #include "OutputComponent.h"
+#include "AggregateComponent.h"
 #include "ComponentFactory.h"
 #include "ComponentList.h"
 #include "Common/Logger.h"
@@ -19,7 +20,7 @@ namespace kex
    * Copyright 2010 KSpace MRI. All Rights Reserved.
    *
    * \author James Kyle
-   * \author $LaAbstractComponent* parentstChangedBy$
+   * \author $LastBy$
    * \date 2010-5-10
    * \date $LastChangedDate$
    * \version $Rev$  \sa OutputComponent
@@ -31,13 +32,10 @@ namespace kex
     ComponentDomParser();
     ComponentDomParser(const QString& fileName);
     
-    bool readFile(const QString &fileName);
-    bool readFile();
+    OutputComponent* readFile(const QString &fileName);
+    OutputComponent* readFile();
     
-    OutputComponent* component() const {return _rootComponent;}
-        
   private:
-    OutputComponent* _rootComponent;
     QString _fileName;
     bool isValidElement(const QDomElement &root) const;
     void parseHeaderElement(const QDomElement &element, 
@@ -45,14 +43,27 @@ namespace kex
 
     void parseElement(const QDomElement &element, 
                       OutputComponent* component) const;
+    
     void parseActionElement(const QDomElement &element, 
                             OutputComponent* component) const;
+    
+    void parseEventElement(const QDomElement &element,
+                           OutputComponent* component) const;
+    
+    void parseTrialElement(const QDomElement &element,
+                           OutputComponent* component) const;
+    
+    void parseExperimentElement(const QDomElement &element,
+                                OutputComponent* component) const;
+
     void setMainCategory(const QDomElement &element,
                          OutputComponent* component) const;
     
     void createChildComponent(const QDomElement &element,
                               OutputComponent *comp) const;
     
+    void resolveName(OutputComponent* comp) const;
+
     OutputComponent* createComponent(const QDomElement& root) const;
 
     

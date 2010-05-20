@@ -49,7 +49,7 @@ namespace kex
      **/
     ~ComponentLibrary();
 
-    void setModel(ComponentModel *model);
+    void setModel(QAbstractItemModel *model);
 
   };
 }

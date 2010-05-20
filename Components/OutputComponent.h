@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QSet>
-#include "ComponentDataPrivate.h"
+#include <QIcon>
 
 namespace kex
 {
@@ -21,8 +21,11 @@ namespace kex
   {
     Q_OBJECT
     Q_FLAGS(ComponentType ComponentTypes)
-    
+        
   public:
+    typedef QSharedPointer<OutputComponent> SharedPointer;
+    typedef OutputComponent* Pointer;
+    
     enum ComponentType
     {
       RestActionType            = 0x1,
@@ -159,7 +162,7 @@ namespace kex
     
     bool removeCategory(const QString& category);
     
-    virtual const quint32 durationMSecs() const;
+    virtual quint32 durationMSecs() const = 0;
     
     virtual const QString toString() const;
     
@@ -185,15 +188,16 @@ namespace kex
     const QIcon icon();
     void setIcon(const QIcon& icon);
     
-    void appendChild(OutputComponent* child);
-    void insertChild(int index, OutputComponent* component);
-    void removeChild(int index);
-    QList<OutputComponent*> childComponents() const;
-    
     static const quint32 MAX_DURATION = 1800000; //!< maximum run time, 30m
     static const QString componentTypeToString(ComponentTypes t);
     
-    
+    virtual void updateFromTemplate(const SharedPointer t) = 0;  
+    OutputComponent::SharedPointer parentComponent() const {return _parentComponent;}
+    void setParentComponent(SharedPointer parent) { _parentComponent = parent;}
+    virtual bool hasChildren() const = 0;
+    virtual int numChildren() const = 0;
+    virtual SharedPointer child(int row) const;
+
   private:
     quint32        _startTimeMSecs;
     ComponentTypes _componentType;
@@ -203,7 +207,7 @@ namespace kex
     QString        _mainCategory; //!< main group identifier
     QSet<QString>  _categorySet; //!< list of all categories for component
     QIcon          _icon;
-    QList<OutputComponent *> _childComponents;
+    SharedPointer  _parentComponent;
     
   signals:
     void startTimeChanged();
@@ -214,5 +218,7 @@ namespace kex
     virtual void abort() = 0;
     void updateStartTime(quint32 startTimeMSecs);
   };
+  // FIXME http://tinyurl.com/2ga3sdx
+//  Q_DECLARE_OPERATORS_FOR_FLAGS(OutputComponent::ComponentTypes)
 }
 #endif

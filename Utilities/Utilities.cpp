@@ -13,12 +13,15 @@ namespace kex
 
       logger = &Logger::instance();
       config = &Config::instance();
-
-      dataDirectoryList = config->dataDirectoryList((Config::LogDirectory |
-                                                    Config::ActionDirectory |
-                                                    Config::ExperimentDirectory |
-                                                    Config::EventDirectory |
-                                                    Config::TrialDirectory));
+      
+      // FIXME http://tinyurl.com/2ga3sdx
+      Config::ApplicationDataDirectoryTypes dt(Config::LogDirectory |
+                                               Config::ActionDirectory |
+                                               Config::ExperimentDirectory |
+                                               Config::EventDirectory |
+                                               Config::TrialDirectory);
+      
+      dataDirectoryList = config->dataDirectoryList(dt);
       foreach(QString path, dataDirectoryList)
       {
         if (!dir.exists(path))
@@ -48,7 +51,7 @@ namespace kex
     void writeTemplateFiles()
     {
       QStringList templates;
-      QList<Config::ApplicationDataDirectoryType> dirs;
+      QList<Config::ApplicationDataDirectoryTypes> dirs;
       Logger *logger = &Logger::instance();
       Config *config = &Config::instance();
 
@@ -58,7 +61,7 @@ namespace kex
       // create directories if they've been deleted
       setupAppStorageEnvironment();
 
-      foreach(Config::ApplicationDataDirectoryType t, dirs)
+      foreach(Config::ApplicationDataDirectoryTypes t, dirs)
       {
         // retrieve all stored templates for data directory t
         templates = config->templates(t);
@@ -100,8 +103,8 @@ namespace kex
     void registerComponents()
     {
       Config *config = &Config::instance();
-      QMap<QString, Config::ApplicationDataDirectoryType> resource_roots;
-      QMap<QString, Config::ApplicationDataDirectoryType>::iterator it;
+      QMap<QString, Config::ApplicationDataDirectoryTypes> resource_roots;
+      QMap<QString, Config::ApplicationDataDirectoryTypes>::iterator it;
       QDir templates;
       QString path = ":templates/%1";
 
@@ -170,14 +173,13 @@ namespace kex
       return valid;
     }
     
-    QStringList xmlFileComponentList()
+    QStringList xmlFileComponentList(Config::ApplicationDataDirectoryTypes t)
     {
       QStringList         dirList;
       QStringList         xmlList;
       Config              *config = &Config::instance();
       
-      dirList = config->dataDirectoryList(Config::AllDataDirectories & 
-                                          ~Config::LogDirectory);
+      dirList = config->dataDirectoryList(t);
       
       foreach(QString path, dirList)
       {
@@ -220,12 +222,6 @@ namespace kex
 
       }
       return output.simplified();
-    }
-    
-    bool sortComponentQList(const OutputComponent* c1, 
-                            const OutputComponent* c2)
-    {
-      return (c1->name() < c2->name());
     }
 
   } // END_UTILITIES

@@ -13,7 +13,7 @@ namespace kex
   ComponentLibrary::~ComponentLibrary() {
   }
 
-  void ComponentLibrary::setModel(ComponentModel *model)
+  void ComponentLibrary::setModel(QAbstractItemModel *model)
   {
     QSortFilterProxyModel *proxy = new QSortFilterProxyModel(this);
 

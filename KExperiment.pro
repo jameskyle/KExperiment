@@ -5,8 +5,19 @@
 TEMPLATE = app
 TARGET =
 
+# Begin Mac Options
+macx {
+  QMAKE_MACOSX_DEPLOYMENT_TARGET=10.6
+  QMAKE_MAC_SDK=/Developer/SDKs/MacOSX10.6.sdk
+  CONFIG+=x86 x86_64
+#  MAKEFILE_GENERATOR = XCODE
+}
+
+# end Mac Options
+
 QT +=  xmlpatterns
 QT += xml
+CONFIG += debug
 
 DEPENDPATH += . \
               Common \
@@ -33,6 +44,7 @@ HEADERS += Common/Global.h \
            Components/ComponentDomParser.h \
            Components/ComponentDataPrivate.h \
            Components/ComponentFactory.h \
+           Components/AggregateComponent.h \
            Models/ComponentModel.h \
            Models/Action/ActionModel.h \
            Components/MetaData.h \
@@ -70,6 +82,7 @@ SOURCES += main.cpp \
            Common/Logger.cpp \
            Components/ComponentDomParser.cpp \
            Components/ComponentFactory.cpp \
+           Components/AggregateComponent.cpp \
            Components/MetaData.cpp \
            Models/ComponentModel.cpp \
            Models/Action/ActionModel.cpp \

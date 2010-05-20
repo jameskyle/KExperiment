@@ -6,7 +6,6 @@
 #include <QList>
 
 #include "OutputComponent.h"
-#include "AbstractComponent.h"
 #include "Common/Uncopyable.h"
 #include "Utilities/Utilities.h"
 #include "Common/Logger.h"
@@ -16,7 +15,9 @@ namespace kex
   class ComponentList : private Uncopyable
   {
   public:
-    typedef QList<OutputComponent*> ComponentQList;
+    typedef QList< OutputComponent::SharedPointer > ComponentQList;
+    typedef QListIterator< OutputComponent::SharedPointer > ComponentQListIterator;
+    
     static ComponentList& instance();
     
     /** \brief  Given the component name, returns a reference to that component.
@@ -34,21 +35,29 @@ namespace kex
      * \return OutputComponent* pointer to found component or 0 if not found
      * \version $Rev$ 
      **/
-    OutputComponent* find(const QString& componentName) const;
+    OutputComponent::SharedPointer find(const QString& componentName) const;
     
     const ComponentQList filter(OutputComponent::ComponentTypes types) const;
     
-    bool remove(OutputComponent* comp);
+    bool remove(OutputComponent::SharedPointer comp);
     
+    void append(OutputComponent::SharedPointer interface);
     void append(OutputComponent* interface);
     
     int count() const;
     
     const ComponentQList toList() const;
+    
+    static bool sortComponentQList(const OutputComponent::SharedPointer c1,
+                                   const OutputComponent::SharedPointer c2);
+
   private:
-    QSet< OutputComponent* > _componentList;
-    ComponentList() {}
-    ~ComponentList();
+    typedef QSet<OutputComponent::SharedPointer> ComponentQSet;
+    typedef QSetIterator<OutputComponent::SharedPointer> ComponentQSetIterator;
+    
+    ComponentQSet _componentList;
+    ComponentList();
+    virtual ~ComponentList();
   };  
 }
 

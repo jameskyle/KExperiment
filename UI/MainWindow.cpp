@@ -2,7 +2,7 @@
 
 namespace kex
 {
-  MainWindow::MainWindow(QMainWindow *parent) 
+  MainWindow::MainWindow(QWidget *parent) 
     : QMainWindow(parent),
       experimentLibraryDock(new ComponentLibrary(this)),
       actionLibraryDock(new ComponentLibrary(this)),
@@ -203,43 +203,35 @@ namespace kex
   
   void MainWindow::populateComponentList()
   {
-    QStringList         xmlFiles(Utilities::xmlFileComponentList());
+    QStringList         xmlFiles;
+    Config::ApplicationDataDirectoryTypes t;
+    
+    t = Config::ActionDirectory;
+    xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
+    
+    t = Config::EventDirectory;
+    xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
+    
+    t = Config::TrialDirectory;
+    xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
+
+    t = Config::ExperimentDirectory;
+    xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
+
     ComponentDomParser dom;
     
+    // It's important that we parse the files in order of precendence so 
+    // template based components can find the original. E.g. if we parsed
+    // Experiments before Actions, the Experiment class would not be able to 
+    // find the Action templates.
     foreach(QString path, xmlFiles)
     {
-      dom.readFile(path);
-      OutputComponent *comp = dom.component();
-      // if the component did not specify a name, we set it to the expanded
-      // file name
-      QString name = comp->name();
-      if (name.isEmpty())
-      {
-        QFileInfo info(path);
-        name = Utilities::componentNameFromBaseName(info.baseName());
-        comp->setName(name);
-      }
-      
+      qDebug() << path;
+      OutputComponent *comp = dom.readFile(path);
+      Q_CHECK_PTR(comp);
+
       // Add the component to our global component list
       componentList->append(comp);
-      foreach(OutputComponent *p, comp->childComponents())
-      {
-        qDebug() << "root name: " << p->name() << "children: " << 
-        p->children().count();
-        foreach(OutputComponent *pp, p->childComponents())
-        {
-          qDebug() << "first child name: " << pp->name() << "children: " << 
-          pp->children().count();
-          
-          foreach(OutputComponent *ppp, pp->childComponents())
-          {
-            qDebug() << "first child name: " << ppp->name() << "children: " << 
-            ppp->children().count();
-            
-          }
-          
-        }
-      }
     }
   }
 } // END_KEX_NAMESPACE

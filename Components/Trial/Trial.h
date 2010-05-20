@@ -32,6 +32,10 @@ namespace kex
      **/
     Trial (QObject *parent = 0) : AggregateComponent(parent) {}
     
+    // TODO implement specifics
+    virtual void updateFromTemplate(const OutputComponent::SharedPointer t);
+
+    
     /** \brief The destructor for the Event class
      * 
      * Ensures all allocated resources of the Event class have been freed.

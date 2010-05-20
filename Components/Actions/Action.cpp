@@ -2,6 +2,13 @@
 
 namespace kex
 {
+  Action::Action(QObject *parent)  : 
+    OutputComponent(parent), 
+    _durationMSecs(0),
+    _durationUnits(MilliSecondType) 
+  {
+  }
+  
   const QStringList Action::actionTypeList(OutputComponent::ComponentTypes t)
   {
     QStringList actionTypes;
@@ -34,5 +41,36 @@ namespace kex
     
     return isValid;
   }
+ 
+  void Action::updateFromTemplate(const OutputComponent::SharedPointer t)
+  {
+    QSharedPointer<Action> action(t.objectCast<Action>());
+
+    // ensure the passed pointer is, in fact, an Action type object
+    Q_CHECK_PTR(action);
+    
+    // call parent method
+    OutputComponent::updateFromTemplate(t);
+    
+    // After that, the only thing left is the duration field for actions
+    if (action->durationMSecs() != durationMSecs())
+    {
+      // test for default time condition indicating it has not been set
+      if (durationMSecs() == 0)
+      {
+        setDurationMSecs(action->durationMSecs());
+      }
+    }
+  }
+
+  bool Action::hasChildren() const
+  {
+    return false;
+  }
   
+  int Action::numChildren() const
+  {
+    // actions don't have children. 
+    return 0;
+  }
 }

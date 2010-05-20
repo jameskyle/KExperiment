@@ -1,6 +1,7 @@
 #ifndef ACTION_H
 #define ACTION_H
 #include <QObject>
+#include <QDebug>
 
 #include <Components/OutputComponent.h>
 
@@ -42,7 +43,7 @@ namespace kex
     * \author James Kyle KSpace MRI
     * \date 2010-04-01
     **/
-    Action (QObject *parent = 0) : OutputComponent(parent), _durationMSecs(0) {}
+    Action (QObject *parent = 0);
 
     /** \brief Destructor for the Actiqon class.
     *
@@ -52,11 +53,14 @@ namespace kex
     virtual ~Action () {}
 
     virtual bool setDurationMSecs(quint32 duration);
-    virtual quint32 durationMSecs(){ return _durationMSecs;}
-
+    virtual quint32 durationMSecs() const { return _durationMSecs;}
+    virtual void updateFromTemplate(const OutputComponent::SharedPointer t);
+    
     UnitTypes units() const {return _durationUnits;}
     void setUnits(UnitTypes t) {_durationUnits = t;}
-
+    bool hasChildren() const;
+    int numChildren() const;
+    
     /** \brief Returns a list of Action types
     *
     * Each Action has a type specifier. That type must be registered in
@@ -77,5 +81,7 @@ namespace kex
     UnitTypes _durationUnits;
 
   };
+  // FIXME http://tinyurl.com/2ga3sdx
+  //Q_DECLARE_OPERATORS_FOR_FLAGS(Action::UnitTypes)
 }
 #endif

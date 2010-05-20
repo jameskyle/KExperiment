@@ -9,14 +9,14 @@
 #include <QStringList>
 #include <QDataWidgetMapper>
 
-#include <Wizards/ComponentCreation/CreationWizard.h>
-#include <Wizards/ComponentCreation/ComponentSelectionDialog.h>
-#include <Components/ComponentList.h>
-#include <Components/AbstractComponent.h>
-#include <ComponentLibrary.h>
-#include <LiveView.h>
-#include <Models/ComponentModel.h>
-#include <Utilities/Utilities.h>
+#include "Wizards/ComponentCreation/CreationWizard.h"
+#include "Wizards/ComponentCreation/ComponentSelectionDialog.h"
+#include "Components/ComponentList.h"
+#include "ComponentLibrary.h"
+#include "LiveView.h"
+#include "Models/ComponentModel.h"
+#include "Utilities/Utilities.h"
+#include "Common/Global.h"
 
 #include "ui_MainWindow.h"
 
@@ -26,7 +26,7 @@ namespace kex
   {
     Q_OBJECT
   public:
-    MainWindow(QMainWindow *parent = 0);
+    MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
     /** \brief  Connects the button to the provided component type library
@@ -74,11 +74,11 @@ namespace kex
      * \version $Rev$  \sa OutputComponent ComponentList
      **/
     void populateComponentList();
-    
+
     void setUpWidgetMapper();
-    
+
     void makeActionConnections();
-    
+
     ComponentLibrary *experimentLibraryDock;
     ComponentLibrary *actionLibraryDock;
     ComponentLibrary *eventLibraryDock;

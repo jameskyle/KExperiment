@@ -3,7 +3,16 @@
 namespace kex
 {
   OutputComponent::OutputComponent(QObject *parent) : 
-  QObject(parent)
+    QObject(parent),
+    _startTimeMSecs(),
+    _componentType(),
+    _name(),
+    _description(),
+    _label(),
+    _mainCategory(),
+    _categorySet(),
+    _icon(),
+    _parentComponent(0)
   {
     _icon = QIcon(":/images/other/Science-64.png");
   }
@@ -80,27 +89,7 @@ namespace kex
   {
     return _categorySet.remove(category);
   }
-  
-  void OutputComponent::appendChild(OutputComponent* child)
-  {
-    _childComponents.append(child);
-  }
-
-  void OutputComponent::removeChild(int index)
-  {
-    _childComponents.removeAt(index);
-  }
-  
-  void OutputComponent::insertChild(int index, OutputComponent* component)
-  {
-    _childComponents.insert(index, component);
-  }
-  
-  QList<OutputComponent*> OutputComponent::childComponents() const
-  {
-    return _childComponents;
-  }
-  
+    
   const QIcon OutputComponent::icon()
   {
     return _icon;
@@ -110,12 +99,7 @@ namespace kex
   {
     _icon = icon;
   }
-  
-  const quint32 OutputComponent::durationMSecs() const
-  {
-    return 0;
-  }
-  
+    
   void OutputComponent::setComponentType(ComponentTypes t)
   {
     _componentType = t;
@@ -160,4 +144,44 @@ namespace kex
     
     return typeString;
   }
+  
+  void OutputComponent::updateFromTemplate(const SharedPointer t)
+  {
+    Q_CHECK_PTR(t);
+    // the default updateFromTemplate pulls in the base information
+    // If our component has a field defined and it is not empty, we pull the 
+    // data form the provided template
+    
+    // We don't change the name
+    if (t->description() != _description)
+    {
+      if (_description.isEmpty())
+      {
+        _description = t->description();
+      }
+    }
+    
+    if (t->label() != _label)
+    {
+      if (_label.isEmpty())
+      {
+        _label = t->label();
+      }
+    }
+    
+    if (t->mainCategory() != _mainCategory)
+    {
+      if (_mainCategory.isEmpty())
+      {
+        _mainCategory = t->mainCategory();
+      }
+    }
+  }
+  
+  OutputComponent::SharedPointer OutputComponent::child(int row) const
+  {
+    SharedPointer p;
+    return p;
+  }
+
 }

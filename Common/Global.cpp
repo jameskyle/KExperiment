@@ -23,7 +23,7 @@ namespace kex
   }
 
   const QString
-  Config::dataDirectoryPath(const ApplicationDataDirectoryType
+  Config::dataDirectoryPath(const ApplicationDataDirectoryTypes
                             directoryType) const
   {
     QString path(storageLocation());
@@ -34,13 +34,13 @@ namespace kex
   }
 
   const QStringList
-  Config::dataDirectoryList(const int dt) const
+  Config::dataDirectoryList(Config::ApplicationDataDirectoryTypes dt) const
   {
     QStringList directoryList;
     QMap<MetaDataType, QVariant> map;
 
     // add the core lists
-    foreach(ApplicationDataDirectoryType directoryType,
+    foreach(ApplicationDataDirectoryTypes directoryType,
             _directoryTypeList.keys())
     {
       if ((dt & directoryType))
@@ -73,13 +73,13 @@ namespace kex
 //    return _componentMetaDataMap[key];
 //  }
 
-  void Config::addTemplate(ApplicationDataDirectoryType storagePath,
+  void Config::addTemplate(ApplicationDataDirectoryTypes storagePath,
                            QString temp)
   {
     _templates.insert(storagePath, temp);
   }
 
-  const QStringList Config::templates(ApplicationDataDirectoryType t) const
+  const QStringList Config::templates(ApplicationDataDirectoryTypes t) const
   {
     return _templates.values(t);
   }

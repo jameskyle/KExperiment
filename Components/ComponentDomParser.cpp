@@ -3,29 +3,27 @@
 namespace kex
 {
 
-  ComponentDomParser::ComponentDomParser() :
-    _rootComponent(0)
-
+  ComponentDomParser::ComponentDomParser()
   {
 
   }
 
   ComponentDomParser::ComponentDomParser(const QString& fileName) :
-    _rootComponent(0),
     _fileName(fileName)
   {
 
   }
 
-  bool ComponentDomParser::readFile(const QString& fileName)
+  OutputComponent* ComponentDomParser::readFile(const QString& fileName)
   {
     _fileName = fileName;
      return readFile();
   }
 
-  bool ComponentDomParser::readFile()
+  OutputComponent* ComponentDomParser::readFile()
   {
     QFile file(_fileName);
+    OutputComponent *rootComponent(0);
     
     Logger *logger = &Logger::instance();
 
@@ -70,11 +68,28 @@ namespace kex
       return false;
     }
     
-    _rootComponent = createComponent(root);
-    parseElement(root, _rootComponent);
+    rootComponent = createComponent(root);
+    Q_CHECK_PTR(rootComponent);
+    parseElement(root, rootComponent);
     
     file.close();
-    return true;
+    
+    resolveName(rootComponent);
+    
+    qDebug() << rootComponent->durationMSecs();
+
+    return rootComponent;
+  }
+  
+  void ComponentDomParser::resolveName(OutputComponent* comp) const
+  {
+    QString name = comp->name();
+    if (name.isEmpty())
+    {
+      QFileInfo info(_fileName);
+      name = Utilities::componentNameFromBaseName(info.baseName());
+      comp->setName(name);
+    }
   }
   
   OutputComponent* 
@@ -148,83 +163,29 @@ namespace kex
   {
     // should only receive valid elements.
     Q_ASSERT(isValidElement(element));
-    
-    
+    Q_CHECK_PTR(component);
+    // this method should never be passed a header tag
+    Q_ASSERT(element.tagName() != "header");
     setMainCategory(element, component);
-
+    
     if (element.tagName() == "action")
     {
       parseActionElement(element, component);
 
-    } else if (element.tagName() == "header")
+    } else if (element.tagName() == "event")
     {
-      parseHeaderElement(element, component);
-    }
-    else if (element.tagName() == "event")
-    {
-      QDomNode child = element.firstChild();
-
-      while (!child.isNull())
-      {
-        if (child.toElement().tagName() == "action")
-        {
-          createChildComponent(element, component);
-          
-        } else if (child.toElement().tagName() == "header")
-        {
-          parseHeaderElement(child.toElement(), component);
-        }
-        child = child.nextSibling();
-      }
+      parseEventElement(element, component);
+      
     } else if (element.tagName() == "trial")
     {
-      QDomNode child = element.firstChild();
-
-      while (!child.isNull())
-      {
-        if (child.toElement().tagName() == "action" ||
-            child.toElement().tagName() == "event")
-        {
-          createChildComponent(element, component);
-          
-        } else if (child.toElement().tagName() == "header")
-        {
-          parseHeaderElement(child.toElement(), component);
-        }
-        child = child.nextSibling();
-      }
-
+      parseTrialElement(element, component);
+      
     } else if (element.tagName() == "experiment")
     {
-      QDomNode child = element.firstChild();
-
-      while (!child.isNull())
-      {
-        if (child.toElement().tagName() == "trial" ||
-            child.toElement().tagName() == "action")
-        {
-          createChildComponent(element, component);
-          
-        } else if (child.toElement().tagName() == "header")
-        {
-          parseHeaderElement(child.toElement(), component);
-          
-        } else if (child.toElement().tagName() == "instructions")
-        {
-          QString v(child.toElement().text());
-          
-          Experiment* temp = qobject_cast<Experiment *>(component);
-          Q_CHECK_PTR(temp);
-          if (temp)
-          {
-            temp->setInstructions(v);
-          }
-        }
-        child = child.nextSibling();
-      }
+      parseExperimentElement(element, component);
     }
   }
-
+  
   void 
   ComponentDomParser::parseHeaderElement(const QDomElement &element,
                                          OutputComponent* component) const
@@ -285,7 +246,7 @@ namespace kex
       // Actions have no children components, so we don't check for them
       if (child.toElement().tagName() == "header")
       {
-        parseElement(child.toElement(), component);
+        parseHeaderElement(child.toElement(), component);
 
       } else if (child.toElement().tagName() == "duration")
       {
@@ -330,7 +291,104 @@ namespace kex
       child = child.nextSibling();
     }
   }
+  
+  void ComponentDomParser::parseEventElement(const QDomElement &element,
+                                             OutputComponent* component) const
+  {
+    QDomNode child = element.firstChild();
+    
+    while (!child.isNull())
+    {
+      if (child.toElement().tagName() == "action")
+      {
+        
+        createChildComponent(child.toElement(), component);
 
+        
+      } else if (child.toElement().tagName() == "header")
+      {
+        parseHeaderElement(child.toElement(), component);
+      }
+      child = child.nextSibling();
+    }
+    
+  }
+  
+  void ComponentDomParser::parseTrialElement(const QDomElement &element,
+                                             OutputComponent* component) const
+  {
+    QDomNode child = element.firstChild();
+    
+    while (!child.isNull())
+    {
+      if (child.toElement().tagName() == "action" ||
+          child.toElement().tagName() == "event")
+      {
+        createChildComponent(child.toElement(), component);
+//        AggregateComponent *g = dynamic_cast<AggregateComponent *>(component);
+//        qDebug() << "parent node: " << g->name();
+//        qDebug() << "num children: " << (g->childComponents()).count();
+//        ComponentList::ComponentQListIterator it(dynamic_cast<AggregateComponent *>(component)->childComponents());
+//        OutputComponent *f;
+//        while (it.hasNext())
+//        {
+//          f = it.next();
+//          qDebug() << "name: " << f->name();
+//          qDebug() << "duration: " << f->durationMSecs();
+//        }
+//        qDebug() << "total duration: " << component->durationMSecs();
+        
+      } else if (child.toElement().tagName() == "header")
+      {
+        parseHeaderElement(child.toElement(), component);
+      } else
+      {
+        Logger *logger = &Logger::instance();
+        QString msg("ComponentDomParser::parseTrialElement");
+        QString info(QObject::tr("Unrecognized element found in %1: %2"));
+        logger->displayMessage(msg, info.arg(element.tagName())
+                                        .arg(child.toElement().tagName()), 
+                               QMessageBox::Ok, Logger::WarningLogLevel);
+      }
+
+      child = child.nextSibling();
+    }
+  }
+  
+  void 
+  ComponentDomParser::parseExperimentElement(const QDomElement &element,
+                                             OutputComponent* component) const
+  {
+    QDomNode child = element.firstChild();
+    
+    while (!child.isNull())
+    {
+      if (child.toElement().tagName() == "trial" ||
+          child.toElement().tagName() == "action")
+      {
+        createChildComponent(child.toElement(), component);
+        
+      } else if (child.toElement().tagName() == "header")
+      {
+        parseHeaderElement(child.toElement(), component);
+        
+      } else if (child.toElement().tagName() == "instructions")
+      {
+        QString v(child.toElement().text());
+        bool isProperty(false);
+        
+        isProperty = component->setProperty("instructions", v);
+        
+        // if false is returned, 'instructions' is not a predefined property
+        // of the component poionter. Since we *should* be dealing with 
+        // Experiment pointers in this block, this state is considered a 
+        // logic/programmer error
+        Q_ASSERT(isProperty);
+      }
+      child = child.nextSibling();
+    }
+  }
+  
   void ComponentDomParser::setMainCategory(const QDomElement &element,
                                            OutputComponent* component) const
   {
@@ -351,7 +409,8 @@ namespace kex
       if (cat.isEmpty())
       {
         QString msg("ComponentDomParser::setMainCategory");
-        QString info("Error: Action element contains no type attribute: %1");
+        QString info(QObject::tr("Error: Action element contains no type "
+                                 "attribute: %1"));
 
         logger->displayMessage(msg, info.arg(_fileName),
                                QMessageBox::Ok, Logger::WarningLogLevel);
@@ -372,12 +431,47 @@ namespace kex
   }
   
   void ComponentDomParser::createChildComponent(const QDomElement &element, 
-                                           OutputComponent *comp) const
+                                                OutputComponent *comp) const
   {
     Q_CHECK_PTR(comp);
     Q_ASSERT(isValidElement(element));
     
-    OutputComponent* child = createComponent(element);
-    comp->appendChild(child);
+    OutputComponent::SharedPointer child(createComponent(element));
+    parseElement(element, child.data());
+    // Since this is a child element, it could be a template. Templates must
+    // Declare a specific name of a predefined item for lookup purposes.
+    // This item could be a defined previously within the parent component
+    // OR it could be defined at the top most level of components in an 
+    // xml file. Since templates work on an overloading principle, we start by
+    // looking at the top most level and then work to the inner scope.
+    
+    ComponentList *c_list = &ComponentList::instance();
+    OutputComponent::SharedPointer templ = c_list->find(child->name());
+    
+    // ComponentList::find() returns 0 if component not found.
+    
+    if (templ)
+    {
+      child->updateFromTemplate(templ);
+    }
+    // Only AggregateComponents can have children, so we must downcast
+    AggregateComponent *c = qobject_cast<AggregateComponent *>(comp);
+    
+    Q_CHECK_PTR(c); // logic error if passed the wrong component 
+
+    if (c)
+    {
+      c->appendChild(child);
+      
+    } else
+    {
+      Logger *logger = &Logger::instance();
+      // Just in case an unaccounted for release problem occurs
+      QString msg("ComponentDomParser::createChild");
+      QString info("Component '%1' can not have any child nodes!");
+      
+      logger->displayMessage(msg, info.arg(comp->name()), 
+                             QMessageBox::Ok, Logger::WarningLogLevel);
+    }
   }
 }

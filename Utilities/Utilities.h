@@ -17,6 +17,7 @@
 #include "Common/Global.h"
 #include "Components/ComponentFactory.h"
 #include "Components/OutputComponent.h"
+
 namespace kex
 {
   namespace Utilities
@@ -99,7 +100,12 @@ namespace kex
      * \date $LastChangedDate$
      * \version $Rev$  \sa validateXml()
      **/
-    QStringList xmlFileComponentList();
+    QStringList xmlFileComponentList(kex::Config::ApplicationDataDirectoryTypes t =
+                                     kex::Config::ApplicationDataDirectoryTypes(
+                                      kex::Config::ActionDirectory | 
+                                      kex::Config::EventDirectory | 
+                                      kex::Config::TrialDirectory |
+                                      kex::Config::ExperimentDirectory));
     
     /** \brief  Translates the given fileName string to a valid compnent name.
      * 

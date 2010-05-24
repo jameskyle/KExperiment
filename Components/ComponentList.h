@@ -15,8 +15,48 @@ namespace kex
   class ComponentList : private Uncopyable
   {
   public:
+    
     typedef QList< OutputComponent::SharedPointer > ComponentQList;
     typedef QListIterator< OutputComponent::SharedPointer > ComponentQListIterator;
+    
+    class Node
+    {
+    public:
+      typedef QSharedPointer<OutputComponent> qPointer;
+      
+      Node();
+      Node(const Node& pt);
+      explicit Node(OutputComponent *raw);
+      ~Node() {}
+      
+      template <class X> 
+      QSharedPointer<X> objectCast() const
+      {
+        QSharedPointer<X> pt(_qpointer.objectCast<X>());
+        return pt;
+      }
+      
+      qPointer qpointer() const {return _qpointer;}
+      int listIndex() const {return _listIndex;}
+      void setListIndex(int index) {_listIndex = index;}
+      bool isNull() const;
+      OutputComponent* data() const {return _qpointer.data();}
+      
+      // operators
+      operator bool() const;
+      bool operator!() const;
+      OutputComponent& operator*() const;
+      OutputComponent* operator->() const;
+      bool operator==(const Node& p) const;
+      
+    private:
+      qPointer _qpointer;
+      int     _listIndex;
+      Node*   _parent;
+      Node*   _previousSibling;
+      Node*   _nextSibling;
+      Node*   _child;
+    };
     
     static ComponentList& instance();
     

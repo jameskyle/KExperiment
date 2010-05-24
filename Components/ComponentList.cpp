@@ -109,4 +109,55 @@ namespace kex {
     qSort(qlist.begin(), qlist.end(), sortComponentQList);
     return qlist;
   }
+  
+  ComponentList::Node::Node() : 
+  _qpointer(), _listIndex(-1)
+  {
+    
+  }
+  
+  ComponentList::Node::Node(const Node& pt) : 
+  _qpointer(pt.qpointer()),
+  _listIndex(-1)
+  {
+    
+  }
+  
+  ComponentList::Node::Node(OutputComponent *raw) :
+  _qpointer(raw),
+  _listIndex(-1)
+  {
+    
+  }
+  
+  bool ComponentList::Node::isNull() const
+  {
+    return _qpointer.isNull();
+  }
+  
+  ComponentList::Node::operator bool() const
+  {
+    return !(_qpointer.isNull());
+  }
+  
+  bool ComponentList::Node::operator!() const
+  {
+    return _qpointer.isNull();
+  }
+  
+  OutputComponent& ComponentList::Node::operator*() const
+  {
+    return *_qpointer.data();
+  }
+  
+  OutputComponent* ComponentList::Node::operator->() const
+  {
+    return _qpointer.data();
+  }
+  
+  bool ComponentList::Node::operator==(const Node& p) const
+  {
+    return (p.data() == data());
+  }
+  
 }

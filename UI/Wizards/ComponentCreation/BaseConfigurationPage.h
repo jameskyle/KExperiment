@@ -74,6 +74,6 @@ namespace kex
     QToolButton _eventLibraryButton;  //!< library of all events
     QToolButton _experimentLibraryButton;  //!< library of all experiments
 
-    };
-  }
+  };
+}
   #endif

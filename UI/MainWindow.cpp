@@ -132,17 +132,19 @@ namespace kex
     // Set models for created libraries
    ComponentModel *model = new ComponentModel(OutputComponent::ActionType, 
                                                actionLibraryDock);
-   actionLibraryDock->setModel(model);
+//   actionLibraryDock->setModel(model);
 
    model = new ComponentModel(OutputComponent::EventType, eventLibraryDock);
-   eventLibraryDock->setModel(model);
+//   eventLibraryDock->setModel(model);
     
    model = new ComponentModel(OutputComponent::TrialType, trialLibraryDock);
-   trialLibraryDock->setModel(model);
+//   trialLibraryDock->setModel(model);
     
   model = new ComponentModel(OutputComponent::AllComponents, 
                                experimentLibraryDock);
-  experimentLibraryDock->setModel(model);
+  componentTreeView->setModel(model);
+
+//  experimentLibraryDock->setModel(model);
   }
   
   void MainWindow::launchComponentLibrary(OutputComponent::ComponentTypes component)

@@ -4,7 +4,7 @@ namespace kex
 {
   AggregateComponent::AggregateComponent(QObject *parent)  : 
     OutputComponent(parent),
-    _childComponents() 
+    _childComponents()
   {
   
   }
@@ -37,18 +37,23 @@ namespace kex
   void AggregateComponent::appendChild(SharedPointer child)
   {
     _childComponents.append(child);
+    child.setListIndex(_childComponents.count() - 1);
+//    child->setParentComponent(this);
   }
   
   void AggregateComponent::removeChild(int index)
   {
+    OutputComponent::SharedPointer ptr = _childComponents[index];
     _childComponents.removeAt(index);
+    ptr.setListIndex(-1);
   }
   
-
   void AggregateComponent::insertChild(int index, 
-                                       SharedPointer comp)
+                                       SharedPointer child)
   {
-    _childComponents.insert(index, comp);
+    _childComponents.insert(index, child);
+    child.setListIndex(index);
+//    child->setParentComponent(this);
   }
 
   bool AggregateComponent::hasChildren() const

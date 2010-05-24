@@ -178,10 +178,54 @@ namespace kex
     }
   }
   
-  OutputComponent::SharedPointer OutputComponent::child(int row) const
+  OutputComponent::SharedPointer::SharedPointer() : 
+   _qpointer(), _listIndex(-1)
   {
-    SharedPointer p;
-    return p;
+    
+  }
+  
+  OutputComponent::SharedPointer::SharedPointer(const SharedPointer& pt) : 
+    _qpointer(pt.qpointer()),
+    _listIndex(-1)
+  {
+    
   }
 
+  OutputComponent::SharedPointer::SharedPointer(OutputComponent *raw) :
+    _qpointer(raw),
+    _listIndex(-1)
+  {
+    
+  }
+      
+  bool OutputComponent::SharedPointer::isNull() const
+  {
+    return _qpointer.isNull();
+  }
+
+  OutputComponent::SharedPointer::operator bool() const
+  {
+    return !(_qpointer.isNull());
+  }
+  
+  bool OutputComponent::SharedPointer::operator!() const
+  {
+    return _qpointer.isNull();
+  }
+  
+  OutputComponent& OutputComponent::SharedPointer::operator*() const
+  {
+    return *_qpointer.data();
+  }
+  
+  OutputComponent* OutputComponent::SharedPointer::operator->() const
+  {
+    return _qpointer.data();
+  }
+
+  bool OutputComponent::SharedPointer::operator==(const SharedPointer& p) const
+  {
+    return (p.data() == data());
+  }
+ 
 }

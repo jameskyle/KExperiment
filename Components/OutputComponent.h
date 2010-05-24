@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QSet>
 #include <QIcon>
-
+#include <QDebug>
 namespace kex
 {
   /** \brief  Interface class for output components
@@ -23,8 +23,42 @@ namespace kex
     Q_FLAGS(ComponentType ComponentTypes)
         
   public:
-    typedef QSharedPointer<OutputComponent> SharedPointer;
     typedef OutputComponent* Pointer;
+    
+    class SharedPointer
+    {
+    public:
+      typedef QSharedPointer<OutputComponent> qPointer;
+
+      SharedPointer();
+      SharedPointer(const SharedPointer& pt);
+      explicit SharedPointer(OutputComponent *raw);
+      ~SharedPointer() {}
+      
+      template <class X> 
+      QSharedPointer<X> objectCast() const
+      {
+        QSharedPointer<X> pt(_qpointer.objectCast<X>());
+        return pt;
+      }
+
+      qPointer qpointer() const {return _qpointer;}
+      int listIndex() const {return _listIndex;}
+      void setListIndex(int index) {_listIndex = index;}
+      bool isNull() const;
+      OutputComponent* data() const {return _qpointer.data();}
+      
+      // operators
+      operator bool() const;
+      bool operator!() const;
+      OutputComponent& operator*() const;
+      OutputComponent* operator->() const;
+      bool operator==(const SharedPointer& p) const;
+      
+    private:
+      qPointer _qpointer;
+      int _listIndex;
+    };
     
     enum ComponentType
     {
@@ -193,10 +227,10 @@ namespace kex
     
     virtual void updateFromTemplate(const SharedPointer t) = 0;  
     OutputComponent::SharedPointer parentComponent() const {return _parentComponent;}
-    void setParentComponent(SharedPointer parent) { _parentComponent = parent;}
+    void setParentComponent(OutputComponent::SharedPointer parent) { _parentComponent = parent;}
     virtual bool hasChildren() const = 0;
     virtual int numChildren() const = 0;
-    virtual SharedPointer child(int row) const;
+    virtual SharedPointer child(int row) const = 0;
 
   private:
     quint32        _startTimeMSecs;

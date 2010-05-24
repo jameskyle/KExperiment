@@ -11,6 +11,9 @@ macx {
   QMAKE_MAC_SDK=/Developer/SDKs/MacOSX10.6.sdk
   CONFIG+=x86 x86_64
 #  MAKEFILE_GENERATOR = XCODE
+  #QMAKE_CC = /usr/local/bin/clang
+  #QMAKE_CXX = /usr/local/bin/clang++
+  #QMAKE_LINK = /usr/local/bin/clang++
 }
 
 # end Mac Options

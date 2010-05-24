@@ -4,7 +4,7 @@
 #include <QString>
 #include <QSet>
 #include <QList>
-
+#include <QHash>
 #include "OutputComponent.h"
 #include "Common/Uncopyable.h"
 #include "Utilities/Utilities.h"
@@ -50,7 +50,7 @@ namespace kex
     
     static bool sortComponentQList(const OutputComponent::SharedPointer c1,
                                    const OutputComponent::SharedPointer c2);
-
+    
   private:
     typedef QSet<OutputComponent::SharedPointer> ComponentQSet;
     typedef QSetIterator<OutputComponent::SharedPointer> ComponentQSetIterator;

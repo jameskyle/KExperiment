@@ -44,6 +44,7 @@ namespace kex
  
   void Action::updateFromTemplate(const OutputComponent::SharedPointer t)
   {
+    Q_CHECK_PTR(t);
     QSharedPointer<Action> action(t.objectCast<Action>());
 
     // ensure the passed pointer is, in fact, an Action type object
@@ -73,4 +74,11 @@ namespace kex
     // actions don't have children. 
     return 0;
   }
+  
+  OutputComponent::SharedPointer Action::child(int /*row*/) const
+  {
+    OutputComponent::SharedPointer sp(0);
+    return sp;
+  }
+  
 }

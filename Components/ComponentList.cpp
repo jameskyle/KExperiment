@@ -43,7 +43,7 @@ namespace kex {
       Logger *logger = &Logger::instance();
 
       QString msg("ComponentList::append");
-      QString info("This component has already been defined: %1");
+      QString info(QObject::tr("This component has already been defined: %1"));
       logger->displayMessage(msg, info.arg(interface->name()),
                              QMessageBox::Ok, Logger::WarningLogLevel);
     } else

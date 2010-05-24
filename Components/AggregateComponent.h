@@ -46,8 +46,8 @@ namespace kex
     QList<OutputComponent::SharedPointer> childComponents() const;
     void appendChild(OutputComponent::SharedPointer child);
     
-    void insertChild(int index, OutputComponent* comp);
-    void insertChild(int index, OutputComponent::SharedPointer comp);
+    void insertChild(int index, OutputComponent* child);
+    void insertChild(int index, OutputComponent::SharedPointer child);
 
     void removeChild(int index);
     bool hasChildren() const;
@@ -56,6 +56,7 @@ namespace kex
     
   private:
     QList<SharedPointer> _childComponents;
+
   };
 }
 #endif

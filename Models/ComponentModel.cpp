@@ -5,108 +5,24 @@ namespace kex
   ComponentModel::ComponentModel(OutputComponent::ComponentTypes types, 
                                  QObject *parent) 
     : QAbstractItemModel(parent),
-      _componentList(ComponentList::instance().filter(types))
+      _componentList(ComponentList::instance().filter(types)),
+      _slist()
   {
+   _slist << "One" << "Two" << "Three" << "Four" << "Five"; 
   }
 
-  int ComponentModel::rowCount(const QModelIndex &parent) const
-  {
-    int count(0);
-    if (parent.isValid())
-    {
-      OutputComponent *comp;
-      comp = static_cast<OutputComponent *>(parent.internalPointer());
-      qDebug() << "rowCount::name " << comp->name();
-      count = comp->numChildren();
-    }
-
-    return count;
-  }
-
-  int ComponentModel::columnCount(const QModelIndex & /*parent */) const
-  {
-    
-    // For display purposes, a component shows these values for columens
-    // - 0 name
-    // - 1 component type
-    // - 2 label
-    // - 3 description
-    // - 4 duration
-    // - 5 Icon
-    return 6;
-  }
-  
-  QVariant ComponentModel::data(const QModelIndex &index, int role) const
-  {
-    QVariant result;
-    if (role == Qt::DecorationRole)
-    {
-       QSharedPointer<OutputComponent> comp(_componentList[index.row()]);
-      result = comp->icon();
-    } else if (role == Qt::DisplayRole)
-    {
-      // Columns   Value
-      // 0         Component Name
-      // 1         ComponentType
-      // 2         Label
-      // 3         Description
-      // 4         Duration 
-      // 5         Component's Icon
-      
-      if (index.row()     < _componentList.count() &&
-          index.row()     >= 0 &&
-          index.column()  >= 0 &&
-          index.column()  < columnCount())
-      {
-        OutputComponent::SharedPointer comp = _componentList[index.row()];
-        
-        if (index.column() == 0)
-        {
-          result.setValue(comp->name());
-        } else if (index.column() == 1)
-        {
-          
-          result.setValue(
-            OutputComponent::componentTypeToString(comp->componentType()));
-        } else if (index.column() == 2)
-        {
-          result.setValue(comp->label());
-        } else if (index.column() == 3)
-        {
-          result.setValue(comp->description());
-        } else if (index.column() == 4)
-        {
-          quint32 duration = comp->durationMSecs();
-          quint32 minutes, seconds, msecs;
-          float sec_fraction;
-          
-          msecs   = duration % 1000;
-          sec_fraction = msecs / 1000.0;
-          seconds = (duration / 1000) % 60;
-          minutes = (duration / 1000 / 60) % 60;
-          
-          QString time("%1 : %2.%3");
-          
-          result.setValue(time.arg(minutes).arg(seconds).arg(sec_fraction));
-        } else if (index.column() == 5)
-        {
-          result = (comp->icon()).pixmap(QSize(64,64));
-        }
-        else {
-          result.setValue(QString("a column value"));
-        }
-      }
-    } else if (role == Qt::EditRole)
-    {
-      result = index.data(Qt::DisplayRole);
-    }
-    
-    return result;
-  }
-  
+ 
   QVariant ComponentModel::headerData(int section, Qt::Orientation /*orient*/,
                       int role) const
   {
+    // Columns   Value
+    // 0         Component Name
+    // 1         ComponentType
+    // 2         Label
+    // 3         Description
+    // 4         Duration 
+    // 5         Component's Icon
+    
     QVariant result;
     if (role == Qt::DisplayRole)
     {
@@ -116,16 +32,22 @@ namespace kex
           result.setValue(QString("Name"));
           break;
         case 1:
-          result.setValue(QString("Label"));
+          result.setValue(QString("Component Type"));
           break;
         case 2:
-          result.setValue(QString("Description"));
+          result.setValue(QString("Label"));
           break;
         case 3:
+          result.setValue(QString("Description"));
+          break;
+        case 4:
           result.setValue(QString("Duration (msecs)"));
           break;
-
+        case 5:
+          result.setValue(QString("Icon"));
+          break;
         default:
+                      
           break;
       }
     }
@@ -136,63 +58,148 @@ namespace kex
   {
     //_rootPath.refresh();
   }
-  
-  QModelIndex ComponentModel::index(int row, int column, 
-                                    const QModelIndex &parent) const
+
+
+  int ComponentModel::rowCount(const QModelIndex &parent) const 
   {
-    QModelIndex index;
+    int count(0);
     
-    if (hasIndex(row, column, parent))
+    if (parent.isValid())
     {
-      if (parent.isValid())
+      OutputComponent::SharedPointer sp = getItem(parent);
+      
+      count = sp->numChildren();
+      
+    } else
+    {
+      count = _componentList.count();
+    }
+
+    return count;
+  }
+  
+  int ComponentModel::columnCount(const QModelIndex &parent) const 
+  {
+    int count(0);
+    
+    if (!parent.isValid())
+    {
+      count = 5;
+    } else
+    {
+      OutputComponent::SharedPointer sp = getItem(parent);
+      count = sp->numChildren();
+    }
+
+    return count;
+  }
+  
+  QVariant ComponentModel::data(const QModelIndex &index, int role) const 
+  {
+    // Columns   Value
+    // 0         Component Name
+    // 1         ComponentType
+    // 2         Label
+    // 3         Description
+    // 4         Duration 
+    // 5         Component's Icon
+    
+    QVariant result;
+    
+    if (index.isValid())
+    {
+      OutputComponent::SharedPointer sp;
+
+      if (!index.parent().isValid())
       {
-        OutputComponent::SharedPointer parent_item;
-        OutputComponent::SharedPointer child;
-        
-        parent_item = *static_cast<OutputComponent::SharedPointer *>
-                                  (parent.internalPointer());
-        child = parent_item->child(row);
-        
-        if (child)
+        sp = _componentList[index.row()];
+      } else
+      {
+        sp = getItem(index);
+      }
+
+      if (role == Qt::DisplayRole)
+      {
+        if (index.column() == 0)
         {
-          index = createIndex(row, column, &child);
+          result.setValue(sp->name());
+        } else if (index.column() == 1)
+        {
+          result.setValue(sp->mainCategory());
         }
       }
     }
     
-    return index;
+    OutputComponent::SharedPointer sp(ComponentList::instance().find("Double Event Example"));
+    qDebug() << "children: " << sp->numChildren();
+    OutputComponent::SharedPointer child1(sp->child(0));
+    OutputComponent::SharedPointer child2(sp->child(1));
+    qDebug() << "child 1: " << child1->name();
+    qDebug() << "child 2: " << child2->name();
+    
+    for (int i=0; i < sp->numChildren(); ++i)
+    {
+      qDebug() << (sp->child(i))->parent();
+    }
+    return result;
   }
   
-  QModelIndex ComponentModel::parent(const QModelIndex& index) const
+  QModelIndex ComponentModel::parent(const QModelIndex &index) const 
   {
     QModelIndex p_index;
     
     if (index.isValid())
     {
-      OutputComponent *comp;
-      comp = static_cast<OutputComponent *>(index.internalPointer());
+      OutputComponent::SharedPointer sp = getItem(index);
+      OutputComponent::SharedPointer parentItem(sp->parentComponent());
       
-      if (comp->parent())
+      if (parentItem)
       {
-        p_index = createIndex(index.row(), 0, comp->parent() );
-      } 
+        p_index = createIndex(0,0, &parentItem);
+      }
     }
-    
     return p_index;
   }
   
-  bool ComponentModel::hasChildren(const QModelIndex &parent) const
+  QModelIndex 
+  ComponentModel::index(int row, int column, const QModelIndex &parent) const
   {
-    bool result(false);
-    if (parent.isValid())
+    QModelIndex ind;
+    
+    if(hasIndex(row, column, parent))
     {
-      OutputComponent *comp;
-      comp = static_cast<OutputComponent *>(parent.internalPointer());
-      result = comp->hasChildren(); 
+      if(parent.isValid())
+      {
+        OutputComponent::SharedPointer parentItem = getItem(parent);
+        
+        OutputComponent::SharedPointer *child;
+        child = new OutputComponent::SharedPointer;
+        *child = parentItem->child(row);
+        
+        if (*child)
+        {
+          ind = createIndex(row, column, child);
+        }
+        
+      } else
+      {
+        OutputComponent::SharedPointer *sp = new OutputComponent::SharedPointer;
+        *sp = _componentList[row];
+        ind = createIndex(row, column, sp);
+      }
+
     }
     
-    return result;
+    return ind;
   }
-
-
+  
+  OutputComponent::SharedPointer 
+  ComponentModel::getItem(const QModelIndex& parent) const
+  {
+    OutputComponent::SharedPointer parentItem;
+    
+    void *p = parent.internalPointer();
+    parentItem = *static_cast<OutputComponent::SharedPointer *>(p);
+    return parentItem;
+  }
 }

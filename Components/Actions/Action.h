@@ -60,6 +60,7 @@ namespace kex
     void setUnits(UnitTypes t) {_durationUnits = t;}
     bool hasChildren() const;
     int numChildren() const;
+    virtual SharedPointer child(int row) const;
     
     /** \brief Returns a list of Action types
     *

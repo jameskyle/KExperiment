@@ -34,9 +34,10 @@ namespace kex
     return _childComponents;
   }
     
-  void AggregateComponent::appendChild(SharedPointer child)
+  void AggregateComponent::appendChild(OutputComponent* child)
   {
-    _childComponents.append(child);
+    ComponentList::Node* node(0);
+    node = _childComponents.append(child);
     child.setListIndex(_childComponents.count() - 1);
 //    child->setParentComponent(this);
   }

@@ -2,7 +2,9 @@
 
 namespace kex {
   ComponentList::ComponentList() :
-    _componentList()
+    _count(0),
+    _front(0),
+    _back(0)
   {
     
   }
@@ -16,148 +18,168 @@ namespace kex {
     return componentList;
   }
 
-  OutputComponent::SharedPointer 
-  ComponentList::find(const QString& componentName) const
+  ComponentList::Node* 
+  ComponentList::find(const Node& node) const
   {
-    ComponentQSetIterator i(_componentList);
-    OutputComponent::SharedPointer currentComponent;
-    OutputComponent::SharedPointer component;
+    Node* current = _front;
+    Node* foundNode(0);
     
-    while (i.hasNext())
+    while (current->next())
     {
-      currentComponent = i.next();
-
-      if (currentComponent->name() == componentName)
+      if (node == *current->next())
       {
-        component = currentComponent;
-        break;
+        foundNode = current;
       }
     }
-    return component;
+    return foundNode;
   }
 
-  void ComponentList::append( OutputComponent::SharedPointer interface)
+  void ComponentList::append(Node* node)
   {
-    if (_componentList.contains(interface))
+    insertAfter(node, _back);
+  }
+  
+  void ComponentList::prepend(Node* node)
+  {
+    insertBefore(node, _front);
+  }
+  
+  void ComponentList::insertBefore(Node* node, Node* nextNode)
+  {
+    node->setPrevious(nextNode->previous());
+    node->setNext(nextNode);
+    nextNode->setPrevious(node);
+    
+    // if the nextNode was _front node, we set node to the new _front
+    if (!node->previous())
     {
-      Logger *logger = &Logger::instance();
-
-      QString msg("ComponentList::append");
-      QString info(QObject::tr("This component has already been defined: %1"));
-      logger->displayMessage(msg, info.arg(interface->name()),
-                             QMessageBox::Ok, Logger::WarningLogLevel);
+      _front = node;
     } else
     {
-      _componentList.insert(interface);
+      node->previous()->setNext(node);
     }
+    
+    ++_count;
   }
 
-  bool ComponentList::remove( OutputComponent::SharedPointer comp)
+  void ComponentList::insertAfter(Node* node, Node* prevNode)
+  {
+    node->setPrevious(prevNode);
+    node->setNext(prevNode->next());
+    prevNode->setNext(node);
+    
+    if (!node->next())
+    {
+      _back = node;
+    } else
+    {
+      node->next()->setPrevious(node);
+    }
+    
+    ++_count;
+  }
+  
+  bool ComponentList::remove(Node* comp)
   {
     bool found(false);
-
-    if (_componentList.contains(comp))
+    Node* current = _front;
+    
+    while (current)
     {
-      found = _componentList.remove(comp);
+      if (current == comp)
+      {
+        found = true;
+        Node* prev = current->previous();
+        Node* next = current->next();
+    
+        prev->setNext(next);
+        next->setPrevious(prev);
+        
+        current->setNext(0);
+        current->setPrevious(0);
+        break;
+      }
+      current = current->next();
     }
-
+    
+    
     return found;
   }
   
-  void ComponentList::append(OutputComponent* interface)
+  void ComponentList::append(OutputComponent* comp)
   {
-    OutputComponent::SharedPointer p(interface);
-    append(p);
+    Node::Pointer p(comp);
+    Node* node = new Node(p);
+    append(node);
   }
 
   const ComponentList::ComponentQList 
   ComponentList::filter(OutputComponent::ComponentTypes types) const
   {
+    Node* current = _front;
+    
     ComponentQList  filteredList;
-    
-   ComponentQSetIterator i(_componentList);
-    
-    while (i.hasNext())
+
+    while (current->hasNext())
     {
-      OutputComponent::SharedPointer p(i.next());
-      if (p->componentType() & types )
+      if (current->component()->componentType() & types)
       {
-        filteredList.append(p);
+        filteredList.append(current);
       }
     }
     
-    qSort(filteredList.begin(), filteredList.end(), sortComponentQList);
+    qSort(filteredList.begin(), filteredList.end(), sortComponentList);
     
     return filteredList;
   }
 
-  int ComponentList::count() const
+  bool ComponentList::sortComponentList(Node* c1, Node* c2)
   {
-    return _componentList.count();
-  }
-
-  bool ComponentList::sortComponentQList(const  OutputComponent::SharedPointer c1,
-                                         const  OutputComponent::SharedPointer c2)
-  {
-    return (c1->name() < c2->name());
+    return (c1->component()->name() < c2->component()->name());
   }
   
-  const ComponentList::ComponentQList ComponentList::toList() const
-  {
-    ComponentQList qlist = _componentList.toList();
-    
-    qSort(qlist.begin(), qlist.end(), sortComponentQList);
-    return qlist;
-  }
-  
-  ComponentList::Node::Node() : 
-  _qpointer(), _listIndex(-1)
-  {
-    
-  }
-  
-  ComponentList::Node::Node(const Node& pt) : 
-  _qpointer(pt.qpointer()),
-  _listIndex(-1)
-  {
-    
-  }
-  
-  ComponentList::Node::Node(OutputComponent *raw) :
-  _qpointer(raw),
-  _listIndex(-1)
+  ComponentList::Node::Node(Pointer comp) : 
+  _component(comp),
+  _position(-1),
+  _root(0),
+  _previous(0),
+  _next(0),
+  _child(0)
   {
     
   }
   
   bool ComponentList::Node::isNull() const
   {
-    return _qpointer.isNull();
+    bool null(true);
+    
+    if (_component)
+    {
+      null = false;
+    }
+    return null;
   }
   
   ComponentList::Node::operator bool() const
   {
-    return !(_qpointer.isNull());
+    return !(isNull());
   }
   
   bool ComponentList::Node::operator!() const
   {
-    return _qpointer.isNull();
+    return isNull();
   }
   
-  OutputComponent& ComponentList::Node::operator*() const
+  bool ComponentList::Node::hasNext() const
   {
-    return *_qpointer.data();
-  }
-  
-  OutputComponent* ComponentList::Node::operator->() const
-  {
-    return _qpointer.data();
-  }
-  
-  bool ComponentList::Node::operator==(const Node& p) const
-  {
-    return (p.data() == data());
+    bool n(false);
+    
+    if (_next)
+    {
+      n = true;
+    }
+    
+    return n;
   }
   
 }

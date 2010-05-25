@@ -6,6 +6,7 @@
 #include <QDebug>
 
 #include "Components/OutputComponent.h"
+#include "Components/ComponentList.h"
 
 namespace kex
 {
@@ -55,7 +56,7 @@ namespace kex
     SharedPointer child(int row) const;
     
   private:
-    QList<SharedPointer> _childComponents;
+    ComponentList _childComponents;
 
   };
 }

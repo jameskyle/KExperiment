@@ -16,50 +16,48 @@ namespace kex
   {
   public:
     
-    typedef QList< OutputComponent::SharedPointer > ComponentQList;
-    typedef QListIterator< OutputComponent::SharedPointer > ComponentQListIterator;
-    
     class Node
     {
     public:
-      typedef QSharedPointer<OutputComponent> qPointer;
-      
-      Node();
-      Node(const Node& pt);
-      explicit Node(OutputComponent *raw);
+      typedef QSharedPointer<OutputComponent> Pointer;
+
+      Node(Pointer comp);
       ~Node() {}
       
-      template <class X> 
-      QSharedPointer<X> objectCast() const
-      {
-        QSharedPointer<X> pt(_qpointer.objectCast<X>());
-        return pt;
-      }
+      Pointer component() {return _component;}
+      int position() const {return _position;}
+      Node* root() const {return _root;}
+      Node* previous() const {return _previous;}
+      Node* next() const {return _next;}
+      Node* child() const {return _child;}
       
-      qPointer qpointer() const {return _qpointer;}
-      int listIndex() const {return _listIndex;}
-      void setListIndex(int index) {_listIndex = index;}
+      void setRoot(Node* root) {_root = root;}
+      void setPrevious(Node* prev) {_previous = prev;}
+      void setNext(Node* next) {_next = next;}
+      
+      bool hasNext() const;
+      Node::Pointer data() const {return _component;}
       bool isNull() const;
-      OutputComponent* data() const {return _qpointer.data();}
-      
+
       // operators
       operator bool() const;
       bool operator!() const;
-      OutputComponent& operator*() const;
-      OutputComponent* operator->() const;
-      bool operator==(const Node& p) const;
       
     private:
-      qPointer _qpointer;
-      int     _listIndex;
-      Node*   _parent;
-      Node*   _previousSibling;
-      Node*   _nextSibling;
+      Pointer _component;
+      int     _position;
+      Node*   _root;
+      Node*   _previous;
+      Node*   _next;
       Node*   _child;
     };
-    
+
+    ComponentList();
+    ~ComponentList();
+
     static ComponentList& instance();
     
+    int count() const {return _count;}
     /** \brief  Given the component name, returns a reference to that component.
      * 
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -75,29 +73,25 @@ namespace kex
      * \return OutputComponent* pointer to found component or 0 if not found
      * \version $Rev$ 
      **/
-    OutputComponent::SharedPointer find(const QString& componentName) const;
+    Node* find(const Node& node) const;
     
-    const ComponentQList filter(OutputComponent::ComponentTypes types) const;
-    
-    bool remove(OutputComponent::SharedPointer comp);
-    
-    void append(OutputComponent::SharedPointer interface);
-    void append(OutputComponent* interface);
-    
-    int count() const;
-    
-    const ComponentQList toList() const;
-    
-    static bool sortComponentQList(const OutputComponent::SharedPointer c1,
-                                   const OutputComponent::SharedPointer c2);
+    const ComponentList filter(OutputComponent::ComponentTypes types) const;
+    void insertAfter(Node* node, Node* prevNode);
+    void insertBefore(Node* node, Node* nextNode);
+
+    void prepend(Node* node);
+    void append(Node* node);
+    Node* append(OutputComponent* comp);
+    void appendChild(Node* parent, Node* child);
+    void prependChild(Node* parent, Node* child);
+    bool remove(Node* comp);
+
+    static bool sortComponentList(Node* c1, Node* c2);
     
   private:
-    typedef QSet<OutputComponent::SharedPointer> ComponentQSet;
-    typedef QSetIterator<OutputComponent::SharedPointer> ComponentQSetIterator;
-    
-    ComponentQSet _componentList;
-    ComponentList();
-    virtual ~ComponentList();
+    int   _count;
+    Node* _front;
+    Node* _back;
   };  
 }
 

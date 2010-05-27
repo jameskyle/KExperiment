@@ -3,7 +3,7 @@
 #include <QString>
 #include <QList>
 
-#include "Components/AggregateComponent.h"
+#include "Components/OutputComponent.h"
 
 namespace kex
 {
@@ -17,7 +17,7 @@ namespace kex
    * \date $LastChangedDate$
    * \version $Rev$  \sa Action OutputAction RestAction
    **/
-  class Trial : public AggregateComponent
+  class Trial : public OutputComponent
   {
     Q_OBJECT
   public:
@@ -30,7 +30,7 @@ namespace kex
      * \date 2010-04-01
      * \sa Action()
      **/
-    Trial (QObject *parent = 0) : AggregateComponent(parent) {}
+    Trial (QObject *parent = 0) : OutputComponent(parent) {}
     
     // TODO implement specifics
     virtual void updateFromTemplate(const OutputComponent::SharedPointer t);

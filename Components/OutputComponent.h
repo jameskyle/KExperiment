@@ -43,8 +43,6 @@ namespace kex
       }
 
       qPointer qpointer() const {return _qpointer;}
-      int listIndex() const {return _listIndex;}
-      void setListIndex(int index) {_listIndex = index;}
       bool isNull() const;
       OutputComponent* data() const {return _qpointer.data();}
       
@@ -195,9 +193,7 @@ namespace kex
     void addCategory(const QString& category);
     
     bool removeCategory(const QString& category);
-    
-    virtual quint32 durationMSecs() const = 0;
-    
+        
     virtual const QString toString() const;
     
     ComponentTypes componentType() const {return _componentType;}
@@ -225,12 +221,7 @@ namespace kex
     static const quint32 MAX_DURATION = 1800000; //!< maximum run time, 30m
     static const QString componentTypeToString(ComponentTypes t);
     
-    virtual void updateFromTemplate(const SharedPointer t) = 0;  
-    OutputComponent::SharedPointer parentComponent() const {return _parentComponent;}
-    void setParentComponent(OutputComponent::SharedPointer parent) { _parentComponent = parent;}
-    virtual bool hasChildren() const = 0;
-    virtual int numChildren() const = 0;
-    virtual SharedPointer child(int row) const = 0;
+    virtual void updateFromTemplate(const SharedPointer t);  
 
   private:
     quint32        _startTimeMSecs;
@@ -241,7 +232,6 @@ namespace kex
     QString        _mainCategory; //!< main group identifier
     QSet<QString>  _categorySet; //!< list of all categories for component
     QIcon          _icon;
-    SharedPointer  _parentComponent;
     
   signals:
     void startTimeChanged();

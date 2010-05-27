@@ -73,8 +73,8 @@ namespace kex
   private:
     OutputComponent::SharedPointer getItem(const QModelIndex& index) const;
 
-    const ComponentList::ComponentQList _componentList;
-    QStringList _slist;
+    const ComponentList _componentList;
+
   public slots:
     void updateComponentList();
   };

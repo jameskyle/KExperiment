@@ -5,10 +5,8 @@ namespace kex
   ComponentModel::ComponentModel(OutputComponent::ComponentTypes types, 
                                  QObject *parent) 
     : QAbstractItemModel(parent),
-      _componentList(ComponentList::instance().filter(types)),
-      _slist()
+      _componentList(ComponentList::const_instance())
   {
-   _slist << "One" << "Two" << "Three" << "Four" << "Five"; 
   }
 
  

@@ -3,15 +3,15 @@
 #include <QString>
 #include <QObject>
 
-#include "Components/AggregateComponent.h"
+#include "Components/OutputComponent.h"
 namespace kex
 {
-  class Experiment : public AggregateComponent  {
+  class Experiment : public OutputComponent  {
     Q_OBJECT
     Q_PROPERTY(QString instructions READ instructions WRITE setInstructions)
     
   public:
-    Experiment(QObject *parent = 0) : AggregateComponent(parent) {}
+    Experiment(QObject *parent = 0) : OutputComponent(parent) {}
     ~Experiment() {}
     
     const QString instructions() const {return _instructions;}

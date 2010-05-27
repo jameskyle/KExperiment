@@ -446,13 +446,13 @@ namespace kex
     // looking at the top most level and then work to the inner scope.
     
     ComponentList *c_list = &ComponentList::instance();
-    OutputComponent::SharedPointer templ = c_list->find(child->name());
+    ComponentList::iterator it = c_list->findByName(child->name());
     
     // ComponentList::find() returns 0 if component not found.
     
-    if (templ)
+    if (it != c_list->end())
     {
-      child->updateFromTemplate(templ);
+      child->updateFromTemplate(it->component());
     }
     // Only AggregateComponents can have children, so we must downcast
     AggregateComponent *c = qobject_cast<AggregateComponent *>(comp);

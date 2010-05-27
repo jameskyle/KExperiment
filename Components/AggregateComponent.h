@@ -42,22 +42,7 @@ namespace kex
      * \sa ~Action()
      **/
     virtual ~AggregateComponent ();
-    
-    virtual quint32 durationMSecs() const;
-    QList<OutputComponent::SharedPointer> childComponents() const;
-    void appendChild(OutputComponent* child);
-    
-    void insertChild(int index, OutputComponent* child);
-    void insertChild(int index, OutputComponent::SharedPointer child);
-
-    void removeChild(int index);
-    bool hasChildren() const;
-    int numChildren() const;
-    SharedPointer child(int row) const;
-    
-  private:
-    ComponentList _childComponents;
-
+        
   };
 }
 #endif

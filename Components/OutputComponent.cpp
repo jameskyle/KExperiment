@@ -11,8 +11,7 @@ namespace kex
     _label(),
     _mainCategory(),
     _categorySet(),
-    _icon(),
-    _parentComponent(0)
+    _icon()
   {
     _icon = QIcon(":/images/other/Science-64.png");
   }

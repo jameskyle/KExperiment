@@ -3,7 +3,7 @@
 #include <QString>
 #include <QList>
 
-#include "Components/AggregateComponent.h"
+#include "Components/OutputComponent.h"
 
 namespace kex
 {
@@ -23,7 +23,7 @@ namespace kex
   * \date $LastChangedDate$
   * \version $Rev$  \sa Action OutputAction RestAction
   **/
-  class Event : public AggregateComponent
+  class Event : public OutputComponent
   {
     Q_OBJECT
   public:
@@ -36,7 +36,7 @@ namespace kex
     * \date 2010-04-01
     * \sa Action()
     **/
-    Event (QObject *parent = 0) : AggregateComponent(parent) {}
+    Event (QObject *parent = 0) : OutputComponent(parent) {}
     
     /** \brief The destructor for the Event class
     * 

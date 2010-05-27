@@ -9,7 +9,7 @@ namespace kex
     QSharedPointer<const Experiment> exp = t.objectCast<const Experiment>();
     // ensure this is an experiment type component
     Q_CHECK_PTR(exp);
-    AggregateComponent::updateFromTemplate(t);
+    OutputComponent::updateFromTemplate(t);
     
     // Experiments have a unique instructions field
     

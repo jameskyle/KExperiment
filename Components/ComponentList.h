@@ -23,8 +23,6 @@ namespace kex
     
     class Node
     {
-      friend class ComponentList;
-      
     public:
       typedef QSharedPointer<OutputComponent> Pointer;
 
@@ -32,25 +30,35 @@ namespace kex
       ~Node() {}
       
       Pointer   component() {return _component;}
-      int       position() const {return _position;}
       Node*     parentComponent() const {return _parentComponent;}
       Node*     previous() const {return _previous;}
       Node*     next() const {return _next;}
       Node*     lastChild() const {return _lastChild;}
+      Node*     child() const {return _child;}
+      int       durationMSecs() const {return _durationMSecs;}
+      
+      void setParentComponent(Node* p) {_parentComponent = p;}
+      void setPrevious(Node* p) {_previous = p;}
+      void setNext(Node* c) {_next = c;}
+      void setChild(Node* c) {_child = c;}
+      void setLastChild(Node* c) {_lastChild = c;}
+      void setDurationMSecs(int duration) {_durationMSecs = duration;}
+      
+      void updateParent(); 
       
       bool      hasNext() const;
       bool      hasChildren() const;
       bool      isNull() const;
+
       // operators
       operator  bool() const;
       bool      operator!() const;
       
-      Node* child() const {return _child;}
-      Node::Pointer  data() const {return _component;}
-      
+      void clearPositionalData();
+            
     private:
       Pointer _component;
-      int     _position;
+      int     _durationMSecs;
       Node*   _parentComponent;
       Node*   _previous;
       Node*   _next;
@@ -195,6 +203,7 @@ namespace kex
     ~ComponentList();
 
     static ComponentList& instance();
+    static const ComponentList& const_instance();
     
     int count() const {return _count;}
     /** \brief  Given the component name, returns a reference to that component.
@@ -212,26 +221,33 @@ namespace kex
      * \return OutputComponent* pointer to found component or 0 if not found
      * \version $Rev$ 
      **/
-    iterator
-    find(const Node* node, const_iterator start, const_iterator stop) const;
+    iterator find(const Node* node, iterator start, iterator stop) const;
+    iterator findByName(const QString& name) const;
+    
+    void insert(Node* prevNode, Node* node);
+    void insert(iterator it, Node* node);
+    void clone(Node* prevNode, Node* node);
+    bool remove(Node* comp);
     
     void insertAfter(Node* prevNode, Node* node);
     void insertBefore(Node* node, Node* nextNode);
 
-    void prepend(Node* node);
-    void prependChild(Node* parent, Node* child);
-    void append(Node* node);
-    void appendChild(Node* parent, Node* child);
-    void append(OutputComponent* comp);
-    bool remove(Node* comp);
-
+    void prepend(Node* node, Node* parent = 0);
+    void prepend(OutputComponent* comp, Node* parent = 0);
+    
+    void append(Node* node, Node* parent = 0);
+    void append(OutputComponent* comp, Node* parent = 0);
+        
     static bool sortComponentList(Node* c1, Node* c2);
     
     // iterator methods
-    iterator begin();
+    iterator begin(Node* node = 0);
+    const_iterator begin(Node* node = 0) const;
     iterator end();
+    const_iterator end() const;
     
   private:
+    void updateList(Node* node);
     int   _count;
     Node* _front;
     Node* _back;

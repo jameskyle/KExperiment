@@ -2,6 +2,7 @@
 
 namespace kex {
   ComponentList::ComponentList() :
+    ActionComponents(*this),
     _count(0),
     _front(0),
     _back(0)
@@ -18,22 +19,25 @@ namespace kex {
     return componentList;
   }
 
-  ComponentList::Node* 
-  ComponentList::find(const Node& node) const
+  ComponentList::iterator 
+  ComponentList::find(const Node* node, const_iterator start, 
+                      const_iterator stop) const
   {
-    Node* current = _front;
-    Node* foundNode(0);
+    iterator found;
     
-    while (current->next())
+    while (start != stop)
     {
-      if (node == *current->next())
+      if (start == node)
       {
-        foundNode = current;
+        found = node;
+        break;
       }
+      ++start;
     }
-    return foundNode;
+    
+    return found;
   }
-
+  
   void ComponentList::append(Node* node)
   {
     insertAfter(node, _back);
@@ -44,9 +48,9 @@ namespace kex {
     insertBefore(node, _front);
   }
   
-  void ComponentList::insertBefore(Node* node, Node* nextNode)
+  void ComponentList::insertBefore(Node* nextNode, Node* node)
   {
-    node->setPrevious(nextNode->previous());
+    node->_previous = nextNode->previous();
     node->setNext(nextNode);
     nextNode->setPrevious(node);
     
@@ -62,7 +66,7 @@ namespace kex {
     ++_count;
   }
 
-  void ComponentList::insertAfter(Node* node, Node* prevNode)
+  void ComponentList::insertAfter(Node* prevNode, Node* node)
   {
     node->setPrevious(prevNode);
     node->setNext(prevNode->next());
@@ -112,39 +116,35 @@ namespace kex {
     Node* node = new Node(p);
     append(node);
   }
-
-  const ComponentList::ComponentQList 
-  ComponentList::filter(OutputComponent::ComponentTypes types) const
-  {
-    Node* current = _front;
-    
-    ComponentQList  filteredList;
-
-    while (current->hasNext())
-    {
-      if (current->component()->componentType() & types)
-      {
-        filteredList.append(current);
-      }
-    }
-    
-    qSort(filteredList.begin(), filteredList.end(), sortComponentList);
-    
-    return filteredList;
-  }
-
+  
   bool ComponentList::sortComponentList(Node* c1, Node* c2)
   {
     return (c1->component()->name() < c2->component()->name());
   }
   
+  ComponentList::iterator ComponentList::begin()
+  {
+    return iterator(_front);
+  }
+  
+  ComponentList::iterator ComponentList::end()
+  {
+    return iterator(_back);
+  }
+  
+  void ComponentList::prependChild(Node* parent, Node* child)
+  {
+    insertBefore(parent->child(), child);
+  }
+  
   ComponentList::Node::Node(Pointer comp) : 
   _component(comp),
   _position(-1),
-  _root(0),
+  _parentComponent(0),
   _previous(0),
   _next(0),
-  _child(0)
+  _child(0),
+  _lastChild(0)
   {
     
   }
@@ -181,5 +181,17 @@ namespace kex {
     
     return n;
   }
+  
+  bool ComponentList::Node::hasChildren() const
+  {
+    bool childFound(false);
+    if (_childList->count() > 0)
+    {
+      childFound = true;
+    }
+    
+    return childFound;
+  }
+
   
 }

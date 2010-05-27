@@ -45,7 +45,7 @@ namespace kex
     
     virtual quint32 durationMSecs() const;
     QList<OutputComponent::SharedPointer> childComponents() const;
-    void appendChild(OutputComponent::SharedPointer child);
+    void appendChild(OutputComponent* child);
     
     void insertChild(int index, OutputComponent* child);
     void insertChild(int index, OutputComponent::SharedPointer child);

@@ -37,9 +37,7 @@ namespace kex
   void AggregateComponent::appendChild(OutputComponent* child)
   {
     ComponentList::Node* node(0);
-    node = _childComponents.append(child);
-    child.setListIndex(_childComponents.count() - 1);
-//    child->setParentComponent(this);
+    _childComponents.append(child);
   }
   
   void AggregateComponent::removeChild(int index)

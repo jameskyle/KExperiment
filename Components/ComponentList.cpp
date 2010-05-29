@@ -433,6 +433,13 @@ namespace kex {
     }
   }
   
+  int ComponentList::Node::position() const
+  {
+    int position(0);
+    
+    Node *child;
+  }
+  
   int ComponentList::Node::numChildren() const
   {
     int count(0);

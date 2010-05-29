@@ -31,11 +31,11 @@ namespace kex
 
   }
   
-  OutputComponent* 
+  OutputComponent::Pointer 
   ComponentFactory::create(OutputComponent::ComponentTypes key) const
   {
     QMap<OutputComponent::ComponentTypes, Creator>::const_iterator it;
-    OutputComponent *component = 0;
+    OutputComponent::Pointer component = 0;
 
     it = _componentCreatorMap.find(key);
 
@@ -48,12 +48,12 @@ namespace kex
     return component;
   }
   
-  OutputComponent*
+  OutputComponent::Pointer
   ComponentFactory::create(OutputComponent::ComponentTypes key,
                            const QString& templateName) const
   {
     QMap<OutputComponent::ComponentTypes, Creator>::const_iterator it;
-    OutputComponent *component = 0;
+    OutputComponent::Pointer component = 0;
     
     it = _componentCreatorMap.find(key);
     

@@ -71,9 +71,9 @@ namespace kex
                         int role) const;
     
   private:
-    OutputComponent::SharedPointer getItem(const QModelIndex& index) const;
+    ComponentList::Node::Pointer  getItem(const QModelIndex& index) const;
 
-    const ComponentList _componentList;
+    ComponentList& _componentList;
 
   public slots:
     void updateComponentList();

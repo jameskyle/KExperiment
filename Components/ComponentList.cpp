@@ -24,8 +24,21 @@ namespace kex {
     return ComponentList::instance();
   }
 
-  
-  void ComponentList::insert(Node* prevNode, Node* node)
+  ComponentList::Node& ComponentList::operator[](int row)
+  {
+    iterator it;
+    if (row >= 0)
+    {
+      it = begin();
+    } else
+    {
+      it = end();
+    }
+
+    return *(it + row);
+  }
+
+  void ComponentList::insert(Node::Pointer prevNode, Node::Pointer node)
   {
     Q_CHECK_PTR(prevNode);
     Q_CHECK_PTR(node);
@@ -35,7 +48,7 @@ namespace kex {
     insertAfter(prevNode, node);
   }
   
-  void ComponentList::insert(iterator it, Node* node)
+  void ComponentList::insert(iterator it, Node::Pointer node)
   {
     Q_CHECK_PTR(node);
     // ensure the node is not a member of another list, see clone()
@@ -43,7 +56,7 @@ namespace kex {
     insertAfter(&(*it), node);
   }
   
-  void ComponentList::clone(Node* prevNode, Node* node)
+  void ComponentList::clone(Node::Pointer prevNode, Node::Pointer node)
   {
     Q_CHECK_PTR(prevNode);
     Q_CHECK_PTR(node);
@@ -56,7 +69,7 @@ namespace kex {
   }
   
   ComponentList::iterator 
-  ComponentList::find(const Node* node, iterator start, 
+  ComponentList::find(const Node::Pointer node, iterator start, 
                       iterator stop) const
   {
     iterator found;
@@ -75,7 +88,7 @@ namespace kex {
   }
 
   ComponentList::iterator
-  ComponentList::findByName(const QString& name) const
+  ComponentList::findByName(const QString& name)
   {
     iterator it = begin();
     
@@ -91,7 +104,7 @@ namespace kex {
     return it;
   }
   
-  void ComponentList::append(Node* node, Node* parent)
+  void ComponentList::append(Node::Pointer node, Node::Pointer parent)
   {
     Q_CHECK_PTR(node);
     Q_ASSERT(!node->previous() && !node->next() && !node->parentComponent());
@@ -123,14 +136,14 @@ namespace kex {
     }
   }
   
-  void ComponentList::append(OutputComponent* comp, Node* parent)
+  void ComponentList::append(OutputComponent::Pointer comp, Node::Pointer parent)
   {
-    Node::Pointer p(comp);
-    Node* node = new Node(p);
+    OutputComponent::SharedPointer p(comp);
+    Node::Pointer node = new Node(p);
     append(node, parent);
   }
   
-  void ComponentList::prepend(Node* node, Node* parent)
+  void ComponentList::prepend(Node::Pointer node, Node::Pointer parent)
   {
     Q_CHECK_PTR(node);
     Q_ASSERT(!node->previous() && !node->next() && !node->parentComponent());
@@ -163,14 +176,14 @@ namespace kex {
     
    }
   
-  void ComponentList::prepend(OutputComponent* comp, Node* parent)
+  void ComponentList::prepend(OutputComponent::Pointer comp, Node::Pointer parent)
   {
-    Node::Pointer p(comp);
-    Node* node = new Node(p);
+    OutputComponent::SharedPointer p(comp);
+    Node::Pointer node = new Node(p);
     prepend(node, parent);
   }
   
-  void ComponentList::insertBefore(Node* nextNode, Node* node)
+  void ComponentList::insertBefore(Node::Pointer nextNode, Node::Pointer node)
   {
     Q_CHECK_PTR(nextNode);
     Q_CHECK_PTR(node);
@@ -192,7 +205,7 @@ namespace kex {
     ++_count;
   }
 
-  void ComponentList::insertAfter(Node* prevNode, Node* node)
+  void ComponentList::insertAfter(Node::Pointer prevNode, Node::Pointer node)
   {
     Q_CHECK_PTR(prevNode);
     Q_CHECK_PTR(node);
@@ -214,7 +227,7 @@ namespace kex {
     ++_count;
   }
     
-  bool ComponentList::remove(Node* comp)
+  bool ComponentList::remove(Node::Pointer comp)
   {
     bool found(false);
     iterator it(begin(comp));
@@ -246,12 +259,12 @@ namespace kex {
     return found;
   }
   
-  bool ComponentList::sortComponentList(Node* c1, Node* c2)
+  bool ComponentList::sortComponentList(Node::Pointer c1, Node::Pointer c2)
   {
     return (c1->component()->name() < c2->component()->name());
   }
   
-  ComponentList::iterator ComponentList::begin(Node* node)
+  ComponentList::iterator ComponentList::begin(Node::Pointer node)
   {
     // this method returns the _front of any segment for which node belongs to
     // if node == 0 or if node has no parent, we return the _front of the top 
@@ -263,7 +276,7 @@ namespace kex {
       
     } else
     {
-      Node* n = node;
+      Node::Pointer n = node;
       
       while (n->previous())
       {
@@ -276,7 +289,7 @@ namespace kex {
     return it;
   }
   
-  ComponentList::const_iterator ComponentList::begin(Node* node) const
+  ComponentList::const_iterator ComponentList::begin(Node::Pointer node) const
   {
     const_iterator it;
     
@@ -285,7 +298,7 @@ namespace kex {
       it = const_iterator(_front);
     } else
     {
-      Node* n = node;
+      Node::Pointer n = node;
       
       while (n->previous())
       {
@@ -297,7 +310,7 @@ namespace kex {
 
     return it;
   }
-  
+
   ComponentList::iterator ComponentList::end()
   {
     // per STL, the end() method returns one past the last item.
@@ -310,7 +323,7 @@ namespace kex {
     return const_iterator(0);
   }
   
-  void ComponentList::updateList(Node* node)
+  void ComponentList::updateList(Node::Pointer node)
   {
     // indicates this is not a child component
     if (!node->parentComponent())
@@ -327,7 +340,7 @@ namespace kex {
     }
   }
 
-  ComponentList::Node::Node(Pointer comp) : 
+  ComponentList::Node::Node(OutputComponent::SharedPointer comp) : 
   _component(comp),
   _durationMSecs(0),
   _parentComponent(0),
@@ -418,6 +431,22 @@ namespace kex {
       
       _parentComponent->setDurationMSecs(duration);
     }
+  }
+  
+  int ComponentList::Node::numChildren() const
+  {
+    int count(0);
+    
+    Node* child = _child;
+    if (child)
+    {
+      while (child->hasNext())
+      {
+        ++count;
+        child = child->next();
+      }
+    }
+    return count;
   }
 
 }

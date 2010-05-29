@@ -47,9 +47,7 @@ HEADERS += Common/Global.h \
            Components/ComponentDomParser.h \
            Components/ComponentDataPrivate.h \
            Components/ComponentFactory.h \
-           Components/AggregateComponent.h \
            Models/ComponentModel.h \
-           Models/Action/ActionModel.h \
            Components/MetaData.h \
            UI/ComponentLibrary.h \
            UI/LiveView.h \
@@ -85,10 +83,8 @@ SOURCES += main.cpp \
            Common/Logger.cpp \
            Components/ComponentDomParser.cpp \
            Components/ComponentFactory.cpp \
-           Components/AggregateComponent.cpp \
            Components/MetaData.cpp \
            Models/ComponentModel.cpp \
-           Models/Action/ActionModel.cpp \
            UI/ComponentLibrary.cpp \
            UI/LiveView.cpp \
            UI/MainWindow.cpp \

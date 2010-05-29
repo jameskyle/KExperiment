@@ -8,7 +8,6 @@
 #include <QVariant>
 
 #include "OutputComponent.h"
-#include "AggregateComponent.h"
 #include "ComponentFactory.h"
 #include "ComponentList.h"
 #include "Common/Logger.h"
@@ -32,39 +31,40 @@ namespace kex
     ComponentDomParser();
     ComponentDomParser(const QString& fileName);
     
-    OutputComponent* readFile(const QString &fileName);
-    OutputComponent* readFile();
+    bool readFile(const QString &fileName);
+    bool readFile();
     
   private:
     QString _fileName;
+    ComponentList& _globalList;
     bool isValidElement(const QDomElement &root) const;
     void parseHeaderElement(const QDomElement &element, 
-                            OutputComponent* component) const;
+                            ComponentList::Node::Pointer node) const;
 
     void parseElement(const QDomElement &element, 
-                      OutputComponent* component) const;
+                      ComponentList::Node::Pointer node) const;
     
     void parseActionElement(const QDomElement &element, 
-                            OutputComponent* component) const;
+                            ComponentList::Node::Pointer node) const;
     
     void parseEventElement(const QDomElement &element,
-                           OutputComponent* component) const;
+                           ComponentList::Node::Pointer node) const;
     
     void parseTrialElement(const QDomElement &element,
-                           OutputComponent* component) const;
+                           ComponentList::Node::Pointer node) const;
     
     void parseExperimentElement(const QDomElement &element,
-                                OutputComponent* component) const;
+                                ComponentList::Node::Pointer node) const;
 
     void setMainCategory(const QDomElement &element,
-                         OutputComponent* component) const;
+                         ComponentList::Node::Pointer node) const;
     
     void createChildComponent(const QDomElement &element,
-                              OutputComponent *comp) const;
+                              ComponentList::Node::Pointer node) const;
     
-    void resolveName(OutputComponent* comp) const;
+    void resolveName(ComponentList::Node::Pointer node) const;
 
-    OutputComponent* createComponent(const QDomElement& root) const;
+    ComponentList::Node::Pointer createComponentNode(const QDomElement& root) const;
 
     
   };

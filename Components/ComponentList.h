@@ -17,33 +17,33 @@
 
 namespace kex
 {
-  class ComponentList : private Uncopyable
+  class ComponentList
   {
   public:
-    
     class Node
     {
     public:
-      typedef QSharedPointer<OutputComponent> Pointer;
+      typedef Node* Pointer;
 
-      Node(Pointer comp);
+      Node(OutputComponent::SharedPointer comp);
       ~Node() {}
       
-      Pointer   component() {return _component;}
-      Node*     parentComponent() const {return _parentComponent;}
-      Node*     previous() const {return _previous;}
-      Node*     next() const {return _next;}
-      Node*     lastChild() const {return _lastChild;}
-      Node*     child() const {return _child;}
+      OutputComponent::SharedPointer   component() {return _component;}
+      Pointer     parentComponent() const {return _parentComponent;}
+      Pointer     previous() const {return _previous;}
+      Pointer     next() const {return _next;}
+      Pointer     lastChild() const {return _lastChild;}
+      Pointer     child() const {return _child;}
       int       durationMSecs() const {return _durationMSecs;}
       
-      void setParentComponent(Node* p) {_parentComponent = p;}
-      void setPrevious(Node* p) {_previous = p;}
-      void setNext(Node* c) {_next = c;}
-      void setChild(Node* c) {_child = c;}
-      void setLastChild(Node* c) {_lastChild = c;}
+      void setParentComponent(Pointer p) {_parentComponent = p;}
+      void setPrevious(Pointer p) {_previous = p;}
+      void setNext(Pointer c) {_next = c;}
+      void setChild(Pointer c) {_child = c;}
+      void setLastChild(Pointer c) {_lastChild = c;}
       void setDurationMSecs(int duration) {_durationMSecs = duration;}
-      
+      int numChildren() const;
+
       void updateParent(); 
       
       bool      hasNext() const;
@@ -57,13 +57,13 @@ namespace kex
       void clearPositionalData();
             
     private:
-      Pointer _component;
+      OutputComponent::SharedPointer _component;
       int     _durationMSecs;
-      Node*   _parentComponent;
-      Node*   _previous;
-      Node*   _next;
-      Node*   _child;
-      Node*   _lastChild;
+      Pointer   _parentComponent;
+      Pointer   _previous;
+      Pointer   _next;
+      Pointer   _child;
+      Pointer   _lastChild;
     };
     
     template<class Value>
@@ -218,39 +218,42 @@ namespace kex
      * \date 2010-5-2
      * \date $LastChangedDate$
      * \param componentName the name of the component to search for.
-     * \return OutputComponent* pointer to found component or 0 if not found
+     * \return OutputComponent::Pointer pointer to found component or 0 if not found
      * \version $Rev$ 
      **/
-    iterator find(const Node* node, iterator start, iterator stop) const;
-    iterator findByName(const QString& name) const;
+    iterator find(const Node::Pointer node, iterator start, iterator stop) const;
+    iterator findByName(const QString& name);
     
-    void insert(Node* prevNode, Node* node);
-    void insert(iterator it, Node* node);
-    void clone(Node* prevNode, Node* node);
-    bool remove(Node* comp);
+    void insert(Node::Pointer prevNode, Node::Pointer node);
+    void insert(iterator it, Node::Pointer node);
+    void clone(Node::Pointer prevNode, Node::Pointer node);
+    bool remove(Node::Pointer comp);
     
-    void insertAfter(Node* prevNode, Node* node);
-    void insertBefore(Node* node, Node* nextNode);
+    void insertAfter(Node::Pointer prevNode, Node::Pointer node);
+    void insertBefore(Node::Pointer node, Node::Pointer nextNode);
 
-    void prepend(Node* node, Node* parent = 0);
-    void prepend(OutputComponent* comp, Node* parent = 0);
+    void prepend(Node::Pointer node, Node::Pointer parent = 0);
+    void prepend(OutputComponent::Pointer comp, Node::Pointer parent = 0);
     
-    void append(Node* node, Node* parent = 0);
-    void append(OutputComponent* comp, Node* parent = 0);
+    void append(Node::Pointer node, Node::Pointer parent = 0);
+    void append(OutputComponent::Pointer comp, Node::Pointer parent = 0);
         
-    static bool sortComponentList(Node* c1, Node* c2);
+    static bool sortComponentList(Node::Pointer c1, Node::Pointer c2);
+    
+    // Operators
+    Node& operator[](int row);
     
     // iterator methods
-    iterator begin(Node* node = 0);
-    const_iterator begin(Node* node = 0) const;
+    iterator begin(Node::Pointer node = 0);
+    const_iterator begin(Node::Pointer node = 0) const;
     iterator end();
     const_iterator end() const;
     
   private:
-    void updateList(Node* node);
+    void updateList(Node::Pointer node);
     int   _count;
-    Node* _front;
-    Node* _back;
+    Node::Pointer _front;
+    Node::Pointer _back;
   };  
 }
 

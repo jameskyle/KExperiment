@@ -5,7 +5,7 @@ namespace kex
   ComponentModel::ComponentModel(OutputComponent::ComponentTypes types, 
                                  QObject *parent) 
     : QAbstractItemModel(parent),
-      _componentList(ComponentList::const_instance())
+      _componentList(ComponentList::instance())
   {
   }
 
@@ -64,14 +64,22 @@ namespace kex
     
     if (parent.isValid())
     {
-      OutputComponent::SharedPointer sp = getItem(parent);
-      
-      count = sp->numChildren();
       
     } else
     {
       count = _componentList.count();
     }
+
+//    if (parent.isValid())
+//    {
+//      OutputComponent::SharedPointer sp = getItem(parent);
+//      
+//      count = sp->numChildren();
+//      
+//    } else
+//    {
+//      count = _componentList.count();
+//    }
 
     return count;
   }
@@ -85,8 +93,8 @@ namespace kex
       count = 5;
     } else
     {
-      OutputComponent::SharedPointer sp = getItem(parent);
-      count = sp->numChildren();
+//      OutputComponent::SharedPointer sp = getItem(parent);
+//      count = sp->numChildren();
     }
 
     return count;
@@ -103,43 +111,30 @@ namespace kex
     // 5         Component's Icon
     
     QVariant result;
-    
+   
     if (index.isValid())
     {
-      OutputComponent::SharedPointer sp;
-
+      ComponentList::Node::Pointer node;
       if (!index.parent().isValid())
       {
-        sp = _componentList[index.row()];
+        node = &_componentList[index.row()];
       } else
       {
-        sp = getItem(index);
+        node = getItem(index);
       }
 
       if (role == Qt::DisplayRole)
       {
         if (index.column() == 0)
         {
-          result.setValue(sp->name());
+          result.setValue(node->component()->name());
         } else if (index.column() == 1)
         {
-          result.setValue(sp->mainCategory());
+          result.setValue(node->component()->mainCategory());
         }
       }
     }
-    
-    OutputComponent::SharedPointer sp(ComponentList::instance().find("Double Event Example"));
-    qDebug() << "children: " << sp->numChildren();
-    OutputComponent::SharedPointer child1(sp->child(0));
-    OutputComponent::SharedPointer child2(sp->child(1));
-    qDebug() << "child 1: " << child1->name();
-    qDebug() << "child 2: " << child2->name();
-    
-    for (int i=0; i < sp->numChildren(); ++i)
-    {
-      qDebug() << (sp->child(i))->parent();
-    }
-    return result;
+      return result;
   }
   
   QModelIndex ComponentModel::parent(const QModelIndex &index) const 
@@ -148,12 +143,13 @@ namespace kex
     
     if (index.isValid())
     {
-      OutputComponent::SharedPointer sp = getItem(index);
-      OutputComponent::SharedPointer parentItem(sp->parentComponent());
+      ComponentList::Node::Pointer node = getItem(index);
+      ComponentList::Node::Pointer p_node;
+      p_node = node->parentComponent();
       
-      if (parentItem)
+      if (p_node)
       {
-        p_index = createIndex(0,0, &parentItem);
+        p_index = createIndex(0,0, p_node); 
       }
     }
     return p_index;
@@ -164,40 +160,40 @@ namespace kex
   {
     QModelIndex ind;
     
-    if(hasIndex(row, column, parent))
-    {
-      if(parent.isValid())
-      {
-        OutputComponent::SharedPointer parentItem = getItem(parent);
-        
-        OutputComponent::SharedPointer *child;
-        child = new OutputComponent::SharedPointer;
-        *child = parentItem->child(row);
-        
-        if (*child)
-        {
-          ind = createIndex(row, column, child);
-        }
-        
-      } else
-      {
-        OutputComponent::SharedPointer *sp = new OutputComponent::SharedPointer;
-        *sp = _componentList[row];
-        ind = createIndex(row, column, sp);
-      }
-
-    }
+  //  if(hasIndex(row, column, parent))
+//    {
+//      if(parent.isValid())
+//      {
+//        OutputComponent::SharedPointer parentItem = getItem(parent);
+//        
+//        OutputComponent::SharedPointer *child;
+//        child = new OutputComponent::SharedPointer;
+//        *child = parentItem->child(row);
+//        
+//        if (*child)
+//        {
+//          ind = createIndex(row, column, child);
+//        }
+//        
+//      } else
+//      {
+//        OutputComponent::SharedPointer *sp = new OutputComponent::SharedPointer;
+//        *sp = _componentList[row];
+//        ind = createIndex(row, column, sp);
+//      }
+//
+//    }
     
     return ind;
   }
   
-  OutputComponent::SharedPointer 
-  ComponentModel::getItem(const QModelIndex& parent) const
+  ComponentList::Node::Pointer 
+  ComponentModel::getItem(const QModelIndex& index) const
   {
-    OutputComponent::SharedPointer parentItem;
+    ComponentList::Node::Pointer parentItem;
     
-    void *p = parent.internalPointer();
-    parentItem = *static_cast<OutputComponent::SharedPointer *>(p);
+    void *p = index.internalPointer();
+    parentItem = static_cast<ComponentList::Node::Pointer>(p);
     return parentItem;
   }
 }

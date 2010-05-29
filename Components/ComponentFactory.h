@@ -10,6 +10,7 @@
 #include <QVariant>
 
 #include "OutputComponent.h"
+#include "ComponentList.h"
 #include "Actions/RestAction.h"
 #include "Actions/TextAction.h"
 #include "Actions/ImageAction.h"
@@ -18,7 +19,6 @@
 #include "Event/Event.h"
 #include "Trial/Trial.h"
 #include "Experiment/Experiment.h"
-#include "ComponentDomParser.h"
 
 #include <Common/Global.h>
 
@@ -27,7 +27,7 @@ class OutputComponent;
 namespace kex
 {
   //!< factor creator pointer
-  typedef boost::function<OutputComponent* ()> Creator;
+  typedef boost::function<OutputComponent::Pointer ()> Creator;
 
   /** \brief  Factory for the OutputComponent interface
   *
@@ -69,12 +69,12 @@ namespace kex
     * \date 2010-04-02
     * \param  key the mapped key to the registered component.
     *
-    * \return OutputComponent* pointer to the newly created object
+    * \return OutputComponent::Pointer pointer to the newly created object
     *
     * \sa OutputComponent
     **/
-    OutputComponent* create(OutputComponent::ComponentTypes key) const;
-    OutputComponent* create(OutputComponent::ComponentTypes key,
+    OutputComponent::Pointer create(OutputComponent::ComponentTypes key) const;
+    OutputComponent::Pointer create(OutputComponent::ComponentTypes key,
                                const QString& templateName) const;
 
     /** \brief Returns a list of Action types

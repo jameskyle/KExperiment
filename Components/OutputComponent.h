@@ -24,39 +24,7 @@ namespace kex
         
   public:
     typedef OutputComponent* Pointer;
-    
-    class SharedPointer
-    {
-    public:
-      typedef QSharedPointer<OutputComponent> qPointer;
-
-      SharedPointer();
-      SharedPointer(const SharedPointer& pt);
-      explicit SharedPointer(OutputComponent *raw);
-      ~SharedPointer() {}
-      
-      template <class X> 
-      QSharedPointer<X> objectCast() const
-      {
-        QSharedPointer<X> pt(_qpointer.objectCast<X>());
-        return pt;
-      }
-
-      qPointer qpointer() const {return _qpointer;}
-      bool isNull() const;
-      OutputComponent* data() const {return _qpointer.data();}
-      
-      // operators
-      operator bool() const;
-      bool operator!() const;
-      OutputComponent& operator*() const;
-      OutputComponent* operator->() const;
-      bool operator==(const SharedPointer& p) const;
-      
-    private:
-      qPointer _qpointer;
-      int _listIndex;
-    };
+    typedef QSharedPointer<OutputComponent> SharedPointer;
     
     enum ComponentType
     {

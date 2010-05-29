@@ -11,9 +11,13 @@
 
 #include "Wizards/ComponentCreation/CreationWizard.h"
 #include "Wizards/ComponentCreation/ComponentSelectionDialog.h"
+
 #include "Components/ComponentList.h"
+#include "Components/ComponentDomParser.h"
+
 #include "ComponentLibrary.h"
 #include "LiveView.h"
+
 #include "Models/ComponentModel.h"
 #include "Utilities/Utilities.h"
 #include "Common/Global.h"

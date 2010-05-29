@@ -125,8 +125,8 @@ namespace kex
      **/
     QString componentNameFromBaseName(const QString& fileName);
     
-    bool sortComponentQList(const OutputComponent* c1, 
-                            const OutputComponent* *c2);
+    bool sortComponentQList(const OutputComponent::Pointer c1, 
+                            const OutputComponent::Pointer *c2);
   };
 
 }

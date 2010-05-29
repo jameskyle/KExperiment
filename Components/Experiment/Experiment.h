@@ -17,7 +17,7 @@ namespace kex
     const QString instructions() const {return _instructions;}
     void setInstructions(const QString& inst) {_instructions = inst;}
     
-    void updateFromTemplate(const OutputComponent* t);
+    void updateFromTemplate(const OutputComponent::Pointer t);
     void updateFromTemplate(const OutputComponent::SharedPointer t);
   private:
     QString _instructions;

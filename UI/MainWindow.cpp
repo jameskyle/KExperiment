@@ -207,6 +207,7 @@ namespace kex
   {
     QStringList         xmlFiles;
     Config::ApplicationDataDirectoryTypes t;
+    Logger& logger = Logger::instance();
     
     t = Config::ActionDirectory;
     xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
@@ -226,14 +227,19 @@ namespace kex
     // template based components can find the original. E.g. if we parsed
     // Experiments before Actions, the Experiment class would not be able to 
     // find the Action templates.
+    bool success(false);
     foreach(QString path, xmlFiles)
     {
-      qDebug() << path;
-      OutputComponent *comp = dom.readFile(path);
-      Q_CHECK_PTR(comp);
-
-      // Add the component to our global component list
-      componentList->append(comp);
+      success = dom.readFile(path);
+      
+      if (!success)
+      {
+        QString msg("MainWindow::populateComponentList");
+        QString info(QObject::tr("Failed to create component from file: %1"));
+        logger.displayMessage(msg, info.arg(path), 
+                              QMessageBox::Ok, Logger::WarningLogLevel);
+      }
+      success = false;
     }
   }
 } // END_KEX_NAMESPACE

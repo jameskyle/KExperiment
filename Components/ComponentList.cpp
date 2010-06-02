@@ -3,7 +3,6 @@
 namespace kex {
   ComponentList::ComponentList() :
     ActionComponents(*this),
-    _count(0),
     _front(0),
     _back(0)
   {
@@ -130,6 +129,7 @@ namespace kex {
         
       } else
       {
+        Q_CHECK_PTR(parent->lastChild());
         insertAfter(parent->lastChild(), node);
       }
       node->updateParent();
@@ -201,9 +201,7 @@ namespace kex {
     
     // update the list if this is a new _front or _back node
     updateList(node);
-    
-    ++_count;
-  }
+   }
 
   void ComponentList::insertAfter(Node::Pointer prevNode, Node::Pointer node)
   {
@@ -224,7 +222,6 @@ namespace kex {
     // update the list itself if this is the new _front or _back
     updateList(node);
      
-    ++_count;
   }
     
   bool ComponentList::remove(Node::Pointer comp)
@@ -255,7 +252,6 @@ namespace kex {
       
       ++it;
     }
-    
     return found;
   }
   
@@ -340,6 +336,21 @@ namespace kex {
     }
   }
 
+  int ComponentList::count() const
+  {
+    const_iterator it;
+    it = begin();
+    int count(0);
+    
+    while (it != end())
+    {
+      ++count;
+      ++it;
+    }
+    
+    return count;
+  }
+
   ComponentList::Node::Node(OutputComponent::SharedPointer comp) : 
   _component(comp),
   _durationMSecs(0),
@@ -364,7 +375,7 @@ namespace kex {
   {
     bool null(true);
     
-    if (_component)
+    if (!_component.isNull())
     {
       null = false;
     }
@@ -435,9 +446,16 @@ namespace kex {
   
   int ComponentList::Node::position() const
   {
-    int position(0);
+    int count(0);
+    ComponentList::const_iterator it(this);
     
-    Node *child;
+    while (it->hasPrevious())
+    {
+      ++count;
+      --it;
+    }
+    
+    return count;
   }
   
   int ComponentList::Node::numChildren() const
@@ -454,6 +472,15 @@ namespace kex {
       }
     }
     return count;
+  }
+  bool ComponentList::Node::hasPrevious() const
+  {
+    bool valid(false);
+    if (_previous)
+    {
+      valid = true;
+    }
+    return valid;
   }
 
 }

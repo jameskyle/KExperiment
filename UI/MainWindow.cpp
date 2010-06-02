@@ -140,7 +140,7 @@ namespace kex
    model = new ComponentModel(OutputComponent::TrialType, trialLibraryDock);
    trialLibraryDock->setModel(model);
     
-  model = new ComponentModel(OutputComponent::AllComponents, 
+   model = new ComponentModel(OutputComponent::AllComponents, 
                                experimentLibraryDock);
   componentTreeView->setModel(model);
 
@@ -239,7 +239,6 @@ namespace kex
         logger.displayMessage(msg, info.arg(path), 
                               QMessageBox::Ok, Logger::WarningLogLevel);
       }
-      success = false;
     }
   }
 } // END_KEX_NAMESPACE

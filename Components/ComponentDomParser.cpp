@@ -78,7 +78,7 @@ namespace kex
     file.close();
     
     resolveName(node);
-    
+    qDebug() << "dom added: " << node->component()->name();
     return true;
   }
   
@@ -125,9 +125,11 @@ namespace kex
     } else if (rootName == "event")
     {
       c_type = OutputComponent::EventType;
+      
     } else if (rootName == "trial")
     {
       c_type = OutputComponent::TrialType;
+      
     } else if (rootName == "experiment")
     {
       c_type = OutputComponent::ExperimentType;
@@ -433,11 +435,12 @@ namespace kex
   {
     Q_CHECK_PTR(node);
     Q_ASSERT(isValidElement(element));
+    Q_ASSERT(node->component()->componentType() & ~OutputComponent::ActionType);
     
     ComponentList::Node::Pointer child = createComponentNode(element);
+
     Q_CHECK_PTR(child);
     // Only non Action components  can have children, we assert this here
-    Q_ASSERT(child->component()->componentType() & ~OutputComponent::ActionType);
     
     parseElement(element, child);
     // Since this is a child element, it could be a template. Templates must

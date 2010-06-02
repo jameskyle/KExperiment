@@ -13,12 +13,8 @@ int main (int argc, char *argv[])
 {
   QApplication app(argc, argv);
 
-  QList<QString> categories;
-  categories << "Special1" << "Special2" << "Special3" << "Special4";
 
   kex::Utilities::configureApplication();
-
-  kex::MetaData::instance().addCategories(categories);
 
   kex::MainWindow k;
   k.show();

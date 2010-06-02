@@ -34,19 +34,21 @@ namespace kex
       Pointer     next() const {return _next;}
       Pointer     lastChild() const {return _lastChild;}
       Pointer     child() const {return _child;}
-      int       durationMSecs() const {return _durationMSecs;}
-      
+      int         durationMSecs() const {return _durationMSecs;}
+      int         position() const;
+
       void setParentComponent(Pointer p) {_parentComponent = p;}
       void setPrevious(Pointer p) {_previous = p;}
       void setNext(Pointer c) {_next = c;}
-      void setChild(Pointer c) {_child = c;}
+      void setChild(Pointer c) {_child = _lastChild = c;}
       void setLastChild(Pointer c) {_lastChild = c;}
       void setDurationMSecs(int duration) {_durationMSecs = duration;}
-      int numChildren() const;
+      int  numChildren() const;
 
       void updateParent(); 
       
       bool      hasNext() const;
+      bool      hasPrevious() const;
       bool      hasChildren() const;
       bool      isNull() const;
 
@@ -58,7 +60,7 @@ namespace kex
             
     private:
       OutputComponent::SharedPointer _component;
-      int     _durationMSecs;
+      int       _durationMSecs;
       Pointer   _parentComponent;
       Pointer   _previous;
       Pointer   _next;
@@ -205,7 +207,7 @@ namespace kex
     static ComponentList& instance();
     static const ComponentList& const_instance();
     
-    int count() const {return _count;}
+    int count() const;
     /** \brief  Given the component name, returns a reference to that component.
      * 
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -251,7 +253,6 @@ namespace kex
     
   private:
     void updateList(Node::Pointer node);
-    int   _count;
     Node::Pointer _front;
     Node::Pointer _back;
   };  

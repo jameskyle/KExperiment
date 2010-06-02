@@ -7,6 +7,14 @@ namespace kex
     : QAbstractItemModel(parent),
       _componentList(ComponentList::instance())
   {
+    qDebug() << _componentList.count();
+    ComponentList::iterator it(_componentList.begin());
+    while (it != _componentList.end())
+    {
+      qDebug() << it->component()->name();
+      ++it;
+    }
+    
   }
 
  
@@ -64,39 +72,29 @@ namespace kex
     
     if (parent.isValid())
     {
+      ComponentList::Node::Pointer p = getItem(parent);
+      // if the index isValid() we should always get a valid node
+      Q_CHECK_PTR(p);
+      
+      count = p->numChildren();
       
     } else
     {
       count = _componentList.count();
     }
 
-//    if (parent.isValid())
-//    {
-//      OutputComponent::SharedPointer sp = getItem(parent);
-//      
-//      count = sp->numChildren();
-//      
-//    } else
-//    {
-//      count = _componentList.count();
-//    }
-
     return count;
   }
   
   int ComponentModel::columnCount(const QModelIndex &parent) const 
   {
-    int count(0);
+    int count(5);
     
-    if (!parent.isValid())
+    if (parent.isValid())
     {
       count = 5;
-    } else
-    {
-//      OutputComponent::SharedPointer sp = getItem(parent);
-//      count = sp->numChildren();
     }
-
+    
     return count;
   }
   
@@ -121,6 +119,9 @@ namespace kex
       } else
       {
         node = getItem(index);
+        // if the index isValid() we should always get a valid node
+        Q_CHECK_PTR(node);
+        
       }
 
       if (role == Qt::DisplayRole)
@@ -144,12 +145,14 @@ namespace kex
     if (index.isValid())
     {
       ComponentList::Node::Pointer node = getItem(index);
+      // if the index isValid() we should always get a valid node
+      Q_CHECK_PTR(node);
       ComponentList::Node::Pointer p_node;
       p_node = node->parentComponent();
       
       if (p_node)
       {
-        p_index = createIndex(0,0, p_node); 
+        p_index = createIndex(p_node->position(),0, p_node); 
       }
     }
     return p_index;
@@ -160,29 +163,34 @@ namespace kex
   {
     QModelIndex ind;
     
-  //  if(hasIndex(row, column, parent))
-//    {
-//      if(parent.isValid())
-//      {
-//        OutputComponent::SharedPointer parentItem = getItem(parent);
-//        
-//        OutputComponent::SharedPointer *child;
-//        child = new OutputComponent::SharedPointer;
-//        *child = parentItem->child(row);
-//        
-//        if (*child)
-//        {
-//          ind = createIndex(row, column, child);
-//        }
-//        
-//      } else
-//      {
-//        OutputComponent::SharedPointer *sp = new OutputComponent::SharedPointer;
-//        *sp = _componentList[row];
-//        ind = createIndex(row, column, sp);
-//      }
-//
-//    }
+    if(hasIndex(row, column, parent))
+    {
+      if(parent.isValid())
+      {
+        ComponentList::Node::Pointer parentItem = getItem(parent);
+        // if the index isValid() we should always get a valid node
+        Q_CHECK_PTR(parentItem);
+
+        ComponentList::iterator it(parentItem->child());
+        it += row;
+        
+        if (it != _componentList.end())
+        {
+          ind = createIndex(row, column, &(*it));
+        }
+        
+      } else
+      {
+        ComponentList::iterator it(_componentList.begin() + row);
+        ComponentList::Node& node(*it);
+        // make sure the requested node/row is valid
+        if (it != _componentList.end())
+        {
+          ind = createIndex(row, column, &node);
+        }
+      }
+
+    }
     
     return ind;
   }

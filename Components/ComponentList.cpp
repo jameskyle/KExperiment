@@ -18,7 +18,7 @@ namespace kex {
     return componentList;
   }
   
-  const ComponentList::ComponentList& const_instance()
+  const ComponentList& ComponentList::const_instance()
   {
     return ComponentList::instance();
   }

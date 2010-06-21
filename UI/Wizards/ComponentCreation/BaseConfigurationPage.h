@@ -58,7 +58,7 @@ namespace kex
 
   protected:
     static const char DURATION_DECIMALS = 3;
-    static const double DURATION_STEPSIZE = 0.5;
+    static const double DURATION_STEPSIZE;
     
     QLabel _nameLabel;  //!< label for the name value
     QLabel _labelLabel; //!< label for the Label value

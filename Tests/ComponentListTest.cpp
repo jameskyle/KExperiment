@@ -172,7 +172,18 @@ namespace kex
   void ComponentListTest::cloneTest(){}
   void ComponentListTest::removeTest()
   {
-    
+    QList<ComponentList::Node::Pointer> nodes = componentNodes();
+    ComponentList cList;
+
+    for(int i = 0;i < nodes.count();++i)
+    {
+      cList.append(nodes[i]);
+    }
+
+    while(cList.begin() != cList.end())
+    {
+      cList.remove(cList.begin());
+    }
   }
   
   void ComponentListTest::prependTest(){}

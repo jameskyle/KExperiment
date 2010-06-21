@@ -227,31 +227,40 @@ namespace kex {
   bool ComponentList::remove(Node::Pointer comp)
   {
     bool found(false);
-    iterator it(begin(comp));
-    
     // while node is not the null pointer indicating end of list
     
-    while (it != end())
+    iterator it(find(comp, begin(comp), end()));
+    
+    if (it != end())
     {
-      if (*it == *comp)
-      {
-        found = true;
-        
-        if (it->previous())
-        {
-          it->previous()->setNext(it->next());
-        }
-        
-        if (it->next())
-        {
-          it->next()->setPrevious(it->previous());
-        }
-        
-        it->clearPositionalData();
-      }
+      found = true;
       
-      ++it;
+      
+      if (comp->next() && comp->previous())
+      {
+        comp->previous()->setNext(comp->next());
+        comp->next()->setPrevious(comp->previous());
+        
+      } else if (comp->next())
+      {
+        comp->next()->setPrevious(comp->previous());
+        _front = comp->next();
+        
+      } else if (comp->previous())
+      {
+        comp->previous()->setNext(comp->next());
+        _back = comp->previous();
+        
+      } else
+      {
+        _front = _back = 0;
+      }
+            
+      comp->clearPositionalData();
+      
     }
+
+    
     return found;
   }
   
@@ -350,7 +359,15 @@ namespace kex {
     
     return count;
   }
-
+  
+  void ComponentList::clear() 
+  { 
+    while (_back)
+    {
+      remove(_back);
+    }
+  }
+  
   ComponentList::Node::Node(OutputComponent::SharedPointer comp) : 
   _component(comp),
   _durationMSecs(0),
@@ -385,6 +402,16 @@ namespace kex {
   ComponentList::Node::operator bool() const
   {
     return !(isNull());
+  }
+  
+  bool ComponentList::Node::operator==(const Node& other)
+  {
+    return (this == &other);
+  }
+  
+  bool ComponentList::Node::operator!=(const Node& other)
+  {
+    return !(*this == other);
   }
   
   bool ComponentList::Node::operator!() const
@@ -473,6 +500,7 @@ namespace kex {
     }
     return count;
   }
+  
   bool ComponentList::Node::hasPrevious() const
   {
     bool valid(false);

@@ -9,8 +9,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-#include <Components/Actions/Action.h>
-#include <Utilities/Utilities.h>
+#include "Components/Actions/Action.h"
 
 namespace kex
 {
@@ -20,11 +19,11 @@ namespace kex
   public:
     BaseInformationPage(QWidget *parent = 0);
     virtual ~BaseInformationPage() {}
-    
+
   protected:
-    
+
     QLabel      _nameLabel;
-    QLabel      _labelLabel;      
+    QLabel      _labelLabel;
     QLabel      _descriptionLabel;
 
     QLineEdit   _nameLineEdit;

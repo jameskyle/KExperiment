@@ -11,7 +11,7 @@ namespace kex
     Q_PROPERTY(QString instructions READ instructions WRITE setInstructions)
     
   public:
-    Experiment(QObject *parent = 0) : OutputComponent(parent) {}
+    Experiment(QObject *parent = 0);
     ~Experiment() {}
     
     const QString instructions() const {return _instructions;}

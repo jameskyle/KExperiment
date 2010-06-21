@@ -18,10 +18,8 @@ macx {
 
 # end Mac Options
 
-QT +=  xmlpatterns
-QT += xml
-QT += testLib
-CONFIG += debug
+QT +=  xmlpatterns xml
+CONFIG += debug warn_on
 
 DEPENDPATH += . \
               Common \
@@ -53,7 +51,6 @@ HEADERS += Common/Global.h \
            UI/ComponentLibrary.h \
            UI/LiveView.h \
            UI/MainWindow.h \
-           Utilities/Utilities.h \
            Components/Actions/Action.h \
            Components/OutputComponent.h \
            Components/Actions/RestAction.h \
@@ -65,7 +62,6 @@ HEADERS += Common/Global.h \
            Components/Trial/Trial.h \
            Components/Experiment/Experiment.h \
            Components/ComponentList.h \
-           Tests/ComponentListTest.h \
            UI/Wizards/ComponentCreation/BaseConfigurationPage.h \
            UI/Wizards/ComponentCreation/BaseInformationPage.h \
            UI/Wizards/ComponentCreation/ComponentSelectionDialog.h \
@@ -102,7 +98,6 @@ SOURCES += main.cpp \
            Components/Trial/Trial.cpp \
            Components/Experiment/Experiment.cpp \
            Components/ComponentList.cpp \
-           Tests/ComponentListTest.cpp \
            UI/Wizards/ComponentCreation/BaseConfigurationPage.cpp \
            UI/Wizards/ComponentCreation/BaseInformationPage.cpp \
            UI/Wizards/ComponentCreation/ComponentSelectionDialog.cpp \

@@ -7,10 +7,10 @@
 #include <QListView>
 #include <QSignalMapper>
 
-#include <Wizards/ComponentCreation/BaseConfigurationPage.h>
 #include "Components/Event/Event.h"
-#include "LiveView.h"
-#include "MainWindow.h"
+#include "UI/Wizards/ComponentCreation/BaseConfigurationPage.h"
+#include "UI/LiveView.h"
+#include "UI/MainWindow.h"
 #include "Utilities/Utilities.h"
 
 namespace kex

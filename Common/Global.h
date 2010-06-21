@@ -8,8 +8,8 @@
 #include <QMessageBox>
 #include <QVariant>
 
-#include <Common/Uncopyable.h>
-#include <Common/Logger.h>
+#include "Common/Uncopyable.h"
+#include "Common/Logger.h"
 
 namespace kex
 {

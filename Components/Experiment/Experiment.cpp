@@ -2,6 +2,11 @@
 
 namespace kex
 {
+  Experiment::Experiment(QObject *parent) : 
+    OutputComponent(parent), _instructions()
+  {
+  }
+
   void Experiment::updateFromTemplate(const OutputComponent::SharedPointer t)
   {
     Q_CHECK_PTR(t);

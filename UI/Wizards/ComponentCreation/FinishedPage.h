@@ -5,15 +5,15 @@
 #include <QVBoxLayout>
 #include <QVariant>
 
-#include <Utilities/Utilities.h>
+#include "Components/OutputComponent.h"
 
 namespace kex
 {
   /** \brief  The finished page for the creation wizard.
-   * 
-   * The Finished page is specific to the selected CreationType in the 
+   *
+   * The Finished page is specific to the selected CreationType in the
    * CreationSelectionPage instance.
-   * 
+   *
    * © Copyright 2010 KSpace MRI - James Kyle. All Rights Reserved.
    *
    * \author James Kyle KSpace MRI
@@ -28,13 +28,13 @@ namespace kex
   public:
     FinishedPage(const OutputComponent::ComponentTypes component,
                  QWidget *parent = 0);
-    
+
     ~FinishedPage();
     void initializePage();
-    
+
   private:
     OutputComponent::ComponentTypes _component;
   };
-  
+
 }
 #endif

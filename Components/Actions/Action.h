@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QDebug>
 
-#include <Components/OutputComponent.h>
+#include "Components/OutputComponent.h"
 
 namespace kex
 {

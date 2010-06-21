@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include <QObjectCleanupHandler>
 #include <QDebug>
 #include <QXmlStreamReader>
@@ -19,7 +20,6 @@
 #include "LiveView.h"
 
 #include "Models/ComponentModel.h"
-#include "Utilities/Utilities.h"
 #include "Common/Global.h"
 
 #include "ui_MainWindow.h"

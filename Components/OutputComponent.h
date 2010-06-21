@@ -5,10 +5,11 @@
 #include <QSet>
 #include <QIcon>
 #include <QDebug>
+
 namespace kex
 {
   /** \brief  Interface class for output components
-   * 
+   *
    * Copyright 2010 KSpace MRI. All Rights Reserved.
    *
    * \author James Kyle
@@ -21,11 +22,11 @@ namespace kex
   {
     Q_OBJECT
     Q_FLAGS(ComponentType ComponentTypes)
-        
+
   public:
     typedef OutputComponent* Pointer;
     typedef QSharedPointer<OutputComponent> SharedPointer;
-    
+
     enum ComponentType
     {
       RestActionType            = 0x1,
@@ -39,15 +40,15 @@ namespace kex
       ActionType                = (RestActionType | TextActionType |
                                    ImageActionType | AudioActionType |
                                    VideoActionType),
-      AllComponents             = (ActionType | EventType | 
+      AllComponents             = (ActionType | EventType |
                                    TrialType | ExperimentType),
     };
     Q_DECLARE_FLAGS(ComponentTypes, ComponentType)
-    
+
     OutputComponent(QObject *parent = 0);
-    
+
     /** \brief  Copy constructor
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
      * \author James Kyle
@@ -58,9 +59,9 @@ namespace kex
      * \version $Rev$
      **/
    // OutputComponent(const OutputComponent &component);
-        
+
     virtual ~OutputComponent();
-    
+
     /** \brief Returns the name attribute.
      *
      * The name attribute serves as a unique identifier for every class
@@ -72,7 +73,7 @@ namespace kex
      * \sa QList
      **/
     const QString name() const;
-    
+
     /** \brief Returns the description for the Action class.
      *
      * The description of a base class is a QString with maximum length of
@@ -84,7 +85,7 @@ namespace kex
      * \sa QString
      **/
     const QString description() const;
-    
+
     /** \brief Returns the label for an Action class.
      *
      * The label is a brief description of maximum 256 characters.
@@ -95,7 +96,7 @@ namespace kex
      * \sa QString
      **/
     const QString label() const;
-    
+
     /** \brief Returns the category for the Action class.
      *
      * The category for an Action class is used for sorting and filtering with
@@ -107,9 +108,9 @@ namespace kex
      * \sa QString
      **/
     const QString mainCategory() const;
-    
+
     void setMainCategory(const QString& cat);
-    
+
     /** \brief Sets the name attribute of the Action class.
      *
      * The name attribute serves as a unique identifier for each Action
@@ -121,7 +122,7 @@ namespace kex
      * \sa QString name()
      **/
     void setName(const QString& name);
-    
+
     /** \brief Sets the description for the Action class.
      *
      * The Action description is a verbose description of any pertinent details
@@ -135,7 +136,7 @@ namespace kex
      * \sa QString description()
      **/
     void setDescription(const QString& desc);
-    
+
     /** \brief Sets the label of an Action class.
      *
      * An Action's label is a short description of the Action and is displayed
@@ -147,7 +148,7 @@ namespace kex
      * \sa QString label()
      **/
     void setLabel(const QString& label);
-    
+
     /** \brief Sets the category for the Action instance.
      *
      * The category is used for sorting and library organization of Actions.
@@ -159,21 +160,21 @@ namespace kex
      * \sa QString category()
      **/
     void addCategory(const QString& category);
-    
+
     bool removeCategory(const QString& category);
-        
+
     virtual const QString toString() const;
-    
+
     ComponentTypes componentType() const {return _componentType;}
-    
+
     /** \brief  Holds the type of component represented.
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
-     * This stores a mask for the various component types represented. For 
+     * This stores a mask for the various component types represented. For
      * a componentType equal to OutputComponent::EventType the method
      * toComponent() would return a pointer to a new Event object.
-     * 
+     *
      * \author James Kyle
      * \author $LastChangedBy$
      * \date 2010-5-10
@@ -182,14 +183,14 @@ namespace kex
      * \version $Rev$  \sa componentType()
      **/
     void setComponentType(ComponentTypes t);
-    
+
     const QIcon icon();
     void setIcon(const QIcon& icon);
-    
+
     static const quint32 MAX_DURATION = 1800000; //!< maximum run time, 30m
     static const QString componentTypeToString(ComponentTypes t);
-    
-    virtual void updateFromTemplate(const SharedPointer t);  
+
+    virtual void updateFromTemplate(const SharedPointer t);
 
   private:
     quint32        _startTimeMSecs;
@@ -200,11 +201,11 @@ namespace kex
     QString        _mainCategory; //!< main group identifier
     QSet<QString>  _categorySet; //!< list of all categories for component
     QIcon          _icon;
-    
+
   signals:
     void startTimeChanged();
     void complete();
-    
+
   public slots:
     virtual void begin() = 0;
     virtual void abort() = 0;

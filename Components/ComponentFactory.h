@@ -20,9 +20,7 @@
 #include "Trial/Trial.h"
 #include "Experiment/Experiment.h"
 
-#include <Common/Global.h>
-
-class OutputComponent;
+#include "Common/Global.h"
 
 namespace kex
 {

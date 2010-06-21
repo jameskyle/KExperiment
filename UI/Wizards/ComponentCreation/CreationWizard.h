@@ -4,13 +4,13 @@
 #include <QWizard>
 #include <QDebug>
 
-#include <Wizards/ComponentCreation/WelcomePage.h>
-#include <Wizards/ComponentCreation/InformationPage.h>
-#include <Wizards/ComponentCreation/ConfigurationPage.h>
-#include <Wizards/ComponentCreation/FinishedPage.h>
+#include "UI/Wizards/ComponentCreation/WelcomePage.h"
+#include "UI/Wizards/ComponentCreation/InformationPage.h"
+#include "UI/Wizards/ComponentCreation/ConfigurationPage.h"
+#include "UI/Wizards/ComponentCreation/FinishedPage.h"
 
-#include <Components/Actions/Action.h>
-#include <Common/Global.h>
+#include "Components/Actions/Action.h"
+#include "Common/Global.h"
 
 namespace kex
 {

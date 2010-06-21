@@ -1,13 +1,10 @@
-
+#include <QString>
 #include <QApplication>
 #include <QList>
 
-#include <Components/ComponentFactory.h>
-#include <Components/MetaData.h>
-#include <Utilities/Utilities.h>
-#include <Common/Global.h>
-#include <QTreeView>
-#include "MainWindow.h"
+#include "Utilities/Utilities.h"
+#include "UI/MainWindow.h"
+
 
 int main (int argc, char *argv[])
 {

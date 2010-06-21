@@ -73,25 +73,25 @@ namespace kex
      * \version $Rev$  \sa Config
      **/
     void configureApplication();
-    
+
     /** \brief  Validates the provided file using the specified validator.
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
      * Returns true if file conforms to the validator schema.
-     * 
+     *
      * \author James Kyle
      * \author $LastChangedBy$
      * \date 2010-5-3
      * \date $LastChangedDate$
      * \param file the file to be validated
      * \prarm validator validator used to validate
-     * \version $Rev$ 
+     * \version $Rev$
      **/
     bool isValidXml(QFile *file, const QXmlSchemaValidator *validator);
-    
+
     /** \brief  Returns a list of paths to the component xml definition files
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
      * \author James Kyle
@@ -102,19 +102,19 @@ namespace kex
      **/
     QStringList xmlFileComponentList(kex::Config::ApplicationDataDirectoryTypes t =
                                      kex::Config::ApplicationDataDirectoryTypes(
-                                      kex::Config::ActionDirectory | 
-                                      kex::Config::EventDirectory | 
+                                      kex::Config::ActionDirectory |
+                                      kex::Config::EventDirectory |
                                       kex::Config::TrialDirectory |
                                       kex::Config::ExperimentDirectory));
-    
+
     /** \brief  Translates the given fileName string to a valid compnent name.
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
      * Al underscores in a comoponent name are converted to spaces
-     * and the .xml extension is removed. Also, camelcase names are expanded 
+     * and the .xml extension is removed. Also, camelcase names are expanded
      * inserting a space before each capital letter.
-     * 
+     *
      * \author James Kyle
      * \author $LastChangedBy$
      * \date 2010-5-4
@@ -124,8 +124,8 @@ namespace kex
      * \version $Rev$
      **/
     QString componentNameFromBaseName(const QString& fileName);
-    
-    bool sortComponentQList(const OutputComponent::Pointer c1, 
+
+    bool sortComponentQList(const OutputComponent::Pointer c1,
                             const OutputComponent::Pointer *c2);
   };
 

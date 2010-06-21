@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QMessageBox>
 
-#include <Common/Uncopyable.h>
+#include "Common/Uncopyable.h"
 namespace kex
 {  
   /** \brief  Handles logging for the application

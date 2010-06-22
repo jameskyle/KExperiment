@@ -35,8 +35,6 @@ namespace kex
       QVERIFY(cList.count() == 0);
       QVERIFY(!cList.back());
       QVERIFY(!cList.front());
-      
-      qDeleteAll(nodes.begin(), nodes.end());
     }
   }
   
@@ -174,16 +172,28 @@ namespace kex
   {
     QList<ComponentList::Node::Pointer> nodes = componentNodes();
     ComponentList cList;
-
+    int count = 0;
+    
     for(int i = 0;i < nodes.count();++i)
     {
       cList.append(nodes[i]);
     }
-
-    while(cList.begin() != cList.end())
+    
+    count = cList.count();
+    ComponentList::Node::Pointer node;
+    
+    while(cList.front())
     {
-      cList.remove(cList.begin());
+      node = cList.front();
+      cList.remove(node);
+      QVERIFY(node->previous() == 0);
+      QVERIFY(node->next() == 0);
+      
+      count -= 1;
+      QVERIFY(cList.count() == count);
     }
+    
+    QVERIFY(cList.count() == 0);
   }
   
   void ComponentListTest::prependTest(){}

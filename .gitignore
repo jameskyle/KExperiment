@@ -9,4 +9,6 @@ Makefile
 build
 *.xcodeproj
 *.tmproj
+*.pdf
+*.xpr
 Info.plist

@@ -106,7 +106,7 @@ namespace kex {
   void ComponentList::append(Node::Pointer node, Node::Pointer parent)
   {
     Q_CHECK_PTR(node);
-    Q_ASSERT(!node->previous() && !node->next() && !node->parentComponent());
+    Q_ASSERT(!node->previous() && !node->next());
     
     if (!parent) // append to main list
     {

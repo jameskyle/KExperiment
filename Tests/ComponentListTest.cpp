@@ -73,30 +73,30 @@ namespace kex
       ComponentList::iterator it(componentList.begin());
       it = it + i;
       
-      ComponentList::Node& np(componentList[i]);
+      ComponentList::Node::Pointer np(componentList[i]);
       Q_CHECK_PTR(&np);
-      ComponentList::Node::Pointer op = np.next();
+      ComponentList::Node::Pointer op = np->next();
       QVERIFY(componentList.back() == ex_nodes[i]);
-      QVERIFY(componentList[i].next() == 0);
+      QVERIFY((componentList[i])->next() == 0);
       if (i) 
       {
-        QVERIFY(componentList[i].previous() == &componentList[i-1]);
-        QVERIFY(componentList[i].hasPrevious() == true);
+        QVERIFY((componentList[i])->previous() == componentList[i-1]);
+        QVERIFY((componentList[i])->hasPrevious() == true);
       } else
       {
-        QVERIFY(componentList[i].hasPrevious() == false);
+        QVERIFY((componentList[i])->hasPrevious() == false);
         QVERIFY(componentList.back() == componentList.front());
       }
-      QVERIFY(componentList[i].lastChild() == 0);
-      QVERIFY(componentList[i].child() == 0);
-      QVERIFY(componentList[i].parentComponent() == 0);
-      QVERIFY(componentList[i].durationMSecs() == 0);
-      QVERIFY(componentList[i].position() == i);
-      QVERIFY(componentList[i].numChildren() == 0);
-      QVERIFY(componentList[i].hasChildren() == false);
-      QVERIFY(componentList[i].hasNext() == false);
+      QVERIFY((componentList[i])->lastChild() == 0);
+      QVERIFY((componentList[i])->child() == 0);
+      QVERIFY((componentList[i])->parentComponent() == 0);
+      QVERIFY((componentList[i])->durationMSecs() == 0);
+      QVERIFY((componentList[i])->position() == i);
+      QVERIFY((componentList[i])->numChildren() == 0);
+      QVERIFY((componentList[i])->hasChildren() == false);
+      QVERIFY((componentList[i])->hasNext() == false);
       
-      componentList.append(t_nodes[i], &componentList[i]);
+      componentList.append(t_nodes[i], componentList[i]);
       
       componentList.append(e_nodes[i], t_nodes[i]);
       
@@ -151,17 +151,15 @@ namespace kex
   
   void ComponentListTest::findTest()
   {
-//    ComponentList::iterator found;
-//    ComponentList cList;
-//    QList<ComponentList::Node::Pointer> nodes = componentNodes();
-//    
-//    for (int i = 0; i < nodes.count(); ++i)
-//    {
-//      cList.append(nodes[i]);
-//      
-//      
-//    }
-//    qDeleteAll(cList.begin(), cList.end());
+    ComponentList::iterator found;
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nodes = componentNodes();
+    
+    for (int i = 0; i < nodes.count(); ++i)
+    {
+      cList.append(nodes[i]);
+    }
+    qDeleteAll(cList.begin(), cList.end());
   }
   
   void ComponentListTest::findByNameTest(){}
@@ -232,8 +230,8 @@ namespace kex
     ComponentList::iterator it(cList.begin());
     QVERIFY(it == cList.begin());
     QVERIFY(it != cList.end());
-    QVERIFY((*it) == *cList.front());
-    QVERIFY((*it) != *cList.back());
+    QVERIFY((*it) == cList.front());
+    QVERIFY((*it) != cList.back());
     
   }
 

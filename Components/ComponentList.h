@@ -72,7 +72,8 @@ namespace kex
     class node_iter : public boost::iterator_facade<
                                  node_iter<Value>,
                                  Value,
-                                 boost::random_access_traversal_tag>
+                                 boost::random_access_traversal_tag,
+                                 Value*>
     {
     private:
       struct enabler {};
@@ -81,10 +82,6 @@ namespace kex
       node_iter() : m_node(0) {}
 
       explicit node_iter(Value* p) : m_node(p) {}
-
-      template<class OtherValue>
-      node_iter(node_iter<OtherValue> const& other) :
-        m_node(other.m_node) {}
 
       // converting constructor for const casting between iterators
       template<class OtherValue>
@@ -97,15 +94,15 @@ namespace kex
       friend class boost::iterator_core_access;
       template<class> friend class node_iter;
 
-      Value& dereference() const
-      {return *m_node;}
-
       template<class OtherValue>
       bool equal(node_iter<OtherValue> const& other) const
       {return this->m_node == other.m_node;}
-
+      
       void increment()
       {m_node = m_node->next();}
+      
+      Value* dereference() const
+      {return m_node;}
 
       void decrement()
       {m_node = m_node->previous();}
@@ -142,13 +139,13 @@ namespace kex
 
     };
     typedef node_iter<Node> iterator;
-    typedef node_iter<const Node> const_iterator;
+    typedef node_iter<Node const> const_iterator;
 
     // Filter iterators
     struct isActionComponent
     {
-      bool operator()(Node& node)
-      {return node.component()->componentType() & OutputComponent::ActionType;}
+      bool operator()(Node* node)
+      {return node->component()->componentType() & OutputComponent::ActionType;}
     };
 
     struct ActionComponents
@@ -245,15 +242,14 @@ namespace kex
     static bool sortComponentList(Node::Pointer c1, Node::Pointer c2);
 
     // Operators
-    Node& operator[](int row);
+    Node::Pointer operator[](int row);
 
     // iterator methods
-    iterator begin(Node::Pointer node = 0);
+    iterator begin(Node::Pointer node = 0) const;
     Node::Pointer front() const {return _front;}
-    const_iterator begin(Node::Pointer node = 0) const;
-    iterator end();
+    iterator end() const;
     Node::Pointer back() const {return _back;}
-    const_iterator end() const;
+    //const_iterator end() const;
 
   private:
     void updateList(Node::Pointer node);

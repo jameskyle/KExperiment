@@ -7,14 +7,6 @@ namespace kex
     : QAbstractItemModel(parent),
       _componentList(ComponentList::instance())
   {
-    qDebug() << _componentList.count();
-    ComponentList::iterator it(_componentList.begin());
-    while (it != _componentList.end())
-    {
-      qDebug() << it->component()->name();
-      ++it;
-    }
-    
   }
 
  
@@ -115,7 +107,7 @@ namespace kex
       ComponentList::Node::Pointer node;
       if (!index.parent().isValid())
       {
-        node = &_componentList[index.row()];
+        node = _componentList[index.row()];
       } else
       {
         node = getItem(index);
@@ -176,17 +168,17 @@ namespace kex
         
         if (it != _componentList.end())
         {
-          ind = createIndex(row, column, &(*it));
+          ind = createIndex(row, column, *it);
         }
         
       } else
       {
         ComponentList::iterator it(_componentList.begin() + row);
-        ComponentList::Node& node(*it);
+        ComponentList::Node::Pointer node(*it);
         // make sure the requested node/row is valid
         if (it != _componentList.end())
         {
-          ind = createIndex(row, column, &node);
+          ind = createIndex(row, column, node);
         }
       }
 

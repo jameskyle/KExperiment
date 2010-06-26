@@ -457,7 +457,7 @@ namespace kex
 
     if (it != _globalList.end())
     {
-      child->component()->updateFromTemplate(it->component());
+      child->component()->updateFromTemplate((*it)->component());
     }
 
     if (child)

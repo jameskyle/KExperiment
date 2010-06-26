@@ -23,7 +23,7 @@ namespace kex {
     return ComponentList::instance();
   }
 
-  ComponentList::Node& ComponentList::operator[](int row)
+  ComponentList::Node::Pointer ComponentList::operator[](int row)
   {
     iterator it;
     if (row >= 0)
@@ -52,7 +52,7 @@ namespace kex {
     Q_CHECK_PTR(node);
     // ensure the node is not a member of another list, see clone()
     Q_ASSERT(!node->parentComponent() && !node->next() && !node->previous());
-    insertAfter(&(*it), node);
+    insertAfter(*it, node);
   }
   
   void ComponentList::clone(Node::Pointer prevNode, Node::Pointer node)
@@ -75,7 +75,7 @@ namespace kex {
     
     while (start != stop)
     {
-      if (*start == *node)
+      if (*start == node)
       {
         found = start;
         break;
@@ -93,7 +93,7 @@ namespace kex {
     
     while (it != end())
     {
-      if (it->component()->name() == name)
+      if ((*it)->component()->name() == name)
       {
         break;
       }
@@ -269,7 +269,7 @@ namespace kex {
     return (c1->component()->name() < c2->component()->name());
   }
   
-  ComponentList::iterator ComponentList::begin(Node::Pointer node)
+  ComponentList::iterator ComponentList::begin(Node::Pointer node) const
   {
     // this method returns the _front of any segment for which node belongs to
     // if node == 0 or if node has no parent, we return the _front of the top 
@@ -294,38 +294,11 @@ namespace kex {
     return it;
   }
   
-  ComponentList::const_iterator ComponentList::begin(Node::Pointer node) const
-  {
-    const_iterator it;
-    
-    if (!node || !node->parentComponent())
-    {
-      it = const_iterator(_front);
-    } else
-    {
-      Node::Pointer n = node;
-      
-      while (n->previous())
-      {
-        n = n->previous();
-      }
-      
-      it = const_iterator(n);
-    }
-
-    return it;
-  }
-
-  ComponentList::iterator ComponentList::end()
+  ComponentList::iterator ComponentList::end() const
   {
     // per STL, the end() method returns one past the last item.
     // in our list, this is always the null pointer, 0x0
     return iterator(0);
-  }
-  
-  ComponentList::const_iterator ComponentList::end() const
-  {
-    return const_iterator(0);
   }
   
   void ComponentList::updateList(Node::Pointer node)
@@ -347,8 +320,7 @@ namespace kex {
 
   int ComponentList::count() const
   {
-    const_iterator it;
-    it = begin();
+    const_iterator it(begin());
     int count(0);
     
     while (it != end())
@@ -459,12 +431,12 @@ namespace kex {
       }
      
       ComponentList::iterator it(this);
-      int duration = it->durationMSecs();
+      int duration = (*it)->durationMSecs();
       
-      while (it->hasNext())
+      while ((*it)->hasNext())
       {
         ++it;
-        duration += it->durationMSecs();
+        duration += (*it)->durationMSecs();
       }
       
       _parentComponent->setDurationMSecs(duration);
@@ -476,7 +448,7 @@ namespace kex {
     int count(0);
     ComponentList::const_iterator it(this);
     
-    while (it->hasPrevious())
+    while ((*it)->hasPrevious())
     {
       ++count;
       --it;

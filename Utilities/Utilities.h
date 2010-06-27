@@ -125,6 +125,57 @@ namespace kex
      **/
     QString componentNameFromBaseName(const QString& fileName);
 
+    /** \brief  Deletes all the items in the range [begin, end)  
+     *  
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     * 
+     * Delets all the items in the range [begin, end] using the C++ delete 
+     * operator. The item type must be a pointer type.
+     *
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-4
+     * \date $LastChangedDate$
+     * \param begin an STL forward iterator representing the start point
+     * \param end an STL forward iterator representing the stop point
+     * \version $Rev$
+     **/
+    template <class ForwardIterator>
+    void deleteAll(ForwardIterator begin, ForwardIterator end)
+    {
+      void *temp;
+      while(begin != end) 
+      {
+        temp = *begin;
+        ++begin;
+        delete temp;
+      }
+    }
+
+    /** \brief  Deletes all the items in the container
+     *  
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     * 
+     * Delets all the items in the container. The container must have a begin()
+     * and end() method that returns an STL iterator.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-4
+     * \date $LastChangedDate$
+     * \param list container that provides begin() and end() iterators
+     * \version $Rev$
+     **/
+    template <class Container>
+    void deleteAll(Container list)
+    {
+      Container::iterator begin(list.begin());
+      Container::iterator end(list.end());
+
+      deleteAll(begin, end);
+    }
+
     bool sortComponentQList(const OutputComponent::Pointer c1,
                             const OutputComponent::Pointer *c2);
   };

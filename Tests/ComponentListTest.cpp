@@ -109,10 +109,10 @@ namespace kex
       
     }
     
-    qDeleteAll(a_nodes.begin(), a_nodes.end());
-    qDeleteAll(e_nodes.begin(), e_nodes.end());
-    qDeleteAll(t_nodes.begin(), t_nodes.end());
-    qDeleteAll(ex_nodes.begin(), ex_nodes.end());
+    Utilities::deleteAll(a_nodes);
+    Utilities::deleteAll(e_nodes);
+    Utilities::deleteAll(t_nodes);
+    Utilities::deleteAll(ex_nodes);
   }
   
   void ComponentListTest::nextPreviousNodeTest()
@@ -143,7 +143,7 @@ namespace kex
       node = node->previous();
     }
     
-    qDeleteAll(nodes.begin(), nodes.end());
+    Utilities::deleteAll(nodes);
   }
   
   void ComponentListTest::insertAfterTest(){}
@@ -159,7 +159,9 @@ namespace kex
     {
       cList.append(nodes[i]);
     }
-    qDeleteAll(cList.begin(), cList.end());
+    QVERIFY(nodes.count() == cList.count());
+    
+    Utilities::deleteAll(cList);
   }
   
   void ComponentListTest::findByNameTest(){}

@@ -5,14 +5,14 @@ namespace kex
 
   ComponentDomParser::ComponentDomParser() :
   _fileName(),
-  _globalList(ComponentList::instance())
+  _globalList(ComponentList())
   {
 
   }
 
   ComponentDomParser::ComponentDomParser(const QString& fileName) :
     _fileName(fileName),
-  _globalList(ComponentList::instance())
+  _globalList(ComponentList())
   {
 
   }
@@ -70,7 +70,7 @@ namespace kex
       return false;
     }
 
-    ComponentList::Node::Pointer node = createComponentNode(root);
+    Node::Pointer node = createComponentNode(root);
 
     _globalList.append(node);
     parseElement(root, node);
@@ -82,7 +82,7 @@ namespace kex
     return true;
   }
 
-  void ComponentDomParser::resolveName(ComponentList::Node::Pointer node) const
+  void ComponentDomParser::resolveName(Node::Pointer node) const
   {
     QString name = node->component()->name();
     if (name.isEmpty())
@@ -93,7 +93,7 @@ namespace kex
     }
   }
 
-  ComponentList::Node*
+  Node::Pointer
   ComponentDomParser::createComponentNode(const QDomElement& root) const
   {
     Q_ASSERT(isValidElement(root));
@@ -141,7 +141,7 @@ namespace kex
     OutputComponent::SharedPointer sp(comp);
     Q_CHECK_PTR(sp);
 
-    ComponentList::Node* node = new ComponentList::Node(sp);
+    Node::Pointer node = new Node(sp);
     Q_CHECK_PTR(node);
 
     return node;
@@ -171,7 +171,7 @@ namespace kex
   }
 
   void ComponentDomParser::parseElement(const QDomElement &element,
-                                        ComponentList::Node::Pointer node) const
+                                        Node::Pointer node) const
   {
     // should only receive valid elements.
     Q_ASSERT(isValidElement(element));
@@ -201,7 +201,7 @@ namespace kex
 
   void
   ComponentDomParser::parseHeaderElement(const QDomElement &element,
-                                         ComponentList::Node::Pointer node) const
+                                         Node::Pointer node) const
   {
     Q_ASSERT(element.tagName() == "header");
     Q_CHECK_PTR(node);
@@ -246,7 +246,7 @@ namespace kex
 
   void
   ComponentDomParser::parseActionElement(const QDomElement &element,
-                                         ComponentList::Node::Pointer node) const
+                                         Node::Pointer node) const
   {
     Q_ASSERT(element.tagName() == "action");
     Q_CHECK_PTR(node);
@@ -305,7 +305,7 @@ namespace kex
   }
 
   void ComponentDomParser::parseEventElement(const QDomElement &element,
-                                             ComponentList::Node::Pointer node) const
+                                             Node::Pointer node) const
   {
     QDomNode child = element.firstChild();
 
@@ -327,7 +327,7 @@ namespace kex
   }
 
   void ComponentDomParser::parseTrialElement(const QDomElement &element,
-                                             ComponentList::Node::Pointer node) const
+                                             Node::Pointer node) const
   {
     QDomNode child = element.firstChild();
 
@@ -357,7 +357,7 @@ namespace kex
 
   void
   ComponentDomParser::parseExperimentElement(const QDomElement &element,
-                                             ComponentList::Node::Pointer node) const
+                                             Node::Pointer node) const
   {
     QDomNode child = element.firstChild();
 
@@ -390,7 +390,7 @@ namespace kex
   }
 
   void ComponentDomParser::setMainCategory(const QDomElement &element,
-                                           ComponentList::Node::Pointer node) const
+                                           Node::Pointer node) const
   {
     QString cat;
     Logger *logger = &Logger::instance();
@@ -431,13 +431,13 @@ namespace kex
   }
 
   void ComponentDomParser::createChildComponent(const QDomElement &element,
-                                                ComponentList::Node::Pointer node) const
+                                                Node::Pointer node) const
   {
     Q_CHECK_PTR(node);
     Q_ASSERT(isValidElement(element));
     Q_ASSERT(node->component()->componentType() & ~OutputComponent::ActionType);
 
-    ComponentList::Node::Pointer child = createComponentNode(element);
+    Node::Pointer child = createComponentNode(element);
 
     Q_CHECK_PTR(child);
     // Only non Action components  can have children, we assert this here
@@ -449,10 +449,8 @@ namespace kex
     // OR it could be defined at the top most level of components in an
     // xml file. Since templates work on an overloading principle, we start by
     // looking at the top most level and then work to the inner scope.
-
-    ComponentList::iterator it;
-    it = _globalList.findByName(child->component()->name());
-
+    
+    ComponentList::iterator it(_globalList.begin());
     // ComponentList::find() returns 0 if component not found.
 
     if (it != _globalList.end())

@@ -74,7 +74,7 @@ namespace kex
       it = it + i;
       
       ComponentList::Node::Pointer np(componentList[i]);
-      Q_CHECK_PTR(&np);
+      Q_CHECK_PTR(np);
       ComponentList::Node::Pointer op = np->next();
       QVERIFY(componentList.back() == ex_nodes[i]);
       QVERIFY((componentList[i])->next() == 0);

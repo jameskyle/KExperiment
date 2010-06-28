@@ -37,35 +37,35 @@ namespace kex
 
   private:
     QString _fileName;
-    ComponentList& _globalList;
+    ComponentList _globalList;
     bool isValidElement(const QDomElement &root) const;
     void parseHeaderElement(const QDomElement &element,
-                            ComponentList::Node::Pointer node) const;
+                            Node::Pointer node) const;
 
     void parseElement(const QDomElement &element,
-                      ComponentList::Node::Pointer node) const;
+                      Node::Pointer node) const;
 
     void parseActionElement(const QDomElement &element,
-                            ComponentList::Node::Pointer node) const;
+                            Node::Pointer node) const;
 
     void parseEventElement(const QDomElement &element,
-                           ComponentList::Node::Pointer node) const;
+                           Node::Pointer node) const;
 
     void parseTrialElement(const QDomElement &element,
-                           ComponentList::Node::Pointer node) const;
+                           Node::Pointer node) const;
 
     void parseExperimentElement(const QDomElement &element,
-                                ComponentList::Node::Pointer node) const;
+                                Node::Pointer node) const;
 
     void setMainCategory(const QDomElement &element,
-                         ComponentList::Node::Pointer node) const;
+                         Node::Pointer node) const;
 
     void createChildComponent(const QDomElement &element,
-                              ComponentList::Node::Pointer node) const;
+                              Node::Pointer node) const;
 
-    void resolveName(ComponentList::Node::Pointer node) const;
+    void resolveName(Node::Pointer node) const;
 
-    ComponentList::Node::Pointer createComponentNode(const QDomElement& root) const;
+    Node::Pointer createComponentNode(const QDomElement& root) const;
 
 
   };

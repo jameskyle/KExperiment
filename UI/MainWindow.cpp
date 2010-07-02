@@ -8,7 +8,7 @@ namespace kex
       actionLibraryDock(new ComponentLibrary(this)),
       eventLibraryDock(new ComponentLibrary(this)),
       trialLibraryDock(new ComponentLibrary(this)),
-      componentList(&ComponentList::instance()),
+      componentList(new ComponentList),
       mapper(new QDataWidgetMapper)
   {    
     setupUi(this); // set up the Qt Designer Gui

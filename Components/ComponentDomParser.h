@@ -7,6 +7,8 @@
 #include <QList>
 #include <QVariant>
 
+#include <boost/function.hpp>
+
 #include "OutputComponent.h"
 #include "ComponentFactory.h"
 #include "ComponentList.h"
@@ -15,6 +17,17 @@
 
 namespace kex
 {
+  class ComponentDomParser;
+  typedef boost::function<void (const ComponentDomParser*,
+                                const QDomElement &element,
+                                ComponentList::Node::Pointer node)> 
+                                parseFunc;
+  
+  typedef boost::function<void (OutputComponent*,
+                                QString& value)> 
+                                setComponentValue;
+                                  
+  
   /** \brief  Parses an xml file representing a Component definition.
    *
    * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -25,7 +38,6 @@ namespace kex
    * \date $LastChangedDate$
    * \version $Rev$  \sa OutputComponent
    **/
-
   class ComponentDomParser
   {
   public:
@@ -36,36 +48,48 @@ namespace kex
     bool readFile();
 
   private:
-    QString _fileName;
-    ComponentList _globalList;
+
+    QString m_filename;
+    ComponentList m_globalList;
+    QMap<QString, parseFunc> m_parseMap;
+    QMap<QString, setComponentValue> m_setValueMap;
+    
     bool isValidElement(const QDomElement &root) const;
     void parseHeaderElement(const QDomElement &element,
-                            Node::Pointer node) const;
+                            ComponentList::Node::Pointer node) const;
 
     void parseElement(const QDomElement &element,
-                      Node::Pointer node) const;
+                      ComponentList::Node::Pointer node) const;
 
     void parseActionElement(const QDomElement &element,
-                            Node::Pointer node) const;
+                            ComponentList::Node::Pointer node) const;
 
     void parseEventElement(const QDomElement &element,
-                           Node::Pointer node) const;
+                           ComponentList::Node::Pointer node) const;
 
     void parseTrialElement(const QDomElement &element,
-                           Node::Pointer node) const;
+                           ComponentList::Node::Pointer node) const;
 
     void parseExperimentElement(const QDomElement &element,
-                                Node::Pointer node) const;
-
+                                ComponentList::Node::Pointer node) const;
+    
+    void parseCategoriesElement(const QDomElement &element,
+                                ComponentList::Node::Pointer node) const;
+    
+    void parseDurationElement(const QDomElement &element,
+                              ComponentList::Node::Pointer node) const;
+    
     void setMainCategory(const QDomElement &element,
-                         Node::Pointer node) const;
+                         ComponentList::Node::Pointer node) const;
 
     void createChildComponent(const QDomElement &element,
-                              Node::Pointer node) const;
+                              ComponentList::Node::Pointer node) const;
+    
+    void resolveName(ComponentList::Node::Pointer node) const;
 
-    void resolveName(Node::Pointer node) const;
-
-    Node::Pointer createComponentNode(const QDomElement& root) const;
+    ComponentList::Node::Pointer createComponentNode(const QDomElement& root) const;
+    
+    void setupParseMap();
 
 
   };

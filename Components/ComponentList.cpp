@@ -6,13 +6,13 @@ namespace kex {
     return (c1->component()->name() < c2->component()->name());
   }*/
   
-  Node::Node(OutputComponent::SharedPointer comp) : 
-  _component(comp),
-  _durationMSecs(0),
-  _parent(0),
-  _previous(0),
-  _next(0),
-  _child(0)
+  ComponentList::Node::Node(OutputComponent::SharedPointer comp) : 
+  m_component(comp),
+  m_durationMSecs(0),
+  m_parent(0),
+  m_previous(0),
+  m_next(0),
+  m_children(new ComponentList)
   {
     if (comp->componentType() & OutputComponent::ActionType)
     {
@@ -20,214 +20,227 @@ namespace kex {
       
       if (action)
       {
-        _durationMSecs = action->durationMSecs();
+        //_durationMSecs = action->durationMSecs();
       }
     }
   }
   
-  Node::Pointer Node::front() const 
+  ComponentList::Node::Node(OutputComponent::Pointer comp) : 
+  m_component(comp),
+  m_durationMSecs(0),
+  m_parent(0),
+  m_previous(0),
+  m_next(0),
+  m_children(new ComponentList)  
   {
-    Pointer p;
-
-    if (!_previous)
-    {
-      p = const_cast<Pointer>(this);
-    } else {
-      p = _previous->front();
-    }
-
-    return p;
-  }
-
-  Node::Pointer Node::back() const
-  {
-    Pointer p;
-    if (!_next)
-    {
-      p = const_cast<Pointer>(this);
-    } else {
-      p = _next->back();
-    }
-    return p;
-  }
-  
-  Node::Pointer Node::lastChild() const
-  {
-    Pointer p;
-
-    if (_child)
-    {
-      p = _child->back();
-    }
-
-    return p;
-  }
-
-  bool Node::isNull() const
-  {
-    bool null(true);
     
-    if (!_component.isNull())
-    {
-      null = false;
-    }
-    return null;
   }
   
-  Node::operator bool() const
+  ComponentList::Node::~Node()
   {
-    return !(isNull());
+    Utilities::deleteAll(*m_children);
+    delete m_children;
   }
   
-  bool Node::operator==(const Node& other)
+  ComponentList& ComponentList::Node::children()
   {
-    return (this == &other);
+    return *m_children;
   }
   
-  void Node::append(Node::Pointer node)
+  int ComponentList::Node::position() const
   {
-    if (!_next)
-    {
-      _next = node;
-    } else {
-      _next->append(node);
-    }
-  }
-
-  void Node::prepend(Node::Pointer node)
-  {
-    if (!_previous)
-    {
-      _previous = node;
-
-    } else {
-      _previous->prepend(node);
-    }
-  }
-
-  void Node::appendChild(Node::Pointer node)
-  {
-    if (!_child)
-    {
-      _child = node;
-    } else {
-      _child->append(node);
-    }
-  }
-  
-  Node::iterator Node::find(Pointer node) const
-  {
-    iterator b(_child);
-    iterator e(end());
-
-    while(*b != node && b != e)
-    {
-      ++b;
-    }
-
-    return b;
-  }
-
-  void Node::remove(Node::Pointer node)
-  {
-    iterator it(find(node));
-
-    if (it != end())
-    {
-      Pointer prev = (*it)->previous();
-      Pointer next = (*it)->next();
-      
-      prev->setNext(next);
-      next->setPrevious(prev);
-
-      (*it)->setPrevious(0);
-      (*it)->setNext(0);
-      (*it)->setParent(0);
-    }
-  }
-
-  bool Node::operator!=(const Node& other)
-  {
-    return !(*this == other);
-  }
-  
-  bool Node::operator!() const
-  {
-    return isNull();
-  }
-  
-  bool Node::hasNext() const
-  {
-    bool n(false);
+    ComponentList::const_iterator it(this);
+    int pos(0);
     
-    if (_next)
+    while ((*it)->m_previous)
     {
-      n = true;
-    }
-    
-    return n;
-  }
-  
-  bool Node::hasChildren() const
-  {
-    bool childFound(false);
-    if (child())
-    {
-      childFound = true;
-    }
-    
-    return childFound;
-  }
-
-  int Node::position() const
-  {
-    int count(0);
-    const_iterator it(this);
-    
-    while ((*it)->hasPrevious())
-    {
-      ++count;
+      ++pos;
       --it;
     }
     
-    return count;
+    return pos;
   }
   
-  void Node::setNext(Pointer node) 
+  ComponentList::ComponentList() :
+  m_head(0),
+  m_tail(0),
+  m_size(0)
   {
-    Q_ASSERT(!node->next());
-    Q_ASSERT(!node->previous());
-    Q_ASSERT(!node->parent());
-
-    node->setParent(_parent);
-
-    if (_next)
+    
+  }
+  
+  ComponentList::ComponentList(Node::Pointer node) :
+  m_head(node),
+  m_tail(0),
+  m_size(0)
+  {
+    Node::Pointer temp(m_head);
+    
+    temp = m_head;
+    ++m_size;
+    
+    while (temp->m_next)
     {
-      Pointer prev = _next->previous();
-
-      node->setNext(_next);
-      node->setPrevious(prev); 
-      _next->setPrevious(node);
-      _next = node;
-
-    } else {
-      _next = node;
+      ++m_size;
+      temp = temp->m_next;
     }
+    
+    m_tail = temp;
+    
+  }
+  
+  ComponentList::~ComponentList() {}
+  int ComponentList::size() const
+  {
+    return m_size;
+  }
+  
+  ComponentList::Node::Pointer ComponentList::front() 
+  {
+    return m_head;
+  }
+  
+  ComponentList::Node::Pointer ComponentList::back()
+  {
+    return m_tail;
+  }
+  
+  bool ComponentList::empty() const
+  {
+    return (m_size == 0);
+  }
+  
+  void ComponentList::push_back(Node::Pointer node)
+  {
+    Q_ASSERT(!node->m_previous && !node->m_next);
+
+    if (m_tail)
+    {
+      m_tail->m_next = node;
+      node->m_previous = m_tail;
+      m_tail = node;
+    } else {
+      Q_ASSERT(m_tail == m_head);
+      m_head = m_tail = node;
+    }
+    
+    ++m_size;
+  }
+  
+  void ComponentList::push_back(OutputComponent::Pointer comp)
+  {
+    Node::Pointer node = new Node(comp);
+    push_back(node);
+  }
+  
+  void ComponentList::push_back(OutputComponent::SharedPointer comp)
+  {
+    Node::Pointer node = new Node(comp);
+    push_back(node);
+  }
+  
+  void ComponentList::push_front(Node::Pointer node)
+  {
+    Q_ASSERT(!node->m_previous && !node->m_next);
+    
+    if (m_head)
+    {
+      Q_ASSERT(!m_head->m_previous);
+      m_head->m_previous = node;
+      node->m_next = m_head;
+    } else {
+      m_tail = node;
+    }
+    
+    m_head = node;
+    ++m_size;
+  }
+  
+  void ComponentList::push_front(OutputComponent::Pointer comp)
+  {
+    Node::Pointer node = new Node(comp);
+    push_front(node);
   }
 
-  int Node::numChildren() const
+  void ComponentList::push_front(OutputComponent::SharedPointer comp)
   {
-    int count(0);
+    Node::Pointer node = new Node(comp);
+    push_front(node);
+  }
+  
+  ComponentList::iterator ComponentList::begin() const 
+  {
+    return iterator(m_head);
+  }
+  
+  ComponentList::iterator ComponentList::end() const
+  {
+    iterator it(0);
     
-    iterator it(_child);
-
+    if (m_tail)
+    {
+      it = iterator(m_tail->m_next);
+    }
+    
+    return it;
+  }
+  
+  void ComponentList::clear()
+  {
+    iterator it(begin());
+    Node::Pointer p;
+    
     while (it != end())
     {
+      p = *it;
       ++it;
-      ++count;
+      p->m_previous = 0;
+      p->m_next = 0;
     }
-
-    return count;
+    
+    m_head = m_tail = 0;
+    m_size = 0;
   }
   
+  void ComponentList::remove(Node::Pointer node)
+  {
+    iterator it(Utilities::find(begin(), end(), node));
+    
+    if (it != end())
+    {
+      if ((*it)->m_previous)
+      {
+        (*it)->m_previous->m_next = (*it)->m_next;
+      } else {
+        m_head = (*it)->m_next;
+      }
+      
+      if ((*it)->m_next)
+      {
+        (*it)->m_next->m_previous = (*it)->m_previous;
+      } else {
+        m_tail = (*it)->m_previous;
+      }
+      (*it)->m_previous = 0;
+      (*it)->m_next = 0;
+      --m_size;
+      
+    }
+  }	
+  
+  ComponentList::iterator ComponentList::findByName(const QString& name) const
+  {
+    iterator b(begin());
+    iterator e(end());
+    while (b != e)
+    {
+      if ((*b)->component()->name() == name)
+      {
+        break;
+      }
+      ++b;
+    }
+    
+    return b;
+  }
 }

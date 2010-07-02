@@ -17,6 +17,7 @@
 #include "Common/Global.h"
 #include "Components/ComponentFactory.h"
 #include "Components/OutputComponent.h"
+#include "Components/ComponentList.h"
 
 namespace kex
 {
@@ -144,12 +145,9 @@ namespace kex
     template <class ForwardIterator>
     void deleteAll(ForwardIterator begin, ForwardIterator end)
     {
-      void *temp;
       while(begin != end) 
       {
-        temp = *begin;
-        ++begin;
-        delete temp;
+        delete *(begin++);
       }
     }
 
@@ -168,14 +166,31 @@ namespace kex
      * \version $Rev$
      **/
     template <class Container>
-    void deleteAll(Container list)
+    void deleteAll(Container c)
     {
-      Container::iterator begin(list.begin());
-      Container::iterator end(list.end());
-
-      deleteAll(begin, end);
+      deleteAll(c.begin(), c.end());
     }
-
+    
+    
+    // a find method. For some reason the boost::iterator_facade iterators is
+    // throwing a compile error in std::find for the value. When that is 
+    // addressed, std::find can be replaced for this method
+    template<class ForwardIterator, class ValueType>
+    ForwardIterator find(ForwardIterator begin, ForwardIterator end, 
+                         ValueType value)
+    {
+      while (begin != end)
+      {
+        if ((*begin) == value)
+        {
+          break;
+        }
+        ++begin;
+      }
+      
+      return begin;
+    }
+    
     bool sortComponentQList(const OutputComponent::Pointer c1,
                             const OutputComponent::Pointer *c2);
   };

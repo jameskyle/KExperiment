@@ -4,7 +4,7 @@
 #include <QTest>
 #include <QDebug>
 
-#include "Components/Components.h"
+#include <Components/Components.h>
 
 namespace kex
 {
@@ -14,47 +14,30 @@ namespace kex
   public:
     ComponentListTest();
     
-  private:
-    QList<ComponentList::Node::Pointer> componentNodes();
-    
-    QList<ComponentList::Node::Pointer> createTestActionNodes();
-    QList<ComponentList::Node::Pointer> createTestEventNodes();
-    QList<ComponentList::Node::Pointer> createTestTrialNodes();
-    QList<ComponentList::Node::Pointer> createTestExperimentNodes();
-    
-    int _numExamples;
-    int _numActions;
-    
   private slots:
     void initTestCase();
 
     // iterator methods
+    void incrementIteratorTest();
+    void decrementIteratorTest();
+    void randomAccessIteratorTest();
+    
+    // STL
+    void frontTest();
+    void backTest();
+    void sizeTest();
+    void emptyTest();
+    void push_backTest();
+    void push_frontTest();
     void beginTest();
     void endTest();
-    void cleanupTestCase();
-    void iteratorTest();
-    
-    void findTest();
-    void removeTest();
     void clearTest();
-    void operatorTest();
-
-    void findByNameTest();
+    void removeTest();
+    void cleanupTestCase();
     
-    void insertTest();
-    void cloneTest();
-    void nextPreviousNodeTest();
-    
-    void insertAfterTest();
-    void insertBeforeTest();
-    
-  void appendTest();
-    void prependTest();
-    
-    // here
-    void sortComponentListTest();
+    void getLists(ComponentList *cList, 
+                  QList<ComponentList::Node::Pointer> *nList);
 
   };
 };
-
 #endif

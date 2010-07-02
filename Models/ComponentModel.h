@@ -73,7 +73,7 @@ namespace kex
   private:
     ComponentList::Node::Pointer  getItem(const QModelIndex& index) const;
 
-    ComponentList& _componentList;
+    ComponentList _componentList;
 
   public slots:
     void updateComponentList();

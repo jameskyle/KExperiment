@@ -4,28 +4,71 @@ namespace kex
 {
 
   ComponentDomParser::ComponentDomParser() :
-  _fileName(),
-  _globalList(ComponentList())
+  m_filename(),
+  m_globalList(ComponentList())
   {
-
+    setupParseMap();
   }
 
   ComponentDomParser::ComponentDomParser(const QString& fileName) :
-    _fileName(fileName),
-  _globalList(ComponentList())
+    m_filename(fileName),
+  m_globalList(ComponentList())
   {
-
+    setupParseMap();
   }
 
   bool ComponentDomParser::readFile(const QString& fileName)
   {
-    _fileName = fileName;
+    m_filename = fileName;
     return readFile();
   }
-
+  
+  void ComponentDomParser::setupParseMap()
+  {
+    // setup parsing function map
+    parseFunc parse;
+    parse = &ComponentDomParser::parseActionElement;
+    m_parseMap["action"] = parse;
+    
+    parse = &ComponentDomParser::parseEventElement;
+    m_parseMap["event"] = parse;
+    
+    parse = &ComponentDomParser::parseTrialElement;
+    m_parseMap["trial"] = parse;
+    
+    parse = &ComponentDomParser::parseExperimentElement;
+    m_parseMap["experiment"] = parse;
+    
+    parse = &ComponentDomParser::parseHeaderElement;
+    m_parseMap["header"] = parse;
+    
+    parse = &ComponentDomParser::parseCategoriesElement;
+    m_parseMap["categories"] = parse;
+    
+    parse = &ComponentDomParser::parseDurationElement;
+    m_parseMap["duration"] = parse;
+    
+    parse = &ComponentDomParser::createChildComponent;
+    m_parseMap["create_child"] = parse;
+    
+    // setup OutputComponent attribute map
+    setComponentValue setValue;
+    setValue = &OutputComponent::setName;
+    m_setValueMap["name"] = setValue;
+    
+    setValue = &OutputComponent::setLabel;
+    m_setValueMap["label"] = setValue;
+    
+    setValue = &OutputComponent::setDescription;
+    m_setValueMap["description"] = setValue;
+    
+    setValue = &OutputComponent::addCategory;
+    m_setValueMap["categories"] = setValue;
+  }
+  
   bool ComponentDomParser::readFile()
   {
-    QFile file(_fileName);
+    QFile file(m_filename);
 
     Logger *logger = &Logger::instance();
 
@@ -63,16 +106,16 @@ namespace kex
     {
       QString msg("ComponentDomParser::readFile");
       QString info("Error: Not a component file: %1");
-      logger->displayMessage(msg, info.arg(_fileName), QMessageBox::Ok,
+      logger->displayMessage(msg, info.arg(m_filename), QMessageBox::Ok,
                              Logger::WarningLogLevel);
 
       file.close();
       return false;
     }
 
-    Node::Pointer node = createComponentNode(root);
+    ComponentList::Node::Pointer node = createComponentNode(root);
 
-    _globalList.append(node);
+    m_globalList.push_back(node);
     parseElement(root, node);
 
     file.close();
@@ -82,18 +125,18 @@ namespace kex
     return true;
   }
 
-  void ComponentDomParser::resolveName(Node::Pointer node) const
+  void ComponentDomParser::resolveName(ComponentList::Node::Pointer node) const
   {
     QString name = node->component()->name();
     if (name.isEmpty())
     {
-      QFileInfo info(_fileName);
+      QFileInfo info(m_filename);
       name = Utilities::componentNameFromBaseName(info.baseName());
       node->component()->setName(name);
     }
   }
 
-  Node::Pointer
+  ComponentList::Node::Pointer
   ComponentDomParser::createComponentNode(const QDomElement& root) const
   {
     Q_ASSERT(isValidElement(root));
@@ -138,10 +181,7 @@ namespace kex
     OutputComponent::Pointer comp = ComponentFactory::instance().create(c_type);
     Q_CHECK_PTR(comp);
 
-    OutputComponent::SharedPointer sp(comp);
-    Q_CHECK_PTR(sp);
-
-    Node::Pointer node = new Node(sp);
+    ComponentList::Node::Pointer node = new ComponentList::Node(comp);
     Q_CHECK_PTR(node);
 
     return node;
@@ -150,15 +190,6 @@ namespace kex
   bool ComponentDomParser::isValidElement(const QDomElement &element) const
   {
     bool isValid(false);
-
-//    if (element.tagName() == "action" || element.tagName() == "event" ||
-//        element.tagName() == "trial")
-//    {
-//      if (element.attribute("template", "false") == "false" )
-//      {
-//
-//      }
-//    }
 
     if (element.tagName() == "action" || element.tagName() == "event" ||
         element.tagName() == "trial"  || element.tagName() == "experiment" ||
@@ -170,8 +201,9 @@ namespace kex
     return isValid;
   }
 
-  void ComponentDomParser::parseElement(const QDomElement &element,
-                                        Node::Pointer node) const
+  void 
+  ComponentDomParser::parseElement(const QDomElement &element,
+                                   ComponentList::Node::Pointer node) const
   {
     // should only receive valid elements.
     Q_ASSERT(isValidElement(element));
@@ -180,64 +212,38 @@ namespace kex
     Q_ASSERT(element.tagName() != "header");
 
     setMainCategory(element, node);
-
-    if (element.tagName() == "action")
-    {
-      parseActionElement(element, node);
-
-    } else if (element.tagName() == "event")
-    {
-      parseEventElement(element, node);
-
-    } else if (element.tagName() == "trial")
-    {
-      parseTrialElement(element, node);
-
-    } else if (element.tagName() == "experiment")
-    {
-      parseExperimentElement(element, node);
-    }
+    
+    QString c_type = element.tagName();
+    // map created in ComponentDomParser::setupParseMap()
+    m_parseMap[c_type](this, element, node);
   }
 
   void
   ComponentDomParser::parseHeaderElement(const QDomElement &element,
-                                         Node::Pointer node) const
+                                         ComponentList::Node::Pointer node) const
   {
     Q_ASSERT(element.tagName() == "header");
     Q_CHECK_PTR(node);
 
+    QString value_type;
+    QString value;
+    OutputComponent::Pointer comp;
+    
     QDomNode child = element.firstChild();
-
+    
     while (!child.isNull())
     {
-      if (child.toElement().tagName() == "name")
+      value_type = child.toElement().tagName();
+      comp = node->component().data();
+      comp->setName(value_type);
+      
+      if (value_type != "categories")
       {
-        node->component()->setName(child.toElement().text());
-
-      } else if (child.toElement().tagName() == "label")
-      {
-        node->component()->setLabel(child.toElement().text());
-
-      } else if (child.toElement().tagName() == "description")
-      {
-        node->component()->setDescription(child.toElement().text());
-      } else if (child.toElement().tagName() == "categories")
-      {
-        QDomNode item = child.toElement().firstChild();
-        QString cat("");
-
-        while (!item.isNull())
-        {
-          if (item.toElement().tagName() == "item")
-          {
-            cat = item.toElement().text();
-            if (!cat.isEmpty())
-            {
-              node->component()->addCategory(cat);
-            }
-          }
-            item = item.nextSibling();
-        }
+        value = child.toElement().text();
+        m_setValueMap[value_type](comp, value);
+        
+      } else {
+        m_parseMap[value_type](this, child.toElement(),node);
       }
 
       child = child.nextSibling();
@@ -246,7 +252,7 @@ namespace kex
 
   void
   ComponentDomParser::parseActionElement(const QDomElement &element,
-                                         Node::Pointer node) const
+                                         ComponentList::Node::Pointer node) const
   {
     Q_ASSERT(element.tagName() == "action");
     Q_CHECK_PTR(node);
@@ -255,42 +261,7 @@ namespace kex
 
     while (!child.isNull())
     {
-      // Actions have no children components, so we don't check for them
-      if (child.toElement().tagName() == "header")
-      {
-        parseHeaderElement(child.toElement(), node);
-
-      } else if (child.toElement().tagName() == "duration")
-      {
-        // Only ActionType components have a duration field; enforced by the
-        // xml schema. Other components duration is determined by the sume of
-        // its member actions
-
-        // we must check the unit specification to do conversions
-        // default: milliseconds
-        QString units(child.toElement().attribute("unit", "msecs"));
-
-        QVariant value(child.toElement().text());
-        quint32 duration = value.toInt();
-
-        // msecs is the default value.
-        if (units == "secs")
-        {
-          node->component()->setProperty("units", Action::SecondType);
-          duration = duration * 1000;
-
-        } else if (units == "ksecs")
-        {
-          node->component()->setProperty("units", Action::KiloSecondType);
-          duration = duration * 1000 * 1000;
-        } else // default msecs
-        {
-          node->component()->setProperty("units", Action::MilliSecondType);
-        }
-
-        node->component()->setProperty("durationMSecs", duration);
-
-      } else if (child.toElement().tagName() == "file")
+      if (child.toElement().tagName() == "file")
       {
         node->component()->setProperty("file", child.toElement().text());
 
@@ -298,51 +269,52 @@ namespace kex
       {
         node->component()->setProperty("text", child.toElement().text());
       }
+
       // TODO add checks for other action types
 
       child = child.nextSibling();
     }
   }
 
-  void ComponentDomParser::parseEventElement(const QDomElement &element,
-                                             Node::Pointer node) const
+  void 
+  ComponentDomParser::parseEventElement(const QDomElement &element,
+                                        ComponentList::Node::Pointer node) const
   {
     QDomNode child = element.firstChild();
-
+    QString value_type;
+    
     while (!child.isNull())
     {
-      if (child.toElement().tagName() == "action")
-      {
+      value_type = child.toElement().tagName();
+      
+      m_parseMap[value_type](this, child.toElement(), node);
 
-        createChildComponent(child.toElement(), node);
-
-
-      } else if (child.toElement().tagName() == "header")
-      {
-        parseHeaderElement(child.toElement(), node);
-      }
       child = child.nextSibling();
     }
 
   }
 
-  void ComponentDomParser::parseTrialElement(const QDomElement &element,
-                                             Node::Pointer node) const
+  void 
+  ComponentDomParser::parseTrialElement(const QDomElement &element,
+                                        ComponentList::Node::Pointer node) const
   {
     QDomNode child = element.firstChild();
-
+    QString key;
+    QString tagName;
+    
     while (!child.isNull())
     {
-      if (child.toElement().tagName() == "action" ||
-          child.toElement().tagName() == "event")
+      tagName = child.toElement().tagName();
+      
+      if (tagName == "action" || tagName == "event")
       {
-        createChildComponent(child.toElement(), node);
-
-      } else if (child.toElement().tagName() == "header")
+        key = "create_child";
+        
+      } else if ( tagName == "header")
       {
-        parseHeaderElement(child.toElement(), node);
-      } else
-      {
+        key = tagName;
+        
+      } else {
         Logger *logger = &Logger::instance();
         QString msg("ComponentDomParser::parseTrialElement");
         QString info(QObject::tr("Unrecognized element found in %1: %2"));
@@ -350,6 +322,8 @@ namespace kex
                                         .arg(child.toElement().tagName()),
                                QMessageBox::Ok, Logger::WarningLogLevel);
       }
+      
+      m_parseMap[key](this, child.toElement(), node);
 
       child = child.nextSibling();
     }
@@ -357,7 +331,7 @@ namespace kex
 
   void
   ComponentDomParser::parseExperimentElement(const QDomElement &element,
-                                             Node::Pointer node) const
+                                             ComponentList::Node::Pointer node) const
   {
     QDomNode child = element.firstChild();
 
@@ -366,11 +340,11 @@ namespace kex
       if (child.toElement().tagName() == "trial" ||
           child.toElement().tagName() == "action")
       {
-        createChildComponent(child.toElement(), node);
+        m_parseMap["create_child"](this, child.toElement(), node);
 
       } else if (child.toElement().tagName() == "header")
       {
-        parseHeaderElement(child.toElement(), node);
+        m_parseMap["header"](this, child.toElement(), node);
 
       } else if (child.toElement().tagName() == "instructions")
       {
@@ -388,9 +362,64 @@ namespace kex
       child = child.nextSibling();
     }
   }
+  
+  void 
+  ComponentDomParser::parseCategoriesElement(const QDomElement &element,
+                              ComponentList::Node::Pointer node) const
+  {
+    QDomNode item = element.firstChild();
+    QString cat("");
+    OutputComponent::Pointer comp = node->component().data();
+    
+    while (!item.isNull())
+    {
+      if (item.toElement().tagName() == "item")
+      {
+        cat = item.toElement().text();
+        if (!cat.isEmpty())
+        {
+          m_setValueMap["categories"](comp,cat);
+        }
+      }
+      item = item.nextSibling();
+    }
+    
+  }
+  void 
+  ComponentDomParser::parseDurationElement(const QDomElement &element,
+                                           ComponentList::Node::Pointer node) const
+  {
+    // Only ActionType components have a duration field; enforced by the
+    // xml schema. Other components duration is determined by the sume of
+    // its member actions
+    
+    // we must check the unit specification to do conversions
+    // default: milliseconds
+    QString units(element.attribute("unit", "msecs"));
+    
+    QVariant value(element.text());
+    quint32 duration = value.toInt();
+    
+    // msecs is the default value.
+    if (units == "secs")
+    {
+      node->component()->setProperty("units", Action::SecondType);
+      duration = duration * 1000;
+      
+    } else if (units == "ksecs")
+    {
+      node->component()->setProperty("units", Action::KiloSecondType);
+      duration = duration * 1000 * 1000;
+    } else // default msecs
+    {
+      node->component()->setProperty("units", Action::MilliSecondType);
+    }
+    
+    node->component()->setProperty("durationMSecs", duration);
+  }
 
   void ComponentDomParser::setMainCategory(const QDomElement &element,
-                                           Node::Pointer node) const
+                                           ComponentList::Node::Pointer node) const
   {
     QString cat;
     Logger *logger = &Logger::instance();
@@ -412,7 +441,7 @@ namespace kex
         QString info(QObject::tr("Error: Action element contains no type "
                                  "attribute: %1"));
 
-        logger->displayMessage(msg, info.arg(_fileName),
+        logger->displayMessage(msg, info.arg(m_filename),
                                QMessageBox::Ok, Logger::WarningLogLevel);
       }
 
@@ -431,13 +460,13 @@ namespace kex
   }
 
   void ComponentDomParser::createChildComponent(const QDomElement &element,
-                                                Node::Pointer node) const
+                                                ComponentList::Node::Pointer node) const
   {
     Q_CHECK_PTR(node);
     Q_ASSERT(isValidElement(element));
     Q_ASSERT(node->component()->componentType() & ~OutputComponent::ActionType);
 
-    Node::Pointer child = createComponentNode(element);
+    ComponentList::Node::Pointer child = createComponentNode(element);
 
     Q_CHECK_PTR(child);
     // Only non Action components  can have children, we assert this here
@@ -449,18 +478,21 @@ namespace kex
     // OR it could be defined at the top most level of components in an
     // xml file. Since templates work on an overloading principle, we start by
     // looking at the top most level and then work to the inner scope.
+    QString name = child->component()->name();
+    ComponentList::iterator it(m_globalList.findByName(name));
     
-    ComponentList::iterator it(_globalList.begin());
-    // ComponentList::find() returns 0 if component not found.
 
-    if (it != _globalList.end())
+    if (it != m_globalList.end())
     {
       child->component()->updateFromTemplate((*it)->component());
     }
 
     if (child)
     {
-      _globalList.append(child, node);
+      node->children().push_back(child);
+      qDebug() << "added child to node. " << "node: " 
+               << node->component()->name() << " child: " 
+               << child->component()->name();
 
     } else
     {

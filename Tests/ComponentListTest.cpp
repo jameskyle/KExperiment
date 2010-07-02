@@ -3,373 +3,297 @@
 namespace kex
 {
   ComponentListTest::ComponentListTest() 
-  : QObject(),
-  _numExamples(3), 
-  _numActions(5) // number of types of actions
+  : QObject()
   {
-    
   }
 
-  void ComponentListTest::initTestCase()
+  void ComponentListTest::ComponentListTest::initTestCase()
   {
   }
   
-  void ComponentListTest::cleanupTestCase()
+  void ComponentListTest::ComponentListTest::cleanupTestCase()
   {
     qDebug() << "called after all tests";
   }
-
-  void ComponentListTest::clearTest()
+  
+  void ComponentListTest::incrementIteratorTest()
   {
-    QList<ComponentList::Node::Pointer> nodes = componentNodes();
     ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
+    int i(0);
     
-    for (int i =0; i < 2; ++i)
+    getLists(&cList, &nList);
+    ComponentList::iterator it(cList.begin());
+    
+    while (it != cList.end())
     {
-      for (int i = 0; i < nodes.count(); ++i)
-      {
-        cList.append(nodes[i]);
-      }
-      
-      cList.clear();
-      QVERIFY(cList.count() == 0);
-      QVERIFY(!cList.back());
-      QVERIFY(!cList.front());
+      QVERIFY(*it == nList[i]);
+      ++i;
+      ++it;
     }
+    
+    QVERIFY(it == cList.end());
+    Utilities::deleteAll(cList);
   }
   
-  void ComponentListTest::appendTest()
+  void ComponentListTest::decrementIteratorTest()
   {
-    ComponentList componentList;
-    QList<ComponentList::Node::Pointer> nodes;
-    nodes = componentNodes();
-    
-    // horizontal append
-    for (int i = 0; i < nodes.count(); ++i)
-    {
-      componentList.append(nodes[i]);
-      QVERIFY( (i + 1) == componentList.count());
-      QVERIFY(nodes[i] == componentList.back());
-      QVERIFY(nodes[0] == componentList.front());
-    }
-    componentList.clear();
-
-    // appending to a parent
-    QList<ComponentList::Node::Pointer> a_nodes;
-    QList<ComponentList::Node::Pointer> e_nodes;
-    QList<ComponentList::Node::Pointer> t_nodes;
-    QList<ComponentList::Node::Pointer> ex_nodes;
-    
-    a_nodes = createTestActionNodes();
-    e_nodes = createTestEventNodes();
-    t_nodes = createTestTrialNodes();
-    ex_nodes = createTestExperimentNodes();
-    
-    QVERIFY(componentList.count() == 0);
-    
-    for (int i = 0; i < ex_nodes.count(); ++i)
-    {
-      componentList.append(ex_nodes[i]);
-      ComponentList::iterator it(componentList.begin());
-      it = it + i;
-      
-      ComponentList::Node::Pointer np(componentList[i]);
-      Q_CHECK_PTR(np);
-      ComponentList::Node::Pointer op = np->next();
-      QVERIFY(componentList.back() == ex_nodes[i]);
-      QVERIFY((componentList[i])->next() == 0);
-      if (i) 
-      {
-        QVERIFY((componentList[i])->previous() == componentList[i-1]);
-        QVERIFY((componentList[i])->hasPrevious() == true);
-      } else
-      {
-        QVERIFY((componentList[i])->hasPrevious() == false);
-        QVERIFY(componentList.back() == componentList.front());
-      }
-      QVERIFY((componentList[i])->lastChild() == 0);
-      QVERIFY((componentList[i])->child() == 0);
-      QVERIFY((componentList[i])->parentComponent() == 0);
-      QVERIFY((componentList[i])->durationMSecs() == 0);
-      QVERIFY((componentList[i])->position() == i);
-      QVERIFY((componentList[i])->numChildren() == 0);
-      QVERIFY((componentList[i])->hasChildren() == false);
-      QVERIFY((componentList[i])->hasNext() == false);
-      
-      componentList.append(t_nodes[i], componentList[i]);
-      
-      componentList.append(e_nodes[i], t_nodes[i]);
-      
-      int start = i * 5;
-      componentList.append(a_nodes[start], e_nodes[i]);
-      componentList.append(a_nodes[start + 1], e_nodes[i]);
-      componentList.append(a_nodes[start + 2], e_nodes[i]);
-      componentList.append(a_nodes[start + 3], e_nodes[i]);
-      componentList.append(a_nodes[start + 4], e_nodes[i]);
-      
-    }
-    
-    Utilities::deleteAll(a_nodes);
-    Utilities::deleteAll(e_nodes);
-    Utilities::deleteAll(t_nodes);
-    Utilities::deleteAll(ex_nodes);
-  }
-  
-  void ComponentListTest::nextPreviousNodeTest()
-  {
-    QList<ComponentList::Node::Pointer> nodes = componentNodes();
-    ComponentList componentList;
-    
-    for (int i = 0; i < nodes.count(); ++i)
-    {
-      componentList.append(nodes[i]);
-    }
-    
-    // verify that the linking was done correctly
-    ComponentList::Node::Pointer node = componentList.front();
-    
-    // forward traversal; next()
-    for (int i = 0; i < componentList.count(); ++i)
-    {
-      QVERIFY(node == nodes[i]);
-      node = node->next();
-    }
-    
-    node = componentList.back();
-    // reverse traversal; previous()
-    for (int i = nodes.count(); i > 0; --i)
-    {
-      QVERIFY(node == nodes[i - 1]);
-      node = node->previous();
-    }
-    
-    Utilities::deleteAll(nodes);
-  }
-  
-  void ComponentListTest::insertAfterTest(){}
-  void ComponentListTest::insertBeforeTest(){}
-  
-  void ComponentListTest::findTest()
-  {
-    ComponentList::iterator found;
     ComponentList cList;
-    QList<ComponentList::Node::Pointer> nodes = componentNodes();
+    QList<ComponentList::Node::Pointer> nList;
+    int i(0);
     
-    for (int i = 0; i < nodes.count(); ++i)
+    getLists(&cList, &nList);
+    
+    ComponentList::iterator it(cList.back());
+    
+    i = (nList.size() - 1);
+    while (it != cList.end())
     {
-      cList.append(nodes[i]);
+      QVERIFY(*it == nList[i]);
+      --i;
+      --it;
     }
-    QVERIFY(nodes.count() == cList.count());
+    Utilities::deleteAll(cList);
+  }
+  
+  void ComponentListTest::randomAccessIteratorTest()
+  {
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
+    int i(0);
+    
+    getLists(&cList, &nList);
+    
+    ComponentList::iterator it(cList.begin());
+    
+    for (i = 0; i < nList.size(); ++i)
+    {
+      int reverse = nList.size() - i - 1;
+      
+      QVERIFY(it[i] == nList[i]);
+      QVERIFY(it[reverse] == nList[reverse]);
+    }
     
     Utilities::deleteAll(cList);
   }
   
-  void ComponentListTest::findByNameTest(){}
-  
-  void ComponentListTest::insertTest(){}
-  void ComponentListTest::cloneTest(){}
-  void ComponentListTest::removeTest()
+  void ComponentListTest::frontTest()
   {
-    QList<ComponentList::Node::Pointer> nodes = componentNodes();
-    ComponentList cList;
-    int count = 0;
     
-    for(int i = 0;i < nodes.count();++i)
+  }
+  
+  void ComponentListTest::backTest()
+  {
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
+    int i(0);
+    
+    getLists(&cList, &nList);
+    cList.clear();
+    
+    for (i = 0; i < nList.size(); ++i)
     {
-      cList.append(nodes[i]);
+      cList.push_back(nList[i]);
+      QVERIFY(cList.back() == nList[i]);
+    }
+    cList.clear();
+    
+    for (i = 0; i < nList.size(); ++i)
+    {
+      cList.push_front(nList[i]);
+      QVERIFY(cList.back() == nList[0]);
+    }
+    Utilities::deleteAll(cList);
+  }
+  
+  void ComponentListTest::sizeTest()
+  {
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
+    int i(0);
+    
+    QVERIFY(cList.size() == 0);
+    
+    getLists(&cList, &nList);
+    QVERIFY(cList.size() == nList.size());
+    cList.clear();
+    QVERIFY(cList.size() == 0);
+    
+    for (i = 0; i < nList.size(); ++i)
+    {
+      cList.push_back(nList[i]);
+      QVERIFY(cList.size() == (i + 1));
     }
     
-    count = cList.count();
-    ComponentList::Node::Pointer node;
+    Utilities::deleteAll(nList);
+  }
+  
+  void ComponentListTest::emptyTest()
+  {
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
     
-    while(cList.front())
+    QVERIFY(cList.empty());
+    
+    getLists(&cList, &nList);
+    
+    QVERIFY(!cList.empty());
+    
+    cList.clear();
+    
+    QVERIFY(cList.empty());
+    
+    Utilities::deleteAll(nList);
+  }
+  
+  void ComponentListTest::push_backTest()
+  {
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
+    int i(0);
+    
+    getLists(&cList, &nList);
+    cList.clear();
+    
+    for (i = 0; i < nList.count(); ++i)
     {
-      node = cList.front();
-      cList.remove(node);
-      QVERIFY(node->previous() == 0);
-      QVERIFY(node->next() == 0);
+      cList.push_back(nList[i]);
+      QVERIFY(cList.back() == nList[i]);
+      QVERIFY(cList.size() == (i + 1));
+      if (i != 0) QVERIFY(cList.front() != nList[i]);
+      else QVERIFY(cList.front() == cList.back());
+      QVERIFY(cList.back() != *cList.end());
+    }
+    
+    Utilities::deleteAll(nList);
+  }
+    
+  void ComponentListTest::push_frontTest()
+  {
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
+    int i(0);
+    
+    getLists(&cList, &nList);
+    cList.clear();
+    
+    for (i = 0; i < nList.count(); ++i)
+    {
+      cList.push_front(nList[i]);
+      QVERIFY(cList.front() == nList[i]);
+      QVERIFY(cList.size() == (i + 1));
+      if (i != 0) QVERIFY(cList.back() != nList[i]);
+      else QVERIFY(cList.back() == cList.back());
+      QVERIFY(cList.front() == *cList.begin());
+    }
+    
+    Utilities::deleteAll(nList);
+  }
+    
+  void ComponentListTest::beginTest()
+  {
+    ComponentList cList;
+    ComponentList cList2;
+    QList<ComponentList::Node::Pointer> nList;
+    QList<ComponentList::Node::Pointer> nList2;
+    int i(0);
+    
+    getLists(&cList, &nList);
+    getLists(&cList2, &nList2);
+    cList.clear();
+    cList2.clear();
+    
+    for (i = 0; i < nList.count(); ++i)
+    {
+      cList.push_back(nList[i]);
+      QVERIFY(*cList.begin() == nList[0]);
+      cList2.push_front(nList2[i]);
+      QVERIFY(*cList2.begin() == nList2[i]);
       
-      count -= 1;
-      QVERIFY(cList.count() == count);
     }
     
-    QVERIFY(cList.count() == 0);
+    Utilities::deleteAll(nList);
+    Utilities::deleteAll(nList2);
   }
   
-  void ComponentListTest::prependTest(){}
-    
-  void ComponentListTest::sortComponentListTest(){}
-  
-  // Operators
-  void ComponentListTest::operatorTest()
+  void ComponentListTest::endTest()
   {
-  }
-  
-  // iterator methods
-  void ComponentListTest::beginTest(){}
-  void ComponentListTest::endTest()  
-  {
-    
-  }
-  
-  void ComponentListTest::iteratorTest()
-  {
-    QList< ComponentList::Node::Pointer > nodes;
-    nodes = componentNodes();
-    
     ComponentList cList;
+    ComponentList cList2;
+    QList<ComponentList::Node::Pointer> nList;
+    QList<ComponentList::Node::Pointer> nList2;
+    int i(0);
     
-    QVERIFY(cList.begin() == cList.end());
-    QVERIFY(cList.front() == cList.back());
+    getLists(&cList, &nList);
+    getLists(&cList2, &nList2);
+    cList.clear();
+    cList2.clear();
     
-    for (int i = 0; i < nodes.count(); ++i)
+    for (i = 0; i < nList.count(); ++i)
     {
-      cList.append(nodes[i]);
+      cList.push_back(nList[i]);
+      QVERIFY(*cList.end() == 0);
+      cList2.push_front(nList2[i]);
+      QVERIFY(*cList2.end() == 0);
+      
     }
-    QVERIFY(cList.begin() != cList.end());
-    QVERIFY(cList.front() != cList.back());
+    
+    Utilities::deleteAll(nList);
+    Utilities::deleteAll(nList2);
+    
+  }
+  
+  void ComponentListTest::clearTest()
+  {
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
+    
+    getLists(&cList, &nList);
+    cList.clear();
+    
+    QVERIFY(cList.size() == 0);
+    QVERIFY(*cList.begin() == 0);
+    QVERIFY(*cList.end() == 0);
     
     ComponentList::iterator it(cList.begin());
-    QVERIFY(it == cList.begin());
-    QVERIFY(it != cList.end());
-    QVERIFY((*it) == cList.front());
-    QVERIFY((*it) != cList.back());
     
+    // this should never enter the loop
+    while (it != cList.end())
+    {
+      QVERIFY(false);
+    }
+    
+    Utilities::deleteAll(nList);
+  }
+  
+  void ComponentListTest::removeTest()
+  {
+    ComponentList cList;
+    QList<ComponentList::Node::Pointer> nList;
+    int i(0);
+    
+    getLists(&cList, &nList);
+
+    for (i = 0; i < nList.size(); ++i)
+    {
+      cList.remove(nList[i]);
+      QVERIFY(cList.size() == (nList.size() - (i + 1)));
+      
+    }
+    
+    Utilities::deleteAll(nList);
+  }
+  
+  void ComponentListTest::getLists(ComponentList *cList,
+                                   QList<ComponentList::Node::Pointer> *nList)
+  {
+    int i(0);
+    for (i = 0; i < 10; ++i)
+    {
+      nList->append(new ComponentList::Node(new RestAction));
+      cList->push_back((*nList)[i]);
+    }
   }
 
-  QList<ComponentList::Node::Pointer> 
-  ComponentListTest::createTestActionNodes() 
-  {
-    // we have 5 types of actions. we stagger their insertion so we can use 
-    // modulus to determine type
-    QList<ComponentList::Node::Pointer> cList;
-    
-    for (int i = 0; i < (_numExamples * 5); ++i)
-    {
-      QString name("action_%1");
-      QString label("label_%1");
-      QString desc("desc_%1");
-      ComponentList::Node::Pointer node;
-      
-      int t = (i % 3);
-      
-      // append rest action
-      if (t == 0)
-      {
-        OutputComponent::SharedPointer sp(new RestAction);
-        sp->setName(name.arg(i));
-        sp->setLabel(label.arg(i));
-        sp->setDescription(desc.arg(i));
-        node = new ComponentList::Node(sp);
-        
-      } else if (t == 1)
-      {
-        OutputComponent::SharedPointer sp(new TextAction);
-        sp->setName(name.arg(i));
-        sp->setLabel(label.arg(i));
-        sp->setDescription(desc.arg(i));
-        node = new ComponentList::Node(sp);
-        
-      } else if (t == 2)
-      {
-        OutputComponent::SharedPointer sp(new ImageAction);
-        sp->setName(name.arg(i));
-        sp->setLabel(label.arg(i));
-        sp->setDescription(desc.arg(i));
-        node = new ComponentList::Node(sp);
-      } else if (t == 3)
-      {
-        OutputComponent::SharedPointer sp(new AudioAction);
-        sp->setName(name.arg(i));
-        sp->setLabel(label.arg(i));
-        sp->setDescription(desc.arg(i));
-        node = new ComponentList::Node(sp);
-        
-      } else if (t == 4)
-      {
-        OutputComponent::SharedPointer sp(new VideoAction);
-        sp->setName(name.arg(i));
-        sp->setLabel(label.arg(i));
-        sp->setDescription(desc.arg(i));
-        node = new ComponentList::Node(sp);
-      }
-      
-      cList.append(node);
-    }
-    
-    return cList;
-  }
-  
-  QList<ComponentList::Node::Pointer> ComponentListTest::createTestEventNodes()
-  {
-    QList<ComponentList::Node::Pointer> cList;
-    
-    for (int i=0; i < _numExamples; ++i)
-    {
-      OutputComponent::SharedPointer sp(new Event);
-      QString name("event_%1");
-      QString label("label_%1");
-      QString description("desc_%1");
-      
-      sp->setName(name.arg(i));
-      sp->setLabel(label.arg(i));
-      sp->setDescription(description.arg(i));
-      sp->setMainCategory("Event");
-      ComponentList::Node::Pointer node = new ComponentList::Node(sp);
-      cList.append(node);
-    }
-    
-    return cList;
-  }
-  
-  QList<ComponentList::Node::Pointer> ComponentListTest::createTestTrialNodes()
-  {
-    QList<ComponentList::Node::Pointer> cList;
-    
-    for (int i=0; i < _numExamples; ++i)
-    {
-      OutputComponent::SharedPointer sp(new Trial);
-      QString name("trial_%1");
-      QString label("label_%1");
-      QString description("desc_%1");
-      
-      sp->setName(name.arg(i));
-      sp->setLabel(label.arg(i));
-      sp->setDescription(description.arg(i));
-      sp->setMainCategory("Trial");
-      ComponentList::Node::Pointer node = new ComponentList::Node(sp);
-      cList.append(node);
-    }
-    
-    return cList;
-  }
-  
-  QList<ComponentList::Node::Pointer> 
-  ComponentListTest::createTestExperimentNodes()
-  {
-    QList<ComponentList::Node::Pointer> cList;
-    for (int i=0; i < _numExamples; ++i)
-    {
-      OutputComponent::SharedPointer sp(new Experiment);
-      QString name("experiment_%1");
-      QString label("label_%1");
-      QString description("desc_%1");
-      
-      sp->setName(name.arg(i));
-      sp->setLabel(label.arg(i));
-      sp->setDescription(description.arg(i));
-      sp->setMainCategory("Event");
-      ComponentList::Node::Pointer node = new ComponentList::Node(sp);
-      cList.append(node);
-    }
-    
-    return cList;
-  }
-  
-  QList<ComponentList::Node::Pointer> ComponentListTest::componentNodes()
-  {
-    return (createTestActionNodes() + createTestEventNodes() + 
-            createTestTrialNodes() + createTestExperimentNodes());
-  }
 }
 QTEST_MAIN(kex::ComponentListTest)

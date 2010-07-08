@@ -1,0 +1,41 @@
+#ifndef COMPONENTDOMPARSERTEST_H
+#define COMPONENTDOMPARSERTEST_H
+
+#include <QTest>
+#include <QDebug>
+#include <QStringList>
+
+#include <boost/function.hpp>
+
+#include "Components/Components.h"
+#include "Common/Global.h"
+#include "Utilities/Utilities.h"
+
+namespace kex
+{
+  class ComponentDomParserTest : public QObject
+  {
+    Q_OBJECT
+  public:
+    ComponentDomParserTest();
+    
+  private:
+    QStringList m_componentFiles;
+    QStringList m_names;
+    QStringList m_labels;
+    QStringList m_descriptions;
+    QList<OutputComponent::ComponentTypes> m_types;
+    QList<int> m_childrenCount;
+    QList<int> m_durationMSecs;
+    ComponentDomParser m_dom;
+    
+  private slots:
+    void initTestCase();
+    
+    // iterator methods
+    void readFileTest();
+    void componentsTest();
+    void cleanupTestCase();
+  };
+}  
+#endif // COMPONENTDOMPARSERTEST_H

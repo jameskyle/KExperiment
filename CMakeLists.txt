@@ -91,6 +91,7 @@ FIND_PACKAGE(Qt4 REQUIRED)
 QT4_ADD_RESOURCES(K_RC_SRCS   ${K_RCS})
 QT4_WRAP_CPP(     K_MOC_SRCS  ${K_MOC_HDRS})
 QT4_WRAP_CPP(     CompListTest_MOC_SRCS Tests/ComponentListTest.h)
+QT4_WRAP_CPP(     ComponentDomParser_MOC_SRCS Tests/ComponentDomParserTest.h)
 QT4_WRAP_UI(      K_UI_HDRS   ${K_UI_FILES})
 
 INCLUDE(${QT_USE_FILE})
@@ -106,5 +107,10 @@ ADD_LIBRARY(K STATIC ${K_SRCS}
 ADD_EXECUTABLE(KExperiment MACOSX_BUNDLE ${KEXP_SRCS})
 TARGET_LINK_LIBRARIES(KExperiment ${QT_LIBRARIES} K)
 
-ADD_EXECUTABLE(ComponentListTest Tests/ComponentListTest.cpp ${CompListTest_MOC_SRCS})
+ADD_EXECUTABLE(ComponentListTest Tests/ComponentListTest.cpp
+               ${CompListTest_MOC_SRCS})
+ADD_EXECUTABLE(ComponentDomParserTest Tests/ComponentDomParserTest.cpp
+               ${ComponentDomParser_MOC_SRCS})
 TARGET_LINK_LIBRARIES(ComponentListTest ${QT_LIBRARIES} K)
+TARGET_LINK_LIBRARIES(ComponentDomParserTest ${QT_LIBRARIES} K)
+

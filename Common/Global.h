@@ -117,28 +117,30 @@ namespace kex
      **/
    // const QMap<Config::MetaDataType, QVariant> metaData(QString& key) const;
 
-    const QString organizationName() const {return _organizationName;}
-    const QString domainName() const {return _domainName;}
-    const QString applicationName() const {return _applicationName;}
-    const QString storageLocation() const {return _storageLocation;}
-    const QString componentSchemaFile() const { return _componentSchemaFile;}
+    const QString organizationName() const {return m_organizationName;}
+    const QString domainName() const {return m_domainName;}
+    const QString applicationName() const {return m_applicationName;}
+    const QString storageLocation() const {return m_storageLocation;}
+    const QString componentSchemaFile() const { return m_componentSchemaFile;}
     const QStringList templates(ApplicationDataDirectoryTypes t) const;
     void addTemplate(ApplicationDataDirectoryTypes storagePath, QString temp);
+    
 
   private:
-    QString _organizationName;
-    QString _domainName;
-    QString _applicationName;
-    QString _storageLocation;
-    QList<ApplicationDataDirectoryTypes> _dataDirectoryList;
-    QMultiMap<ApplicationDataDirectoryTypes, QString> _templates;
-    QString _componentSchemaFile;
+    QString m_organizationName;
+    QString m_domainName;
+    QString m_applicationName;
+    QString m_storageLocation;
+    ComponentList m_componentList;
+    QList<ApplicationDataDirectoryTypes> m_dataDirectoryList;
+    QMultiMap<ApplicationDataDirectoryTypes, QString> m_templates;
+    QString m_componentSchemaFile;
 
     //!< map of class's application metadata
     //QMap<QString, QMap<MetaDataType, QVariant> > _componentMetaDataMap;
 
     // map between an ApplicationDataDirectoryTypes and its name
-    QMap<ApplicationDataDirectoryTypes, QString> _directoryTypeList;
+    QMap<ApplicationDataDirectoryTypes, QString> m_directoryTypeList;
 
     Config();
     ~Config() {}

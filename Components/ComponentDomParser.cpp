@@ -9,6 +9,11 @@ namespace kex
   {
     setupParseMap();
   }
+  
+  ComponentList ComponentDomParser::components() const
+  {
+    return m_globalList;
+  }
 
   ComponentDomParser::ComponentDomParser(const QString& fileName) :
     m_filename(fileName),
@@ -17,7 +22,7 @@ namespace kex
     setupParseMap();
   }
 
-  bool ComponentDomParser::readFile(const QString& fileName)
+  ComponentDomParser& ComponentDomParser::readFile(const QString& fileName)
   {
     m_filename = fileName;
     return readFile();
@@ -66,7 +71,7 @@ namespace kex
     m_setValueMap["categories"] = setValue;
   }
   
-  bool ComponentDomParser::readFile()
+  ComponentDomParser& ComponentDomParser::readFile()
   {
     QFile file(m_filename);
 
@@ -78,8 +83,7 @@ namespace kex
       QString info(QObject::tr("Error: Cannot read file : %1"));
       logger->displayMessage(msg, info.arg(file.errorString()),
                              QMessageBox::Ok, Logger::WarningLogLevel);
-
-      return false;
+      return *this;
     }
 
     QString errorStr;
@@ -97,7 +101,7 @@ namespace kex
                              QMessageBox::Ok, Logger::WarningLogLevel);
 
       file.close();
-      return false;
+      return *this;
     }
 
 
@@ -110,7 +114,7 @@ namespace kex
                              Logger::WarningLogLevel);
 
       file.close();
-      return false;
+      return *this;
     }
 
     ComponentList::Node::Pointer node = createComponentNode(root);
@@ -121,8 +125,7 @@ namespace kex
     file.close();
 
     resolveName(node);
-    qDebug() << "dom added: " << node->component()->name();
-    return true;
+    return *this;
   }
 
   void ComponentDomParser::resolveName(ComponentList::Node::Pointer node) const
@@ -130,8 +133,7 @@ namespace kex
     QString name = node->component()->name();
     if (name.isEmpty())
     {
-      QFileInfo info(m_filename);
-      name = Utilities::componentNameFromBaseName(info.baseName());
+      name = Utilities::componentNameFromFilePath(m_filename);
       node->component()->setName(name);
     }
   }
@@ -165,18 +167,18 @@ namespace kex
       {
         c_type = OutputComponent::VideoActionType;
       }
-    } else if (rootName == "event")
-    {
-      c_type = OutputComponent::EventType;
+      } else if (rootName == "event")
+      {
+        c_type = OutputComponent::EventType;
 
-    } else if (rootName == "trial")
-    {
-      c_type = OutputComponent::TrialType;
+      } else if (rootName == "trial")
+      {
+        c_type = OutputComponent::TrialType;
 
-    } else if (rootName == "experiment")
-    {
-      c_type = OutputComponent::ExperimentType;
-    }
+      } else if (rootName == "experiment")
+      {
+        c_type = OutputComponent::ExperimentType;
+      }
 
     OutputComponent::Pointer comp = ComponentFactory::instance().create(c_type);
     Q_CHECK_PTR(comp);
@@ -230,18 +232,16 @@ namespace kex
     OutputComponent::Pointer comp;
     
     QDomNode child = element.firstChild();
+    comp = node->component().data();
     
     while (!child.isNull())
     {
       value_type = child.toElement().tagName();
-      comp = node->component().data();
-      comp->setName(value_type);
       
       if (value_type != "categories")
       {
         value = child.toElement().text();
         m_setValueMap[value_type](comp, value);
-        
       } else {
         m_parseMap[value_type](this, child.toElement(),node);
       }
@@ -268,6 +268,9 @@ namespace kex
       } else if (child.toElement().tagName() == "text")
       {
         node->component()->setProperty("text", child.toElement().text());
+      } else if (child.isElement())
+      {
+        m_parseMap[child.toElement().tagName()](this, child.toElement(),node);
       }
 
       // TODO add checks for other action types
@@ -286,6 +289,11 @@ namespace kex
     while (!child.isNull())
     {
       value_type = child.toElement().tagName();
+      
+      if (value_type == "action")
+      {
+        value_type = "create_child";
+      }
       
       m_parseMap[value_type](this, child.toElement(), node);
 
@@ -467,7 +475,7 @@ namespace kex
     Q_ASSERT(node->component()->componentType() & ~OutputComponent::ActionType);
 
     ComponentList::Node::Pointer child = createComponentNode(element);
-
+    
     Q_CHECK_PTR(child);
     // Only non Action components  can have children, we assert this here
 
@@ -485,15 +493,12 @@ namespace kex
     if (it != m_globalList.end())
     {
       child->component()->updateFromTemplate((*it)->component());
+      child->children() = (*it)->children();
     }
 
     if (child)
     {
       node->children().push_back(child);
-      qDebug() << "added child to node. " << "node: " 
-               << node->component()->name() << " child: " 
-               << child->component()->name();
-
     } else
     {
       Logger *logger = &Logger::instance();

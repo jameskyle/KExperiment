@@ -12,7 +12,7 @@ namespace kex {
   m_parent(0),
   m_previous(0),
   m_next(0),
-  m_children(new ComponentList)
+  m_children(new ComponentList(this))
   {
     if (comp->componentType() & OutputComponent::ActionType)
     {
@@ -31,7 +31,7 @@ namespace kex {
   m_parent(0),
   m_previous(0),
   m_next(0),
-  m_children(new ComponentList)  
+  m_children(new ComponentList(this))  
   {
     
   }
@@ -61,32 +61,13 @@ namespace kex {
     return pos;
   }
   
-  ComponentList::ComponentList() :
+  ComponentList::ComponentList(Node::Pointer parent) :
   m_head(0),
   m_tail(0),
+  m_parent(parent),
   m_size(0)
-  {
-    
-  }
   
-  ComponentList::ComponentList(Node::Pointer node) :
-  m_head(node),
-  m_tail(0),
-  m_size(0)
   {
-    Node::Pointer temp(m_head);
-    
-    temp = m_head;
-    ++m_size;
-    
-    while (temp->m_next)
-    {
-      ++m_size;
-      temp = temp->m_next;
-    }
-    
-    m_tail = temp;
-    
   }
   
   ComponentList::~ComponentList() {}
@@ -112,8 +93,10 @@ namespace kex {
   
   void ComponentList::push_back(Node::Pointer node)
   {
-    Q_ASSERT(!node->m_previous && !node->m_next);
-
+    Q_ASSERT(!node->m_previous && !node->m_next && !node->m_parent);
+    
+    node->m_parent = m_parent;
+    
     if (m_tail)
     {
       m_tail->m_next = node;
@@ -141,7 +124,9 @@ namespace kex {
   
   void ComponentList::push_front(Node::Pointer node)
   {
-    Q_ASSERT(!node->m_previous && !node->m_next);
+    Q_ASSERT(!node->m_previous && !node->m_next && !node->m_parent);
+    
+    node->m_parent = m_parent;
     
     if (m_head)
     {
@@ -196,6 +181,7 @@ namespace kex {
       ++it;
       p->m_previous = 0;
       p->m_next = 0;
+      p->m_parent = 0;
     }
     
     m_head = m_tail = 0;
@@ -211,18 +197,24 @@ namespace kex {
       if ((*it)->m_previous)
       {
         (*it)->m_previous->m_next = (*it)->m_next;
+        
       } else {
+        
         m_head = (*it)->m_next;
       }
       
       if ((*it)->m_next)
       {
         (*it)->m_next->m_previous = (*it)->m_previous;
+        
       } else {
+        
         m_tail = (*it)->m_previous;
       }
+      
       (*it)->m_previous = 0;
       (*it)->m_next = 0;
+      (*it)->m_parent = 0;
       --m_size;
       
     }
@@ -243,4 +235,25 @@ namespace kex {
     
     return b;
   }
+  
+  int ComponentList::Node::durationMSecs() const
+  {
+    int duration(0);
+
+    if ((m_component->componentType() & OutputComponent::ActionType))
+    {
+      duration = m_component->property("durationMSecs").toInt();
+    } else
+    {
+      iterator it(m_children->begin());
+      while (it != m_children->end())
+      {
+        duration += (*it)->durationMSecs();
+        ++it;
+      }
+    }
+
+    return duration;
+  }
+
 }

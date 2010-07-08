@@ -35,7 +35,10 @@ namespace kex
       ComponentList& children();
       int position() const;
       Pointer parent() const {return m_parent;}
+      void setParent(Pointer node) {m_parent = node;}
+      
       OutputComponent::SharedPointer component() const {return m_component;}
+      int durationMSecs() const;
       
     private:
       OutputComponent::SharedPointer m_component;
@@ -119,8 +122,7 @@ namespace kex
     typedef node_iter<Node> iterator;
     typedef node_iter<Node const> const_iterator;
     
-    ComponentList();
-    ComponentList(Node::Pointer node);
+    ComponentList(Node::Pointer parent = 0);
     ~ComponentList();
     
     // STL
@@ -145,6 +147,7 @@ namespace kex
   private:
     Node::Pointer m_head;
     Node::Pointer m_tail;
+    Node::Pointer m_parent;
     int m_size;
     
   };

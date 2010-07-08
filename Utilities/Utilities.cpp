@@ -223,6 +223,13 @@ namespace kex
       }
       return output.simplified();
     }
+    
+    QString componentNameFromFilePath(const QString& path)
+    {
+      QFileInfo info(path);
+      return componentNameFromBaseName(info.baseName());
+    }
+
 
   } // END_UTILITIES
 } // END_KEX_NAMESPACE

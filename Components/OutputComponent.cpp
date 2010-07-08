@@ -61,22 +61,22 @@ namespace kex
   
   void OutputComponent::setMainCategory(const QString& cat) 
   {
-    _mainCategory = cat;
+    _mainCategory = cat.trimmed();
   }
   
   void OutputComponent::setName(const QString& name) 
   {
-    _name = name;
+    _name = name.trimmed();
   }
   
   void OutputComponent::setDescription(const QString& desc)
   {
-    _description = desc;
+    _description = desc.trimmed();
   }
   
   void OutputComponent::setLabel(const QString& label)
   {
-    _label = label;
+    _label = label.trimmed();
   }
   
   void OutputComponent::addCategory(const QString& category) 

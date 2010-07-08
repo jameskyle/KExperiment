@@ -13,8 +13,7 @@
 #include "Wizards/ComponentCreation/CreationWizard.h"
 #include "Wizards/ComponentCreation/ComponentSelectionDialog.h"
 
-#include "Components/ComponentList.h"
-#include "Components/ComponentDomParser.h"
+#include "Components/Components.h"
 
 #include "ComponentLibrary.h"
 #include "LiveView.h"
@@ -50,6 +49,8 @@ namespace kex
 
 
   private:
+    ComponentList m_components;
+    
     /** \brief  Creates an Experiment Library dock widget
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -87,7 +88,6 @@ namespace kex
     ComponentLibrary *actionLibraryDock;
     ComponentLibrary *eventLibraryDock;
     ComponentLibrary *trialLibraryDock;
-    ComponentList    *componentList;
     QDataWidgetMapper *mapper;
 
   public slots:

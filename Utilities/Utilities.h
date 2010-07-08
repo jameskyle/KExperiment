@@ -125,7 +125,9 @@ namespace kex
      * \version $Rev$
      **/
     QString componentNameFromBaseName(const QString& fileName);
-
+    
+    QString componentNameFromFilePath(const QString& path);
+    
     /** \brief  Deletes all the items in the range [begin, end)  
      *  
      * Copyright 2010 KSpace MRI. All Rights Reserved.

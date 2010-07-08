@@ -17,17 +17,6 @@
 
 namespace kex
 {
-  class ComponentDomParser;
-  typedef boost::function<void (const ComponentDomParser*,
-                                const QDomElement &element,
-                                ComponentList::Node::Pointer node)> 
-                                parseFunc;
-  
-  typedef boost::function<void (OutputComponent*,
-                                QString& value)> 
-                                setComponentValue;
-                                  
-  
   /** \brief  Parses an xml file representing a Component definition.
    *
    * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -44,11 +33,22 @@ namespace kex
     ComponentDomParser();
     ComponentDomParser(const QString& fileName);
 
-    bool readFile(const QString &fileName);
-    bool readFile();
+    void clear() {m_globalList.clear();}
 
+    ComponentDomParser& readFile(const QString &fileName);
+    ComponentDomParser& readFile();
+    ComponentList components() const;
+    
   private:
-
+    typedef boost::function<void (const ComponentDomParser*,
+                                  const QDomElement &element,
+                                  ComponentList::Node::Pointer node)> 
+                                  parseFunc;
+    
+    typedef boost::function<void (OutputComponent*,
+                                  QString& value)> 
+                                  setComponentValue;
+    
     QString m_filename;
     ComponentList m_globalList;
     QMap<QString, parseFunc> m_parseMap;

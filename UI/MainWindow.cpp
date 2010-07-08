@@ -4,11 +4,11 @@ namespace kex
 {
   MainWindow::MainWindow(QWidget *parent) 
     : QMainWindow(parent),
+      m_components(),
       experimentLibraryDock(new ComponentLibrary(this)),
       actionLibraryDock(new ComponentLibrary(this)),
       eventLibraryDock(new ComponentLibrary(this)),
       trialLibraryDock(new ComponentLibrary(this)),
-      componentList(new ComponentList),
       mapper(new QDataWidgetMapper)
   {    
     setupUi(this); // set up the Qt Designer Gui
@@ -33,6 +33,8 @@ namespace kex
     {
       delete mapper;
     }
+    
+    Utilities::deleteAll(m_components);
   }
   
   void MainWindow::showLiveView()
@@ -207,7 +209,6 @@ namespace kex
   {
     QStringList         xmlFiles;
     Config::ApplicationDataDirectoryTypes t;
-    Logger& logger = Logger::instance();
     
     t = Config::ActionDirectory;
     xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
@@ -227,19 +228,12 @@ namespace kex
     // template based components can find the original. E.g. if we parsed
     // Experiments before Actions, the Experiment class would not be able to 
     // find the Action templates.
-    bool success(false);
     foreach(QString path, xmlFiles)
     {
-      success = dom.readFile(path);
-      
-      if (!success)
-      {
-        QString msg("MainWindow::populateComponentList");
-        QString info(QObject::tr("Failed to create component from file: %1"));
-        logger.displayMessage(msg, info.arg(path), 
-                              QMessageBox::Ok, Logger::WarningLogLevel);
-      }
+      dom.readFile(path);
     }
+    
+    m_components = dom.components();
   }
 } // END_KEX_NAMESPACE
 

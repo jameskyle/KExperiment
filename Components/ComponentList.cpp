@@ -14,15 +14,6 @@ namespace kex {
   m_next(0),
   m_children(new ComponentList(this))
   {
-    if (comp->componentType() & OutputComponent::ActionType)
-    {
-      Action *action = qobject_cast<Action *>(comp.data());
-      
-      if (action)
-      {
-        //_durationMSecs = action->durationMSecs();
-      }
-    }
   }
   
   ComponentList::Node::Node(OutputComponent::Pointer comp) : 
@@ -42,6 +33,12 @@ namespace kex {
     delete m_children;
   }
   
+  ComponentList& ComponentList::globalList()
+  {
+    static ComponentList cList;
+    return cList;
+  }
+
   ComponentList& ComponentList::Node::children()
   {
     return *m_children;

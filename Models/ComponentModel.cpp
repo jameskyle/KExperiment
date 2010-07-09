@@ -5,7 +5,7 @@ namespace kex
   ComponentModel::ComponentModel(OutputComponent::ComponentTypes types, 
                                  QObject *parent) 
     : QAbstractItemModel(parent),
-      _componentList(ComponentList())
+      m_components(ComponentList::globalList())
   {
   }
 
@@ -64,15 +64,15 @@ namespace kex
     
     if (parent.isValid())
     {
-      ComponentList::Node::Pointer p = getItem(parent);
+      ComponentList::Node::Pointer node = getItem(parent);
       // if the index isValid() we should always get a valid node
-      Q_CHECK_PTR(p);
+      Q_CHECK_PTR(node);
       
-      count = p->children().size();
+      count = node->children().size();
       
     } else
     {
-      count = _componentList.size();
+      count = m_components.size();
     }
 
     return count;
@@ -107,7 +107,7 @@ namespace kex
       ComponentList::Node::Pointer node;
       if (!index.parent().isValid())
       {
-        ComponentList::iterator it(_componentList.begin());
+        ComponentList::iterator it(m_components.begin());
         node = it[index.row()];
       } else
       {
@@ -119,12 +119,30 @@ namespace kex
 
       if (role == Qt::DisplayRole)
       {
-        if (index.column() == 0)
+        switch (index.column())
         {
-          result.setValue(node->component()->name());
-        } else if (index.column() == 1)
-        {
-          result.setValue(node->component()->mainCategory());
+          case 0:
+            result.setValue(node->component()->name());
+            break;
+          case 1:
+            result.setValue(node->component()->mainCategory());
+            break;
+          case 2:
+            result.setValue(node->component()->label());
+            break;
+          case 3:
+            result.setValue(node->component()->description());
+            break;
+          case 4:
+            result.setValue(node->durationMSecs());
+            break;
+          case 5:
+            result.setValue(node->component()->icon());
+            break;
+
+          default:
+            
+            break;
         }
       }
     }
@@ -156,34 +174,33 @@ namespace kex
   {
     QModelIndex ind;
     
-//    if(hasIndex(row, column, parent))
-//    {
-//      if(parent.isValid())
-//      {
-//        Node::Pointer parentItem = getItem(parent);
-//        // if the index isValid() we should always get a valid node
-//        Q_CHECK_PTR(parentItem);
-//
-//        Node::iterator it(parentItem->child());
-//        it += row;
-//        
-//        if (it != _componentList.end())
-//        {
-//          ind = createIndex(row, column, *it);
-//        }
-//        
-//      } else
-//      {
-//        Node::iterator it(_componentList.begin() + row);
-//        Node::Pointer node(*it);
-//        // make sure the requested node/row is valid
-//        if (it != _componentList.end())
-//        {
-//          ind = createIndex(row, column, node);
-//        }
-//      }
-//
-//    }
+    if(hasIndex(row, column, parent))
+    {
+      if(parent.isValid())
+      {
+        ComponentList::Node::Pointer parentItem = getItem(parent);
+        // if the index isValid() we should always get a valid node
+        Q_CHECK_PTR(parentItem);
+
+        ComponentList::iterator it(parentItem->children().begin());
+        it += row;
+        
+        if (it != parentItem->children().end())
+        {
+          ind = createIndex(row, column, *it);
+        }
+        
+      } else
+      {
+        ComponentList::iterator it(m_components.begin() + row);
+        // make sure the requested node/row is valid
+        if (it != m_components.end())
+        {
+          ind = createIndex(row, column, (*it));
+        }
+      }
+
+    }
     
     return ind;
   }

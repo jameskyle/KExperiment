@@ -8,6 +8,11 @@ IF(APPLE)
   SET(MACOSX_BUNDLE_LONG_VERSION_STRING Version 0.1)
   SET(CMAKE_OSX_ARCHITECTURES x86_64)
   SET(XCODE_VERSION 3.2.1)
+  SET(GCC_VERSION llvm)
+  SET(DEBUG_INFORMATION_FORMAT dwarf-with-dsym)
+  SET(ONLY_ACTIVE_ARCH YES)
+  SET(CURRENT_PROJECT_VERSION .01)
+  SET(GCC_ENABLE_FIX_AND_CONTINUE YES)
 ENDIF(APPLE)
 
 SET(K_MOC_HDRS
@@ -45,7 +50,7 @@ SET(K_RCS Resources/resources.qrc)
 
 SET(KEXP_SRCS main.cpp)
 SET(K_SRCS
-    Common/Global.cpp
+    Common/Config.cpp
     Common/Logger.cpp
     Models/ComponentModel.cpp
     Utilities/Utilities.cpp
@@ -80,7 +85,8 @@ FOREACH(file ${K_SRCS})
   SET(K_SRC_HDRS ${K_SRC_HDRS} ${file_src})
 ENDFOREACH(file ${K_SRCS})
 SET(K_SRC_HDRS ${K_SRC_HDRS} Components/Components.h)
-ADD_DEFINITIONS(-Wall -g)
+SET(CMAKE_C_FLAGS_DEBUG "-Wall -g")
+SET(CMAKE_CXX_FLAGS_DEBUG "-Wall -g")
 
 SET(QT_USE_QTXML true)
 SET(QT_USE_QTXMLPATTERNS true)

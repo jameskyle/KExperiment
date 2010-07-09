@@ -6,9 +6,8 @@
 #include <boost/utility/enable_if.hpp>
 #include <algorithm>
 
-#include "OutputComponent.h"
-#include "Actions/Action.h"
 #include "Utilities/Utilities.h"
+#include "OutputComponent.h"
 
 namespace kex
 {
@@ -141,6 +140,7 @@ namespace kex
     void              clear();
     void              remove(Node::Pointer node);
     iterator          findByName(const QString& name) const;
+    static ComponentList&    globalList();
 //    iterator find(Node::Pointer node) const;
 
 

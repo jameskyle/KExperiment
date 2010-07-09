@@ -173,33 +173,6 @@ namespace kex
       return valid;
     }
 
-    QStringList xmlFileComponentList(Config::ApplicationDataDirectoryTypes t)
-    {
-      QStringList         dirList;
-      QStringList         xmlList;
-      Config              *config = &Config::instance();
-
-      dirList = config->dataDirectoryList(t);
-
-      foreach(QString path, dirList)
-      {
-        QDir dir(path);
-        QStringList filters;
-        QStringList fileList;
-
-        filters << "*.xml";
-        dir.setNameFilters(filters);
-        fileList = dir.entryList(QDir::Files);
-
-        foreach(QString file, fileList)
-        {
-          QString fullPath("%1/%2");
-          xmlList << fullPath.arg(path).arg(file);
-        }
-      }
-      return xmlList;
-    }
-
     QString componentNameFromBaseName(const QString& baseName)
     {
       QString componentName(baseName);

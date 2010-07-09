@@ -8,11 +8,14 @@
 #include <boost/function.hpp>
 
 #include "Components/Components.h"
-#include "Common/Global.h"
+#include "Components/ComponentDomParser.h"
+#include "Common/Config.h"
 #include "Utilities/Utilities.h"
 
 namespace kex
 {
+  class ComponentDomParser;
+  
   class ComponentDomParserTest : public QObject
   {
     Q_OBJECT

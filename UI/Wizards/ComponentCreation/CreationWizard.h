@@ -10,7 +10,7 @@
 #include "UI/Wizards/ComponentCreation/FinishedPage.h"
 
 #include "Components/Actions/Action.h"
-#include "Common/Global.h"
+#include "Common/Config.h"
 
 namespace kex
 {

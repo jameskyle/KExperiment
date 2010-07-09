@@ -15,16 +15,16 @@ namespace kex
     Config::ApplicationDataDirectoryTypes t;
     
     t = Config::ActionDirectory;
-    m_componentFiles << QStringList(Utilities::xmlFileComponentList(t));
+    m_componentFiles << QStringList(Config::instance().xmlFileComponentList(t));
     
     t = Config::EventDirectory;
-    m_componentFiles << QStringList(Utilities::xmlFileComponentList(t));
+    m_componentFiles << QStringList(Config::instance().xmlFileComponentList(t));
     
     t = Config::TrialDirectory;
-    m_componentFiles << QStringList(Utilities::xmlFileComponentList(t));
+    m_componentFiles << QStringList(Config::instance().xmlFileComponentList(t));
     
     t = Config::ExperimentDirectory;
-    m_componentFiles << QStringList(Utilities::xmlFileComponentList(t));
+    m_componentFiles << QStringList(Config::instance().xmlFileComponentList(t));
    
     // Action template one: Rest 10 Seconds
     m_labels << "Pauses for 10 seconds.";

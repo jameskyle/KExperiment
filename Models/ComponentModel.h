@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QIcon>
 
-#include "Common/Global.h"
+#include "Common/Config.h"
 #include "Components/ComponentList.h"
 #include "Components/OutputComponent.h"
 
@@ -73,7 +73,7 @@ namespace kex
   private:
     ComponentList::Node::Pointer  getItem(const QModelIndex& index) const;
 
-    ComponentList _componentList;
+    ComponentList& m_components;
 
   public slots:
     void updateComponentList();

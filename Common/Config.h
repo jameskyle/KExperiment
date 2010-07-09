@@ -7,8 +7,11 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QVariant>
+#include <QDir>
 
+#include "Components/Components.h"
 #include "Common/Uncopyable.h"
+
 #include "Common/Logger.h"
 
 namespace kex
@@ -21,7 +24,7 @@ namespace kex
    * \author $LastChangedBy$
    * \date 2010-4-8
    * \date $LastChangedDate$
-   * \version $Rev$  \sa Types.h Global.h
+   * \version $Rev$  \sa Types.h Config.h
    **/
   class Config : private Uncopyable
   {
@@ -124,14 +127,28 @@ namespace kex
     const QString componentSchemaFile() const { return m_componentSchemaFile;}
     const QStringList templates(ApplicationDataDirectoryTypes t) const;
     void addTemplate(ApplicationDataDirectoryTypes storagePath, QString temp);
-    
+    /** \brief  Returns a list of paths to the component xml definition files
+     *
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-3
+     * \date $LastChangedDate$
+     * \version $Rev$  \sa validateXml()
+     **/
+    QStringList xmlFileComponentList(kex::Config::ApplicationDataDirectoryTypes t =
+                                     kex::Config::ApplicationDataDirectoryTypes(
+                                     kex::Config::ActionDirectory |
+                                     kex::Config::EventDirectory |
+                                     kex::Config::TrialDirectory |
+                                     kex::Config::ExperimentDirectory));
 
   private:
     QString m_organizationName;
     QString m_domainName;
     QString m_applicationName;
     QString m_storageLocation;
-    ComponentList m_componentList;
     QList<ApplicationDataDirectoryTypes> m_dataDirectoryList;
     QMultiMap<ApplicationDataDirectoryTypes, QString> m_templates;
     QString m_componentSchemaFile;

@@ -14,10 +14,9 @@
 #include <QXmlSchemaValidator>
 #include <QStringList>
 
-#include "Common/Global.h"
+#include "Common/Config.h"
 #include "Components/ComponentFactory.h"
 #include "Components/OutputComponent.h"
-#include "Components/ComponentList.h"
 
 namespace kex
 {
@@ -43,7 +42,7 @@ namespace kex
     void writeTemplateFiles();
 
 
-    /** \brief  Registers the comonents with the ComponentFactory
+    /** \brief  Registers the components with the ComponentFactory
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
@@ -90,23 +89,6 @@ namespace kex
      * \version $Rev$
      **/
     bool isValidXml(QFile *file, const QXmlSchemaValidator *validator);
-
-    /** \brief  Returns a list of paths to the component xml definition files
-     *
-     * Copyright 2010 KSpace MRI. All Rights Reserved.
-     *
-     * \author James Kyle
-     * \author $LastChangedBy$
-     * \date 2010-5-3
-     * \date $LastChangedDate$
-     * \version $Rev$  \sa validateXml()
-     **/
-    QStringList xmlFileComponentList(kex::Config::ApplicationDataDirectoryTypes t =
-                                     kex::Config::ApplicationDataDirectoryTypes(
-                                      kex::Config::ActionDirectory |
-                                      kex::Config::EventDirectory |
-                                      kex::Config::TrialDirectory |
-                                      kex::Config::ExperimentDirectory));
 
     /** \brief  Translates the given fileName string to a valid compnent name.
      *

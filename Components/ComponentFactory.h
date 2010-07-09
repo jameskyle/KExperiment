@@ -9,18 +9,9 @@
 #include <QMap>
 #include <QVariant>
 
-#include "OutputComponent.h"
-#include "ComponentList.h"
-#include "Actions/RestAction.h"
-#include "Actions/TextAction.h"
-#include "Actions/ImageAction.h"
-#include "Actions/AudioAction.h"
-#include "Actions/VideoAction.h"
-#include "Event/Event.h"
-#include "Trial/Trial.h"
-#include "Experiment/Experiment.h"
-
-#include "Common/Global.h"
+#include "Components/Components.h"
+#include "Common/Config.h"
+#include "Common/Uncopyable.h"
 
 namespace kex
 {

@@ -14,12 +14,13 @@
 #include "Wizards/ComponentCreation/ComponentSelectionDialog.h"
 
 #include "Components/Components.h"
+#include "Components/ComponentDomParser.h"
 
 #include "ComponentLibrary.h"
 #include "LiveView.h"
 
 #include "Models/ComponentModel.h"
-#include "Common/Global.h"
+#include "Common/Config.h"
 
 #include "ui_MainWindow.h"
 
@@ -49,7 +50,7 @@ namespace kex
 
 
   private:
-    ComponentList m_components;
+    ComponentList& m_components;
     
     /** \brief  Creates an Experiment Library dock widget
      *

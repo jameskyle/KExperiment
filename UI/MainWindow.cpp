@@ -4,7 +4,7 @@ namespace kex
 {
   MainWindow::MainWindow(QWidget *parent) 
     : QMainWindow(parent),
-      m_components(),
+      m_components(ComponentList::globalList()),
       experimentLibraryDock(new ComponentLibrary(this)),
       actionLibraryDock(new ComponentLibrary(this)),
       eventLibraryDock(new ComponentLibrary(this)),
@@ -211,16 +211,16 @@ namespace kex
     Config::ApplicationDataDirectoryTypes t;
     
     t = Config::ActionDirectory;
-    xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
+    xmlFiles << QStringList(Config::instance().xmlFileComponentList(t));
     
     t = Config::EventDirectory;
-    xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
+    xmlFiles << QStringList(Config::instance().xmlFileComponentList(t));
     
     t = Config::TrialDirectory;
-    xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
+    xmlFiles << QStringList(Config::instance().xmlFileComponentList(t));
 
     t = Config::ExperimentDirectory;
-    xmlFiles << QStringList(Utilities::xmlFileComponentList(t));
+    xmlFiles << QStringList(Config::instance().xmlFileComponentList(t));
 
     ComponentDomParser dom;
     

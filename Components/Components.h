@@ -1,3 +1,6 @@
+#ifndef COMPONENTS_H
+#define COMPONENTS_H
+
 #include "OutputComponent.h"
 #include "Actions/Action.h"
 #include "Actions/RestAction.h"
@@ -8,6 +11,5 @@
 #include "Event/Event.h"
 #include "Trial/Trial.h"
 #include "Experiment/Experiment.h"
-#include "ComponentList.h"
-#include "ComponentDomParser.h"
-#include "ComponentFactory.h"
+
+#endif

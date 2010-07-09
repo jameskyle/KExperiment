@@ -1,4 +1,4 @@
-#include "Global.h"
+#include "Config.h"
 
 namespace kex
 {
@@ -51,7 +51,34 @@ namespace kex
 
     return directoryList;
   }
-
+  
+  QStringList Config::xmlFileComponentList(Config::ApplicationDataDirectoryTypes t)
+  {
+    QStringList         dirList;
+    QStringList         xmlList;
+    
+    dirList = dataDirectoryList(t);
+    
+    foreach(QString path, dirList)
+    {
+      QDir dir(path);
+      QStringList filters;
+      QStringList fileList;
+      
+      filters << "*.xml";
+      dir.setNameFilters(filters);
+      fileList = dir.entryList(QDir::Files);
+      
+      foreach(QString file, fileList)
+      {
+        QString fullPath("%1/%2");
+        xmlList << fullPath.arg(path).arg(file);
+      }
+    }
+    return xmlList;
+  }
+  
+  
 //  bool Config::registerComponentMetaData(const QString& classid,
 //                                         QMap<Config::MetaDataType,
 //                                          QVariant> metadata)

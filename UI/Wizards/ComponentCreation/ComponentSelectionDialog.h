@@ -4,7 +4,7 @@
 #include "ui_ComponentSelectionDialog.h"
 #include "UI/Wizards/ComponentCreation/CreationWizard.h"
 #include "Utilities/Utilities.h"
-#include "Common/Global.h"
+#include "Common/Config.h"
 
 namespace kex
 {

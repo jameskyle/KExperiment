@@ -4,7 +4,8 @@
 #include <QTest>
 #include <QDebug>
 
-#include <Components/Components.h>
+#include "Components/Components.h"
+#include "Components/ComponentList.h"
 
 namespace kex
 {

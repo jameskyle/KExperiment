@@ -2,6 +2,7 @@
 #define COMPONENTLIBRARY_H
 #include <QDockWidget>
 #include <QSortFilterProxyModel>
+#include <QAction>
 
 #include "Models/ComponentModel.h"
 #include "Models/ComponentSortFilterProxyModel.h"
@@ -49,10 +50,30 @@ namespace kex
      **/
     ~ComponentLibrary();
 
-    void setModel(QAbstractItemModel *model, 
-                  OutputComponent::ComponentTypes c_type = 
-                  OutputComponent::AllComponents);
+    void setModel(ComponentModel *model);
+    
+    QAction* toggleActionAction() {return m_toggleActionAction;}
+    QAction* toggleEventAction() {return m_toggleEventAction;}
+    QAction* toggleTrialAction() {return m_toggleTrialAction;}
+    QAction* toggleExperimentAction() {return m_toggleExperimentAction;}
+    QAction* toggleAllComponentsAction() {return m_toggleAllComponentsAction;}
 
+  private:
+    void toggleComponentFilter(bool checked, OutputComponent::ComponentTypes t);
+    
+    QAction* m_toggleActionAction;
+    QAction* m_toggleEventAction;
+    QAction* m_toggleTrialAction;
+    QAction* m_toggleExperimentAction;
+    QAction* m_toggleAllComponentsAction;
+    
+  public slots:
+    void toggleActions(bool checked);
+    void toggleEvents(bool checked);
+    void toggleTrials(bool checked);
+    void toggleExperiments(bool checked);
+    void udpateAllComponentsAction();
+    
   };
 }
 #endif

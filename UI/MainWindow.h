@@ -45,9 +45,7 @@ namespace kex
     * \version $Rev$
     **/
     //void connectButtonToLibraryDock(QToolButton *button, );
-
-
-
+    
   private:
     ComponentList& m_components;
     
@@ -84,17 +82,18 @@ namespace kex
 
     void makeActionConnections();
 
-    ComponentLibrary *experimentLibraryDock;
-    ComponentLibrary *actionLibraryDock;
-    ComponentLibrary *eventLibraryDock;
-    ComponentLibrary *trialLibraryDock;
-    QDataWidgetMapper *mapper;
+    ComponentLibrary *m_componentLibraryDock;
+    QDataWidgetMapper *m_mapper;
+    ComponentModel *m_componentModel;
 
   public slots:
     void selectComponentWizard();
     void launchComponentLibrary(OutputComponent::ComponentTypes component);
 
     void showLiveView();
+    
+  signals:
+    void filterComponents(OutputComponent::ComponentTypes c_types);
   };
 }
 

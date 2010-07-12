@@ -4,7 +4,7 @@
 #include <QSortFilterProxyModel>
 
 #include "Models/ComponentModel.h"
-
+#include "Models/ComponentSortFilterProxyModel.h"
 #include "ui_LibraryDockWidget.h"
 
 namespace kex
@@ -49,7 +49,9 @@ namespace kex
      **/
     ~ComponentLibrary();
 
-    void setModel(QAbstractItemModel *model);
+    void setModel(QAbstractItemModel *model, 
+                  OutputComponent::ComponentTypes c_type = 
+                  OutputComponent::AllComponents);
 
   };
 }

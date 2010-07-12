@@ -26,10 +26,10 @@ namespace kex
       ~Node();
       
       // operators
-      operator  bool() const;
-      bool      operator!() const;
-      bool operator==(const Node& other);
-      bool operator!=(const Node& other);
+//      operator  bool() const;
+//      bool      operator!() const;
+//      bool operator==(const Node& other);
+//      bool operator!=(const Node& other);
       
       ComponentList& children();
       int position() const;

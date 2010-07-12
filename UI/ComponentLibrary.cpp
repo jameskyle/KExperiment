@@ -14,12 +14,16 @@ namespace kex
   ComponentLibrary::~ComponentLibrary() {
   }
 
-  void ComponentLibrary::setModel(QAbstractItemModel *model)
+  void ComponentLibrary::setModel(QAbstractItemModel *model, 
+                                  OutputComponent::ComponentTypes c_type)
   {
-    QSortFilterProxyModel *proxy = new QSortFilterProxyModel(this);
-
+    ComponentSortFilterProxyModel *proxy;
+    proxy = new ComponentSortFilterProxyModel(this);
+    
+    
     proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     proxy->setSourceModel(model);
+    proxy->setFilterComponentType(c_type);
 
     componentListView->setModel(proxy);
 

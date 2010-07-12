@@ -27,6 +27,7 @@ SET(K_MOC_HDRS
     Components/Event/Event.h
     Components/Trial/Trial.h
     Components/Experiment/Experiment.h
+    Models/ComponentSortFilterProxyModel.h
     UI/Wizards/ComponentCreation/BaseConfigurationPage.h
     UI/Wizards/ComponentCreation/BaseInformationPage.h
     UI/Wizards/ComponentCreation/ComponentSelectionDialog.h
@@ -68,6 +69,7 @@ SET(K_SRCS
     Components/ComponentDomParser.cpp
     Components/ComponentFactory.cpp
     Components/MetaData.cpp
+    Models/ComponentSortFilterProxyModel.cpp
     UI/ComponentLibrary.cpp
     UI/LiveView.cpp
     UI/MainWindow.cpp

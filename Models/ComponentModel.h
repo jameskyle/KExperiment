@@ -4,6 +4,7 @@
 #include <QResource>
 #include <QStringList>
 #include <QIcon>
+#include <Qt>
 
 #include "Common/Config.h"
 #include "Components/ComponentList.h"
@@ -41,9 +42,7 @@ namespace kex
     * \version $Rev$  
     * \sa OutputComponent OutputComponent::ComponentTypes
     **/
-    ComponentModel(OutputComponent::ComponentTypes types = 
-                   OutputComponent::AllComponents, 
-                   QObject *parent = 0);
+    ComponentModel(QObject *parent = 0);
 
     /** \brief  Default destructor.
      *
@@ -69,10 +68,11 @@ namespace kex
     
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role) const;
-    
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+        
   private:
     ComponentList::Node::Pointer  getItem(const QModelIndex& index) const;
-
+    
     ComponentList& m_components;
 
   public slots:

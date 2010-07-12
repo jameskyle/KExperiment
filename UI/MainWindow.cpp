@@ -46,8 +46,7 @@ namespace kex
   void MainWindow::setUpWidgetMapper()
   {
     // set up the data mapper for displaying
-    ComponentModel *model = new ComponentModel(OutputComponent::AllComponents, 
-                                               this);
+    ComponentModel *model = new ComponentModel(this);
     mapper->setModel(model);
     mapper->addMapping(componentNameLabel, 0, "text");
     mapper->addMapping(typeNameLabel, 1, "text");
@@ -98,13 +97,13 @@ namespace kex
     actionLibraryDock->setWindowTitle(tr("Action Library"));
     eventLibraryDock->setWindowTitle(tr("Event Library"));
     trialLibraryDock->setWindowTitle(tr("Trial Library"));
-    
+
     // set object names
     experimentLibraryDock->setObjectName("experimentLibraryDock");
     actionLibraryDock->setObjectName("actionLibraryDock");
     eventLibraryDock->setObjectName("eventLibraryDock");
     trialLibraryDock->setObjectName("trialLibraryDock");
-    
+
     // declare acceptable dock points
     experimentLibraryDock->setAllowedAreas(Qt::LeftDockWidgetArea | 
                                            Qt::RightDockWidgetArea);
@@ -120,33 +119,39 @@ namespace kex
     addDockWidget(Qt::RightDockWidgetArea, actionLibraryDock);
     addDockWidget(Qt::RightDockWidgetArea, eventLibraryDock);
     addDockWidget(Qt::RightDockWidgetArea, trialLibraryDock);
-    
+
     // tabify the right docks
     tabifyDockWidget(actionLibraryDock, eventLibraryDock);
     tabifyDockWidget(actionLibraryDock, trialLibraryDock);
-    
+
     // Hide the right docks by default
     actionLibraryDock->hide();
     eventLibraryDock->hide();
     trialLibraryDock->hide();
     experimentLibraryDock->hide();
-    
+
     // Set models for created libraries
-   ComponentModel *model = new ComponentModel(OutputComponent::ActionType, 
-                                               actionLibraryDock);
-   actionLibraryDock->setModel(model);
+    ComponentModel *model = new ComponentModel(actionLibraryDock);
+    actionLibraryDock->setModel(model, OutputComponent::ActionType);
 
-   model = new ComponentModel(OutputComponent::EventType, eventLibraryDock);
-   eventLibraryDock->setModel(model);
+    model = new ComponentModel(eventLibraryDock);
+    eventLibraryDock->setModel(model, OutputComponent::EventType);
     
-   model = new ComponentModel(OutputComponent::TrialType, trialLibraryDock);
-   trialLibraryDock->setModel(model);
-    
-   model = new ComponentModel(OutputComponent::AllComponents, 
-                               experimentLibraryDock);
-  componentTreeView->setModel(model);
+    model = new ComponentModel(trialLibraryDock);
+    trialLibraryDock->setModel(model, OutputComponent::TrialType);
 
-  experimentLibraryDock->setModel(model);
+    model = new ComponentModel(experimentLibraryDock);
+    experimentLibraryDock->setModel(model, OutputComponent::ExperimentType);
+    
+    
+    ComponentSortFilterProxyModel *proxy;
+    proxy = new ComponentSortFilterProxyModel(this);
+    proxy->setFilterComponentType(OutputComponent::AllComponents);
+    proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    proxy->setSourceModel(model);
+    
+    componentTreeView->setModel(proxy);  
+    componentTreeView->setSortingEnabled(true);
   }
   
   void MainWindow::launchComponentLibrary(OutputComponent::ComponentTypes component)

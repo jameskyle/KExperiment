@@ -15,11 +15,10 @@
 
 #include "Components/Components.h"
 #include "Components/ComponentDomParser.h"
-
 #include "ComponentLibrary.h"
 #include "LiveView.h"
-
 #include "Models/ComponentModel.h"
+#include "Models/ComponentSortFilterProxyModel.h"
 #include "Common/Config.h"
 
 #include "ui_MainWindow.h"

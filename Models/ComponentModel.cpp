@@ -2,8 +2,7 @@
 
 namespace kex
 {
-  ComponentModel::ComponentModel(OutputComponent::ComponentTypes types, 
-                                 QObject *parent) 
+  ComponentModel::ComponentModel(QObject *parent) 
     : QAbstractItemModel(parent),
       m_components(ComponentList::globalList())
   {
@@ -144,6 +143,7 @@ namespace kex
             
             break;
         }
+      } else {
       }
     }
       return result;
@@ -213,5 +213,16 @@ namespace kex
     void *p = index.internalPointer();
     parentItem = static_cast<ComponentList::Node::Pointer>(p);
     return parentItem;
+  }
+  
+  Qt::ItemFlags ComponentModel::flags(const QModelIndex &index) const
+  {
+    Qt::ItemFlags flags(QAbstractItemModel::flags(index));
+    
+    if (index.parent().isValid())
+    {
+      flags = Qt::ItemIsEnabled;
+    }
+    return flags;
   }
 }

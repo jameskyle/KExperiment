@@ -157,14 +157,7 @@ namespace kex {
   
   ComponentList::iterator ComponentList::end() const
   {
-    iterator it(0);
-    
-    if (m_tail)
-    {
-      it = iterator(m_tail->m_next);
-    }
-    
-    return it;
+    return iterator(0);
   }
   
   void ComponentList::clear()

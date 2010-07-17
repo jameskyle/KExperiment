@@ -2,9 +2,15 @@
 
 namespace kex
 {
-  ComponentModel::ComponentModel(QObject *parent) 
+  ComponentModel& ComponentModel::globalInstance()
+  {
+    static ComponentModel model;
+    return model;
+  }
+
+  ComponentModel::ComponentModel(ComponentList *c_list, QObject *parent) 
     : QAbstractItemModel(parent),
-      m_components(ComponentList::globalList())
+      m_components(*c_list)
   {
   }
 
@@ -38,7 +44,7 @@ namespace kex
           result.setValue(QString("Description"));
           break;
         case 4:
-          result.setValue(QString("Duration (msecs)"));
+          result.setValue(QString("Duration"));
           break;
         case 5:
           result.setValue(QString("Icon"));
@@ -47,6 +53,7 @@ namespace kex
                       
           break;
       }
+
     }
     return result;
   }
@@ -116,7 +123,7 @@ namespace kex
         
       }
 
-      if (role == Qt::DisplayRole)
+      if (role == Qt::DisplayRole  || role == Qt::EditRole)
       {
         switch (index.column())
         {
@@ -133,7 +140,11 @@ namespace kex
             result.setValue(node->component()->description());
             break;
           case 4:
-            result.setValue(node->durationMSecs());
+          {
+            QTime time(0,0,0);
+            result.setValue(time.addMSecs(node->durationMSecs())
+                            .toString("mm:ss.zzz"));
+          }
             break;
           case 5:
             result.setValue(node->component()->icon());
@@ -143,7 +154,6 @@ namespace kex
             
             break;
         }
-      } else {
       }
     }
       return result;

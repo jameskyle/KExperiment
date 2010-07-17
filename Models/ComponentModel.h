@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QIcon>
 #include <Qt>
+#include <QTime>
 
 #include "Common/Config.h"
 #include "Components/ComponentList.h"
@@ -27,23 +28,25 @@ namespace kex
     Q_OBJECT
 
   public:
+    
     /** \brief  Default constructor.
-    *
-    * Copyright 2010 KSpace MRI. All Rights Reserved.
-    *
-    * Sets up the component item model.
-    *
-    * \author James Kyle
-    * \author $LastChangedBy$
-    * \date 2010-4-12
-    * \date $LastChangedDate$
-    * \param types a mask of the types of components
-    * \param parent pointer to the parent classe.
-    * \version $Rev$  
-    * \sa OutputComponent OutputComponent::ComponentTypes
-    **/
-    ComponentModel(QObject *parent = 0);
-
+     *
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * Sets up the component item model.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-4-12
+     * \date $LastChangedDate$
+     * \param types a mask of the types of components
+     * \param parent pointer to the parent classe.
+     * \version $Rev$  
+     * \sa OutputComponent OutputComponent::ComponentTypes
+     **/
+    ComponentModel(ComponentList *c_list = &ComponentList::globalList(),
+                   QObject *parent = 0);
+    
     /** \brief  Default destructor.
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -55,7 +58,8 @@ namespace kex
      * \version $Rev$
      **/
     ~ComponentModel() {}
-
+    
+    static ComponentModel& globalInstance();
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
 

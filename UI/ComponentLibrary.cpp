@@ -43,6 +43,10 @@ namespace kex
             m_toggleExperimentAction, SLOT(setChecked(bool)));
     
     m_toggleAllComponentsAction->trigger();
+    
+    // when a component is clicked, emit the selectedIndexChanged signal
+    connect(componentListView, SIGNAL(clicked(const QModelIndex&)), 
+            this, SIGNAL(selectedIndexChanged(const QModelIndex&)));
   }
 
   ComponentLibrary::~ComponentLibrary() {

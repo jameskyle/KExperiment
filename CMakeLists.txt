@@ -47,8 +47,6 @@ SET(K_UI_FILES
     UI/Forms/MainWindow.ui
     UI/Forms/ViewerFrame.ui)
 
-SET(K_RCS Resources/resources.qrc)
-
 SET(KEXP_SRCS main.cpp)
 SET(K_SRCS
     Common/Config.cpp
@@ -82,10 +80,13 @@ SET(K_SRCS
     UI/Wizards/ComponentCreation/InformationPage.cpp
     UI/Wizards/ComponentCreation/WelcomePage.cpp)
 
+SET(K_RCS Resources/resources.qrc)
+
 FOREACH(file ${K_SRCS})
   STRING(REPLACE .cpp .h file_src ${file})
   SET(K_SRC_HDRS ${K_SRC_HDRS} ${file_src})
 ENDFOREACH(file ${K_SRCS})
+
 SET(K_SRC_HDRS ${K_SRC_HDRS} Components/Components.h)
 SET(CMAKE_C_FLAGS_DEBUG "-Wall -g")
 SET(CMAKE_CXX_FLAGS_DEBUG "-Wall -g")
@@ -109,10 +110,10 @@ ADD_LIBRARY(K STATIC ${K_SRCS}
                      ${K_MOC_SRCS}
                      ${K_UI_SRCS}
                      ${K_UI_HDRS}
-                     ${K_RC_SRCS}
                      ${K_SRC_HDRS})
 
-ADD_EXECUTABLE(KExperiment MACOSX_BUNDLE ${KEXP_SRCS})
+ADD_EXECUTABLE(KExperiment MACOSX_BUNDLE ${K_RC_SRCS} ${KEXP_SRCS})
+
 TARGET_LINK_LIBRARIES(KExperiment ${QT_LIBRARIES} K)
 
 ADD_EXECUTABLE(ComponentListTest Tests/ComponentListTest.cpp

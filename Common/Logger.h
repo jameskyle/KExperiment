@@ -69,24 +69,6 @@ namespace kex
      **/
     void log(const QString& msg, const QWidget *obj = 0, 
                      Logger::LogLevelType level = DebugLogLevel);
-
-    /** \brief  Displays the given message and info to the user
-     * 
-     * Copyright 2010 KSpace MRI. All Rights Reserved.
-     * 
-     * \author James Kyle
-     * \author $LastChangedBy$
-     * \date 2010-4-15
-     * \date $LastChangedDate$
-     * \param test the text of the QMessageBox
-     * \prarm info The information portionof the QMessageBox
-     * \version $Rev$  \sa QMessageBox
-     **/
-    void displayMessage(const QString& text, 
-                        const QString& info = "",
-                        QMessageBox::StandardButton button = 
-                        QMessageBox::Ok, 
-                        Logger::LogLevelType level = DebugLogLevel) const;
     
   private:
     /** \brief  Default constructor
@@ -112,6 +94,25 @@ namespace kex
      * \version $Rev$
      **/
     ~Logger() {}
+    
+  public slots:
+    /** \brief  Displays the given message and info to the user
+     * 
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     * 
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-4-15
+     * \date $LastChangedDate$
+     * \param test the text of the QMessageBox
+     * \prarm info The information portionof the QMessageBox
+     * \version $Rev$  \sa QMessageBox
+     **/
+    void displayMessage(const QString& text, 
+                        const QString& info = "",
+                        QMessageBox::StandardButton button = 
+                        QMessageBox::Ok, 
+                        Logger::LogLevelType level = DebugLogLevel) const;
   };
 }
 #endif

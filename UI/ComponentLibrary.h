@@ -57,6 +57,8 @@ namespace kex
     QAction* toggleTrialAction() {return m_toggleTrialAction;}
     QAction* toggleExperimentAction() {return m_toggleExperimentAction;}
     QAction* toggleAllComponentsAction() {return m_toggleAllComponentsAction;}
+    
+    QAbstractItemModel* model(){return componentListView->model();}
 
   private:
     void toggleComponentFilter(bool checked, OutputComponent::ComponentTypes t);
@@ -73,6 +75,9 @@ namespace kex
     void toggleTrials(bool checked);
     void toggleExperiments(bool checked);
     void udpateAllComponentsAction();
+    
+  signals:
+    void selectedIndexChanged(const QModelIndex&);
     
   };
 }

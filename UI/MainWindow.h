@@ -61,7 +61,7 @@ namespace kex
      * \date $LastChangedDate$
     * \version $Rev$  \sa ComponentLibraryDockWidget
     **/
-    void createLibraryDocks();
+    void createViews();
 
     /** \brief  Populates the componentList from the xml component files.
      *
@@ -84,11 +84,12 @@ namespace kex
 
     ComponentLibrary *m_componentLibraryDock;
     QDataWidgetMapper *m_mapper;
-    ComponentModel *m_componentModel;
+    ComponentModel&   m_componentModel;
 
   public slots:
     void selectComponentWizard();
     void launchComponentLibrary(OutputComponent::ComponentTypes component);
+    void updateTreeViewRoot(const QModelIndex& index);
 
     void showLiveView();
     

@@ -8,6 +8,7 @@
 #include <QVariant>
 
 #include <boost/function.hpp>
+#include <ostream>
 
 #include "OutputComponent.h"
 #include "ComponentFactory.h"
@@ -36,9 +37,14 @@ namespace kex
     void clear() {m_globalList.clear();}
 
     ComponentDomParser& readFile(const QString &fileName);
+    ComponentDomParser& readFile(QFile& file);
     ComponentDomParser& readFile();
+    
     ComponentList components() const;
     
+    ComponentDomParser& operator<<(QFile& file);
+    ComponentDomParser& operator<<(const QString& fileName);
+
   private:
     typedef boost::function<void (const ComponentDomParser*,
                                   const QDomElement &element,

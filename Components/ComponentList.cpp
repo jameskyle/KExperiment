@@ -104,6 +104,7 @@ namespace kex {
       m_head = m_tail = node;
     }
     
+    connectNodeComponents(m_tail->m_previous, m_tail);
     ++m_size;
   }
   
@@ -135,6 +136,8 @@ namespace kex {
     }
     
     m_head = node;
+    
+    connectNodeComponents(m_head, m_head->m_next);
     ++m_size;
   }
   
@@ -244,6 +247,42 @@ namespace kex {
     }
 
     return duration;
+  }
+
+  void ComponentList::connectNodeComponents(Node::Pointer previous, 
+                                            Node::Pointer next) const
+  {
+    bool success(false);
+    OutputComponent* p = previous->m_component.data();
+    OutputComponent* n = next->m_component.data();
+    
+    success = QObject::connect(p, SIGNAL(complete()), n, SLOT(begin()));
+    
+    if (!success)
+    {
+      QString msg = "Failed to connect component %1 from %2";
+      msg.arg(previous->m_component->name()).arg(next->m_component->name());
+      Logger::instance().log(msg, 0, Logger::WarningLogLevel);
+    }
+    
+  }
+  
+  void ComponentList::disconnectNodeComponents(Node::Pointer previous, 
+                                               Node::Pointer next) const
+  {
+    bool success(false);
+    OutputComponent* p = previous->m_component.data();
+    OutputComponent* n = next->m_component.data();
+    
+    success = QObject::disconnect(p, SIGNAL(complete()), n, SLOT(begin()));
+    
+    if (!success)
+    {
+      QString msg = "Failed to disconnect component %1 from %2";
+      msg.arg(previous->m_component->name()).arg(next->m_component->name());
+      Logger::instance().log(msg, 0, Logger::WarningLogLevel);
+    }
+    
   }
 
 }

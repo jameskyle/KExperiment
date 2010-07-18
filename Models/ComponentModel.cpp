@@ -53,8 +53,8 @@ namespace kex
                       
           break;
       }
-
     }
+
     return result;
   }
 
@@ -111,6 +111,7 @@ namespace kex
     if (index.isValid())
     {
       ComponentList::Node::Pointer node;
+      
       if (!index.parent().isValid())
       {
         ComponentList::iterator it(m_components.begin());
@@ -154,8 +155,7 @@ namespace kex
             
             break;
         }
-      }
-    }
+      }    }
       return result;
   }
   

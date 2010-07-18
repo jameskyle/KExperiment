@@ -23,6 +23,13 @@ namespace kex
 
 
     Q_CHECK_PTR(m_componentLibraryDock->model());
+    
+    // Make connections
+    
+    connect(m_componentLibraryDock, SIGNAL(selectedIndexChanged(const QModelIndex&)), 
+            m_mapper, SLOT(setCurrentModelIndex(const QModelIndex&)));
+    connect(m_componentLibraryDock, SIGNAL(selectedIndexChanged(const QModelIndex&)),
+            this, SLOT(updateTreeViewRoot(const QModelIndex&)));
   }
 
   MainWindow::~MainWindow()
@@ -49,10 +56,7 @@ namespace kex
     m_mapper->addMapping(componentIcon, 5, "pixmap");
     m_mapper->toFirst();
     
-    connect(m_componentLibraryDock, SIGNAL(selectedIndexChanged(const QModelIndex&)), 
-            m_mapper, SLOT(setCurrentModelIndex(const QModelIndex&)));
-    connect(m_componentLibraryDock, SIGNAL(selectedIndexChanged(const QModelIndex&)),
-            this, SLOT(updateTreeViewRoot(const QModelIndex&)));
+
     updateTreeViewRoot(m_mapper->model()->index(0, 0));
   }
 
@@ -81,6 +85,9 @@ namespace kex
     if (proxy)
     {
       componentTreeView->setRootIndex(proxy->mapToSource(index));
+      componentTreeView->resizeColumnToContents(0);
+      componentTreeView->resizeColumnToContents(4);
+
     }
   }
 
@@ -109,6 +116,7 @@ namespace kex
     componentTreeView->setColumnHidden(2, true);
     componentTreeView->setColumnHidden(3, true);
     componentTreeView->setColumnHidden(5, true);
+    
     setUpWidgetMapper();
   }
 
@@ -173,7 +181,8 @@ namespace kex
     // find the Action templates.
     foreach(QString path, xmlFiles)
     {
-      dom.readFile(path);
+      // dom appends to the global component list by default
+      dom << path;
     }
 
     m_components = dom.components();

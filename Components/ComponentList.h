@@ -145,6 +145,8 @@ namespace kex
 
 
   private:
+    void connectNodeComponents(Node::Pointer previous, Node::Pointer next) const;
+    void disconnectNodeComponents(Node::Pointer previous, Node::Pointer next) const;
     Node::Pointer m_head;
     Node::Pointer m_tail;
     Node::Pointer m_parent;

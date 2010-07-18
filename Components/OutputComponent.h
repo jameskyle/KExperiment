@@ -211,7 +211,6 @@ namespace kex
     virtual void abort() = 0;
     void updateStartTime(quint32 startTimeMSecs);
   };
-  // FIXME http://tinyurl.com/2ga3sdx
-//  Q_DECLARE_OPERATORS_FOR_FLAGS(OutputComponent::ComponentTypes)
 }
+Q_DECLARE_OPERATORS_FOR_FLAGS(kex::OutputComponent::ComponentTypes)
 #endif

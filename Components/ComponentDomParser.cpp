@@ -21,7 +21,17 @@ namespace kex
   {
     setupParseMap();
   }
-
+  
+  ComponentDomParser& ComponentDomParser::operator<<(QFile& file)
+  {
+    return readFile(file);
+  }
+  
+  ComponentDomParser& ComponentDomParser::operator<<(const QString& fileName)
+  {
+    return readFile(fileName);
+  }
+  
   ComponentDomParser& ComponentDomParser::readFile(const QString& fileName)
   {
     m_filename = fileName;
@@ -70,11 +80,15 @@ namespace kex
     setValue = &OutputComponent::addCategory;
     m_setValueMap["categories"] = setValue;
   }
-  
+
   ComponentDomParser& ComponentDomParser::readFile()
   {
     QFile file(m_filename);
-
+    return readFile(file);
+  }
+  
+  ComponentDomParser& ComponentDomParser::readFile(QFile& file)
+  {
     Logger *logger = &Logger::instance();
 
     if (!file.open(QFile::ReadOnly | QFile::Text))

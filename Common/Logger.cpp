@@ -8,7 +8,7 @@ namespace kex
     return log;
   }
   
-  void Logger::log(const char* msg, const QWidget *obj, 
+  void Logger::log(const char* msg, const QObject *obj, 
                               Logger::LogLevelType level)
   {
     QString prefix("[Unspecified]");
@@ -38,7 +38,7 @@ namespace kex
     }
   }
   
-  void Logger::log(const QString& msg, const QWidget *obj, 
+  void Logger::log(const QString& msg, const QObject *obj, 
                    Logger::LogLevelType level)
   {
     log(qPrintable(msg), obj, level);

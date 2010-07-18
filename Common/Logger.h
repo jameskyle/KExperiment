@@ -51,7 +51,7 @@ namespace kex
      * \param level the desired log level [defaut] Debug
      * \version $Rev$  \sa LogLevelType
      **/
-    void log(const char* msg, const QWidget *obj = 0, 
+    void log(const char* msg, const QObject *obj = 0, 
              LogLevelType level = DebugLogLevel);
     
     /** \brief  Logs the provided message for the declared log level
@@ -67,7 +67,7 @@ namespace kex
      * \param level the desired log level [defaut] Debug
      * \version $Rev$
      **/
-    void log(const QString& msg, const QWidget *obj = 0, 
+    void log(const QString& msg, const QObject *obj = 0, 
                      Logger::LogLevelType level = DebugLogLevel);
     
   private:

@@ -4,7 +4,7 @@ namespace kex
 {
   ComponentSortFilterProxyModel::ComponentSortFilterProxyModel(QObject *parent)
   : QSortFilterProxyModel(parent),
-    m_type(OutputComponent::AllComponents)
+    m_type(Component::AllComponents)
   {
   }
   

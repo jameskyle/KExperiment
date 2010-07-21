@@ -2,7 +2,7 @@
 
 namespace kex
 {
-  WelcomePage::WelcomePage(const OutputComponent::ComponentTypes component,
+  WelcomePage::WelcomePage(const Component::ComponentTypes component,
                            QWidget *parent)
   : QWizardPage(parent),
     _component(component)
@@ -30,16 +30,16 @@ namespace kex
     
     switch (_component)
     {
-      case OutputComponent::ActionType:
+      case Component::ActionType:
         name = tr("Action");
         break;
-      case OutputComponent::EventType:
+      case Component::EventType:
         name = tr("Event");
         break;
-      case OutputComponent::TrialType:
+      case Component::TrialType:
         name = tr("Trial");
         break;
-      case OutputComponent::ExperimentType:
+      case Component::ExperimentType:
         name = tr("Experiment");
       default:
         name = tr("Undefined Component Type");

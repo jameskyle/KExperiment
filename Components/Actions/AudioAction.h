@@ -3,7 +3,7 @@
 
 #include <QFile>
 
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 #include "Action.h"
 
 namespace kex

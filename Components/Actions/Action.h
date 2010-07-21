@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QDebug>
 
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 
 namespace kex
 {
@@ -24,7 +24,7 @@ namespace kex
   * \date $LastChangedDate$
   * \version $Rev$  \sa
   **/
-  class Action : public OutputComponent
+  class Action : public Component
   {
     Q_OBJECT
     Q_FLAGS(UnitType UnitTypes)
@@ -54,14 +54,11 @@ namespace kex
     virtual ~Action () {}
 
     virtual bool setDurationMSecs(quint32 duration);
-    virtual quint32 durationMSecs() const { return _durationMSecs;}
-    virtual void updateFromTemplate(const OutputComponent::SharedPointer t);
-    
-    UnitTypes units() const {return _durationUnits;}
-    void setUnits(UnitTypes t) {_durationUnits = t;}
-    bool hasChildren() const;
-    int numChildren() const;
-    virtual SharedPointer child(int row) const;
+    virtual quint32 durationMSecs() const { return m_durationMSecs;}
+    virtual void updateFromTemplate(const Component::SharedPointer t);
+
+    UnitTypes units() const {return m_durationUnits;}
+    void setUnits(UnitTypes t) {m_durationUnits = t;}
     
     /** \brief Returns a list of Action types
     *
@@ -76,14 +73,14 @@ namespace kex
     * \sa registerComponentTypes() registerComponentType()
     **/
     static const QStringList actionTypeList(
-              OutputComponent::ComponentTypes t = OutputComponent::ActionType);
+              Component::ComponentTypes t = Component::ActionType);
 
   private:
-    quint32 _durationMSecs;
-    UnitTypes _durationUnits;
+    quint32   m_durationMSecs;
+    UnitTypes m_durationUnits;
 
   };
-  // FIXME http://tinyurl.com/2ga3sdx
-  //Q_DECLARE_OPERATORS_FOR_FLAGS(Action::UnitTypes)
 }
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(kex::Action::UnitTypes)
 #endif

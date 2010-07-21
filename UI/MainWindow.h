@@ -74,7 +74,7 @@ namespace kex
      * \author $LastChangedBy$
      * \date 2010-5-2
      * \date $LastChangedDate$
-     * \version $Rev$  \sa OutputComponent ComponentList
+     * \version $Rev$  \sa Component ComponentList
      **/
     void populateComponentList();
 
@@ -88,13 +88,13 @@ namespace kex
 
   public slots:
     void selectComponentWizard();
-    void launchComponentLibrary(OutputComponent::ComponentTypes component);
+    void launchComponentLibrary(Component::ComponentTypes component);
     void updateTreeViewRoot(const QModelIndex& index);
 
     void showLiveView();
     
   signals:
-    void filterComponents(OutputComponent::ComponentTypes c_types);
+    void filterComponents(Component::ComponentTypes c_types);
   };
 }
 

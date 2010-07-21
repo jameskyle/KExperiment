@@ -10,7 +10,7 @@
 #include <boost/function.hpp>
 #include <ostream>
 
-#include "OutputComponent.h"
+#include "Component.h"
 #include "ComponentFactory.h"
 #include "ComponentList.h"
 #include "Common/Logger.h"
@@ -26,7 +26,7 @@ namespace kex
    * \author $LastBy$
    * \date 2010-5-10
    * \date $LastChangedDate$
-   * \version $Rev$  \sa OutputComponent
+   * \version $Rev$  \sa Component
    **/
   class ComponentDomParser
   {
@@ -51,7 +51,7 @@ namespace kex
                                   ComponentList::Node::Pointer node)> 
                                   parseFunc;
     
-    typedef boost::function<void (OutputComponent*,
+    typedef boost::function<void (Component*,
                                   QString& value)> 
                                   setComponentValue;
     

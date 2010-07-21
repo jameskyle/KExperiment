@@ -16,7 +16,7 @@
 
 #include "Common/Config.h"
 #include "Components/ComponentFactory.h"
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 
 namespace kex
 {
@@ -175,8 +175,8 @@ namespace kex
       return begin;
     }
     
-    bool sortComponentQList(const OutputComponent::Pointer c1,
-                            const OutputComponent::Pointer *c2);
+    bool sortComponentQList(const Component::Pointer c1,
+                            const Component::Pointer *c2);
   };
 
 }

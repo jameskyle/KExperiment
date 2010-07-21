@@ -7,7 +7,7 @@
 #include <algorithm>
 
 #include "Utilities/Utilities.h"
-#include "OutputComponent.h"
+#include "Component.h"
 
 namespace kex
 {
@@ -21,8 +21,8 @@ namespace kex
       
       typedef Node* Pointer;
       
-      Node(OutputComponent::SharedPointer comp);
-      Node(OutputComponent::Pointer comp);
+      Node(Component::SharedPointer comp);
+      Node(Component::Pointer comp);
       ~Node();
       
       // operators
@@ -36,11 +36,11 @@ namespace kex
       Pointer parent() const {return m_parent;}
       void setParent(Pointer node) {m_parent = node;}
       
-      OutputComponent::SharedPointer component() const {return m_component;}
+      Component::SharedPointer component() const {return m_component;}
       int durationMSecs() const;
       
     private:
-      OutputComponent::SharedPointer m_component;
+      Component::SharedPointer m_component;
       int       m_durationMSecs;
       Pointer   m_parent;
       Pointer   m_previous;
@@ -130,11 +130,11 @@ namespace kex
     int               size() const;
     bool              empty() const;
     void              push_back(Node::Pointer node);
-    void              push_back(OutputComponent::Pointer comp);
-    void              push_back(OutputComponent::SharedPointer comp);
+    void              push_back(Component::Pointer comp);
+    void              push_back(Component::SharedPointer comp);
     void              push_front(Node::Pointer node);
-    void              push_front(OutputComponent::Pointer comp);
-    void              push_front(OutputComponent::SharedPointer comp);
+    void              push_front(Component::Pointer comp);
+    void              push_front(Component::SharedPointer comp);
     iterator          begin() const;
     iterator          end() const;
     void              clear();

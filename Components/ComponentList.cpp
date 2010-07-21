@@ -6,7 +6,7 @@ namespace kex {
     return (c1->component()->name() < c2->component()->name());
   }*/
   
-  ComponentList::Node::Node(OutputComponent::SharedPointer comp) : 
+  ComponentList::Node::Node(Component::SharedPointer comp) : 
   m_component(comp),
   m_durationMSecs(0),
   m_parent(0),
@@ -16,7 +16,7 @@ namespace kex {
   {
   }
   
-  ComponentList::Node::Node(OutputComponent::Pointer comp) : 
+  ComponentList::Node::Node(Component::Pointer comp) : 
   m_component(comp),
   m_durationMSecs(0),
   m_parent(0),
@@ -108,13 +108,13 @@ namespace kex {
     ++m_size;
   }
   
-  void ComponentList::push_back(OutputComponent::Pointer comp)
+  void ComponentList::push_back(Component::Pointer comp)
   {
     Node::Pointer node = new Node(comp);
     push_back(node);
   }
   
-  void ComponentList::push_back(OutputComponent::SharedPointer comp)
+  void ComponentList::push_back(Component::SharedPointer comp)
   {
     Node::Pointer node = new Node(comp);
     push_back(node);
@@ -141,13 +141,13 @@ namespace kex {
     ++m_size;
   }
   
-  void ComponentList::push_front(OutputComponent::Pointer comp)
+  void ComponentList::push_front(Component::Pointer comp)
   {
     Node::Pointer node = new Node(comp);
     push_front(node);
   }
 
-  void ComponentList::push_front(OutputComponent::SharedPointer comp)
+  void ComponentList::push_front(Component::SharedPointer comp)
   {
     Node::Pointer node = new Node(comp);
     push_front(node);
@@ -233,7 +233,7 @@ namespace kex {
   {
     int duration(0);
 
-    if ((m_component->componentType() & OutputComponent::ActionType))
+    if ((m_component->componentType() & Component::ActionType))
     {
       duration = m_component->property("durationMSecs").toInt();
     } else
@@ -252,18 +252,18 @@ namespace kex {
   void ComponentList::connectNodeComponents(Node::Pointer previous, 
                                             Node::Pointer next) const
   {
-    bool success(false);
-    OutputComponent* p = previous->m_component.data();
-    OutputComponent* n = next->m_component.data();
-    
-    success = QObject::connect(p, SIGNAL(complete()), n, SLOT(begin()));
-    
-    if (!success)
-    {
-      QString msg = "Failed to connect component %1 from %2";
-      msg.arg(previous->m_component->name()).arg(next->m_component->name());
-      Logger::instance().log(msg, 0, Logger::WarningLogLevel);
-    }
+ //   bool success(false);
+//    Component* p = previous->m_component.data();
+//    Component* n = next->m_component.data();
+//    
+//    success = QObject::connect(p, SIGNAL(complete()), n, SLOT(begin()));
+//    
+//    if (!success)
+//    {
+//      QString msg = "Failed to connect component %1 from %2";
+//      msg.arg(previous->m_component->name()).arg(next->m_component->name());
+//      Logger::instance().log(msg, 0, Logger::WarningLogLevel);
+//    }
     
   }
   
@@ -271,8 +271,8 @@ namespace kex {
                                                Node::Pointer next) const
   {
     bool success(false);
-    OutputComponent* p = previous->m_component.data();
-    OutputComponent* n = next->m_component.data();
+    Component* p = previous->m_component.data();
+    Component* n = next->m_component.data();
     
     success = QObject::disconnect(p, SIGNAL(complete()), n, SLOT(begin()));
     

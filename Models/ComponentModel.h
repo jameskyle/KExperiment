@@ -9,7 +9,7 @@
 
 #include "Common/Config.h"
 #include "Components/ComponentList.h"
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 
 namespace kex
 {
@@ -21,7 +21,7 @@ namespace kex
   * \author $LastChangedBy$
   * \date 2010-4-12
   * \date $LastChangedDate$
-  * \version $Rev$  \sa OutputComponent
+  * \version $Rev$  \sa Component
   **/
   class ComponentModel : public QAbstractItemModel
   {
@@ -42,7 +42,7 @@ namespace kex
      * \param types a mask of the types of components
      * \param parent pointer to the parent classe.
      * \version $Rev$  
-     * \sa OutputComponent OutputComponent::ComponentTypes
+     * \sa Component Component::ComponentTypes
      **/
     ComponentModel(ComponentList *c_list = &ComponentList::globalList(),
                    QObject *parent = 0);

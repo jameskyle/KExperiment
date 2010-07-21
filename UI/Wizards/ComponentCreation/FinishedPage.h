@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 #include <QVariant>
 
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 
 namespace kex
 {
@@ -26,14 +26,14 @@ namespace kex
   {
     Q_OBJECT
   public:
-    FinishedPage(const OutputComponent::ComponentTypes component,
+    FinishedPage(const Component::ComponentTypes component,
                  QWidget *parent = 0);
 
     ~FinishedPage();
     void initializePage();
 
   private:
-    OutputComponent::ComponentTypes _component;
+    Component::ComponentTypes _component;
   };
 
 }

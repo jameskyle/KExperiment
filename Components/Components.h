@@ -1,7 +1,7 @@
 #ifndef COMPONENTS_H
 #define COMPONENTS_H
 
-#include "OutputComponent.h"
+#include "Component.h"
 #include "Actions/Action.h"
 #include "Actions/RestAction.h"
 #include "Actions/TextAction.h"

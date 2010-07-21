@@ -25,14 +25,14 @@ namespace kex
   {
     Q_OBJECT
   public:
-    WelcomePage(const OutputComponent::ComponentTypes component,
+    WelcomePage(const Component::ComponentTypes component,
                 QWidget *parent = 0);
 
     ~WelcomePage();
     void initializePage();
 
   private:
-    OutputComponent::ComponentTypes _component;
+    Component::ComponentTypes _component;
   };
 
 }

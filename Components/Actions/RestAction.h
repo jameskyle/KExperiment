@@ -1,7 +1,7 @@
 #ifndef RESTACTION_H
 #define RESTACTION_H
 
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 #include "Action.h"
 
 namespace kex
@@ -12,7 +12,7 @@ namespace kex
   public:
     RestAction(QObject *parent = 0);
     ~RestAction();
-
+    
   public slots:
     void begin();
     void abort();

@@ -60,7 +60,7 @@ namespace kex
      * \date $LastChangedDate$
      * \param directoryType the type of directory
      * \return QString holds the path tot he directory
-     * \version $Rev$  \sa OutputComponent::DataDirectoryType
+     * \version $Rev$  \sa Component::DataDirectoryType
      **/
     const QString
     dataDirectoryPath(const ApplicationDataDirectoryTypes directoryType) const;
@@ -78,7 +78,7 @@ namespace kex
      * \date 2010-4-10
      * \date $LastChangedDate$
      * \version $Rev$
-     * \sa OutputComponent::DataDirectoryType
+     * \sa Component::DataDirectoryType
      * \sa Utilities::setupAppStorageEnvironment
      **/
     const QStringList dataDirectoryList(ApplicationDataDirectoryTypes dt) const;

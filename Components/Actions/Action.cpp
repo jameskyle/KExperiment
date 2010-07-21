@@ -3,28 +3,28 @@
 namespace kex
 {
   Action::Action(QObject *parent)  : 
-    OutputComponent(parent), 
-    _durationMSecs(0),
-    _durationUnits(MilliSecondType) 
+    Component(parent), 
+    m_durationMSecs(0),
+    m_durationUnits(MilliSecondType) 
   {
   }
   
-  const QStringList Action::actionTypeList(OutputComponent::ComponentTypes t)
+  const QStringList Action::actionTypeList(Component::ComponentTypes t)
   {
     QStringList actionTypes;
-    if (t & OutputComponent::RestActionType)
+    if (t & Component::RestActionType)
       actionTypes << "Rest";
 
-    if (t & OutputComponent::TextActionType)
+    if (t & Component::TextActionType)
       actionTypes << "Text";
     
-    if (t & OutputComponent::ImageActionType)
+    if (t & Component::ImageActionType)
       actionTypes << "Image";
     
-    if (t & OutputComponent::AudioActionType)
+    if (t & Component::AudioActionType)
       actionTypes << "Audio";
     
-    if (t & OutputComponent::VideoActionType)
+    if (t & Component::VideoActionType)
       actionTypes << "Video";
     
     return actionTypes;
@@ -35,14 +35,14 @@ namespace kex
     bool isValid(false);
     if (duration <= Action::MAX_DURATION)
     {
-      _durationMSecs = duration;
+      m_durationMSecs = duration;
       isValid = true;
     }
     
     return isValid;
   }
  
-  void Action::updateFromTemplate(const OutputComponent::SharedPointer t)
+  void Action::updateFromTemplate(const Component::SharedPointer t)
   {
     Q_CHECK_PTR(t);
     QSharedPointer<Action> action(t.objectCast<Action>());
@@ -51,7 +51,7 @@ namespace kex
     Q_CHECK_PTR(action);
     
     // call parent method
-    OutputComponent::updateFromTemplate(t);
+    Component::updateFromTemplate(t);
     
     // After that, the only thing left is the duration field for actions
     if (action->durationMSecs() != durationMSecs())
@@ -62,23 +62,5 @@ namespace kex
         setDurationMSecs(action->durationMSecs());
       }
     }
-  }
-
-  bool Action::hasChildren() const
-  {
-    return false;
-  }
-  
-  int Action::numChildren() const
-  {
-    // actions don't have children. 
-    return 0;
-  }
-  
-  OutputComponent::SharedPointer Action::child(int /*row*/) const
-  {
-    OutputComponent::SharedPointer sp(0);
-    return sp;
-  }
-  
+  }  
 }

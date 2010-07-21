@@ -66,18 +66,18 @@ namespace kex
     parse = &ComponentDomParser::createChildComponent;
     m_parseMap["create_child"] = parse;
     
-    // setup OutputComponent attribute map
+    // setup Component attribute map
     setComponentValue setValue;
-    setValue = &OutputComponent::setName;
+    setValue = &Component::setName;
     m_setValueMap["name"] = setValue;
     
-    setValue = &OutputComponent::setLabel;
+    setValue = &Component::setLabel;
     m_setValueMap["label"] = setValue;
     
-    setValue = &OutputComponent::setDescription;
+    setValue = &Component::setDescription;
     m_setValueMap["description"] = setValue;
     
-    setValue = &OutputComponent::addCategory;
+    setValue = &Component::addCategory;
     m_setValueMap["categories"] = setValue;
   }
 
@@ -158,7 +158,7 @@ namespace kex
     Q_ASSERT(isValidElement(root));
 
     QString rootName = root.tagName();
-    OutputComponent::ComponentTypes c_type;
+    Component::ComponentTypes c_type;
 
     // assign type of component to create
     if (rootName == "action")
@@ -167,34 +167,34 @@ namespace kex
 
       if (t == "rest")
       {
-        c_type = OutputComponent::RestActionType;
+        c_type = Component::RestActionType;
       } else if (t == "text")
       {
-        c_type = OutputComponent::TextActionType;
+        c_type = Component::TextActionType;
       } else if (t == "image")
       {
-        c_type = OutputComponent::ImageActionType;
+        c_type = Component::ImageActionType;
       } else if (t == "audio")
       {
-        c_type = OutputComponent::AudioActionType;
+        c_type = Component::AudioActionType;
       } else if (t == "video")
       {
-        c_type = OutputComponent::VideoActionType;
+        c_type = Component::VideoActionType;
       }
       } else if (rootName == "event")
       {
-        c_type = OutputComponent::EventType;
+        c_type = Component::EventType;
 
       } else if (rootName == "trial")
       {
-        c_type = OutputComponent::TrialType;
+        c_type = Component::TrialType;
 
       } else if (rootName == "experiment")
       {
-        c_type = OutputComponent::ExperimentType;
+        c_type = Component::ExperimentType;
       }
 
-    OutputComponent::Pointer comp = ComponentFactory::instance().create(c_type);
+    Component::Pointer comp = ComponentFactory::instance().create(c_type);
     Q_CHECK_PTR(comp);
 
     ComponentList::Node::Pointer node = new ComponentList::Node(comp);
@@ -243,7 +243,7 @@ namespace kex
 
     QString value_type;
     QString value;
-    OutputComponent::Pointer comp;
+    Component::Pointer comp;
     
     QDomNode child = element.firstChild();
     comp = node->component().data();
@@ -391,7 +391,7 @@ namespace kex
   {
     QDomNode item = element.firstChild();
     QString cat("");
-    OutputComponent::Pointer comp = node->component().data();
+    Component::Pointer comp = node->component().data();
     
     while (!item.isNull())
     {
@@ -486,7 +486,7 @@ namespace kex
   {
     Q_CHECK_PTR(node);
     Q_ASSERT(isValidElement(element));
-    Q_ASSERT(node->component()->componentType() & ~OutputComponent::ActionType);
+    Q_ASSERT(node->component()->componentType() & ~Component::ActionType);
 
     ComponentList::Node::Pointer child = createComponentNode(element);
     

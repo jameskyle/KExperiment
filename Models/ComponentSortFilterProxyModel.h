@@ -4,7 +4,7 @@
 #include <QSortFilterProxyModel>
 #include <QAction>
 
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 #include "Components/ComponentList.h"
 
 namespace kex
@@ -16,12 +16,12 @@ namespace kex
   public:
     ComponentSortFilterProxyModel(QObject *parent = 0);
     
-    OutputComponent::ComponentTypes 
+    Component::ComponentTypes 
       filterComponentType() const { return m_type; }
     
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
-    void setFilterComponentType(const OutputComponent::ComponentTypes& t)
+    void setFilterComponentType(const Component::ComponentTypes& t)
     {
       m_type = t;
       invalidateFilter();
@@ -31,7 +31,7 @@ namespace kex
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     
   private:
-    OutputComponent::ComponentTypes m_type;
+    Component::ComponentTypes m_type;
   };
 }
 #endif

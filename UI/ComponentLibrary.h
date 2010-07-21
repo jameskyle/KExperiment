@@ -61,7 +61,7 @@ namespace kex
     QAbstractItemModel* model(){return componentListView->model();}
 
   private:
-    void toggleComponentFilter(bool checked, OutputComponent::ComponentTypes t);
+    void toggleComponentFilter(bool checked, Component::ComponentTypes t);
     
     QAction* m_toggleActionAction;
     QAction* m_toggleEventAction;

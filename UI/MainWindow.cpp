@@ -121,7 +121,7 @@ namespace kex
   }
 
   void
-  MainWindow::launchComponentLibrary(OutputComponent::ComponentTypes component)
+  MainWindow::launchComponentLibrary(Component::ComponentTypes component)
   {
     Logger::instance().log("Launch Library called", this);
 

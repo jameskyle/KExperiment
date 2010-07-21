@@ -5,37 +5,37 @@ namespace kex
   ComponentFactory::ComponentFactory() 
   {
     // Map components to their constructors.
-    _componentCreatorMap[OutputComponent::RestActionType] = 
+    _componentCreatorMap[Component::RestActionType] = 
       boost::lambda::new_ptr<RestAction>();
     
-    _componentCreatorMap[OutputComponent::TextActionType] = 
+    _componentCreatorMap[Component::TextActionType] = 
     boost::lambda::new_ptr<TextAction>();
     
-    _componentCreatorMap[OutputComponent::ImageActionType] = 
+    _componentCreatorMap[Component::ImageActionType] = 
     boost::lambda::new_ptr<ImageAction>();
     
-    _componentCreatorMap[OutputComponent::AudioActionType] = 
+    _componentCreatorMap[Component::AudioActionType] = 
     boost::lambda::new_ptr<AudioAction>();
     
-    _componentCreatorMap[OutputComponent::VideoActionType] = 
+    _componentCreatorMap[Component::VideoActionType] = 
     boost::lambda::new_ptr<VideoAction>();
     
-    _componentCreatorMap[OutputComponent::EventType] = 
+    _componentCreatorMap[Component::EventType] = 
     boost::lambda::new_ptr<Event>();
 
-    _componentCreatorMap[OutputComponent::TrialType] = 
+    _componentCreatorMap[Component::TrialType] = 
     boost::lambda::new_ptr<Trial>();
 
-    _componentCreatorMap[OutputComponent::ExperimentType] = 
+    _componentCreatorMap[Component::ExperimentType] = 
     boost::lambda::new_ptr<Experiment>();
 
   }
   
-  OutputComponent::Pointer 
-  ComponentFactory::create(OutputComponent::ComponentTypes key) const
+  Component::Pointer 
+  ComponentFactory::create(Component::ComponentTypes key) const
   {
-    QMap<OutputComponent::ComponentTypes, Creator>::const_iterator it;
-    OutputComponent::Pointer component = 0;
+    QMap<Component::ComponentTypes, Creator>::const_iterator it;
+    Component::Pointer component = 0;
 
     it = _componentCreatorMap.find(key);
 
@@ -48,12 +48,12 @@ namespace kex
     return component;
   }
   
-  OutputComponent::Pointer
-  ComponentFactory::create(OutputComponent::ComponentTypes key,
+  Component::Pointer
+  ComponentFactory::create(Component::ComponentTypes key,
                            const QString& templateName) const
   {
-    QMap<OutputComponent::ComponentTypes, Creator>::const_iterator it;
-    OutputComponent::Pointer component = 0;
+    QMap<Component::ComponentTypes, Creator>::const_iterator it;
+    Component::Pointer component = 0;
     
     it = _componentCreatorMap.find(key);
     
@@ -71,7 +71,7 @@ namespace kex
     return factory;
   }
 
-  const QList<OutputComponent::ComponentTypes> ComponentFactory::componentList()
+  const QList<Component::ComponentTypes> ComponentFactory::componentList()
   {
     return _componentCreatorMap.keys();
   }

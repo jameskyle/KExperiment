@@ -60,7 +60,7 @@ namespace kex
     
     proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     proxy->setSourceModel(model);
-    proxy->setFilterComponentType(OutputComponent::AllComponents);
+    proxy->setFilterComponentType(Component::AllComponents);
 
     componentListView->setModel(proxy);
 
@@ -72,33 +72,33 @@ namespace kex
   {
     Q_CHECK_PTR(m_toggleActionAction);
     
-    toggleComponentFilter(checked, OutputComponent::ActionType);
+    toggleComponentFilter(checked, Component::ActionType);
   }
   
   void ComponentLibrary::toggleEvents(bool checked)
   {
     Q_CHECK_PTR(m_toggleEventAction);
     
-    toggleComponentFilter(checked, OutputComponent::EventType);
+    toggleComponentFilter(checked, Component::EventType);
   }
   
   void ComponentLibrary::toggleTrials(bool checked)
   {
     Q_CHECK_PTR(m_toggleTrialAction);
     
-    toggleComponentFilter(checked, OutputComponent::TrialType);
+    toggleComponentFilter(checked, Component::TrialType);
   }
   
   void ComponentLibrary::toggleExperiments(bool checked)
   {
     Q_CHECK_PTR(m_toggleExperimentAction);
     
-    toggleComponentFilter(checked, OutputComponent::ExperimentType);
+    toggleComponentFilter(checked, Component::ExperimentType);
   }
   
   void ComponentLibrary::toggleComponentFilter(
                           bool checked, 
-                          OutputComponent::ComponentTypes t)
+                          Component::ComponentTypes t)
   {
     ComponentSortFilterProxyModel *model;
     
@@ -106,7 +106,7 @@ namespace kex
       
     if (model)
     {
-      OutputComponent::ComponentTypes current_types(model->filterComponentType());
+      Component::ComponentTypes current_types(model->filterComponentType());
       
       if (checked)
       {

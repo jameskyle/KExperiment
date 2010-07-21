@@ -3,10 +3,10 @@
 #include <QString>
 #include <QObject>
 
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 namespace kex
 {
-  class Experiment : public OutputComponent  {
+  class Experiment : public Component  {
     Q_OBJECT
     Q_PROPERTY(QString instructions READ instructions WRITE setInstructions)
     
@@ -17,8 +17,8 @@ namespace kex
     const QString instructions() const {return _instructions;}
     void setInstructions(const QString& inst) {_instructions = inst;}
     
-    void updateFromTemplate(const OutputComponent::Pointer t);
-    void updateFromTemplate(const OutputComponent::SharedPointer t);
+    void updateFromTemplate(const Component::Pointer t);
+    void updateFromTemplate(const Component::SharedPointer t);
   private:
     QString _instructions;
   public slots:

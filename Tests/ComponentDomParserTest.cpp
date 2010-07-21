@@ -30,7 +30,7 @@ namespace kex
     m_labels << "Pauses for 10 seconds.";
     m_descriptions << ("When this action is inserted into a Event, a 10 pause "
                        "is performed at the point of its insertion.");
-    m_types.append(OutputComponent::RestActionType);
+    m_types.append(Component::RestActionType);
     m_durationMSecs.append(10000);
     m_childrenCount.append(0);
     
@@ -38,7 +38,7 @@ namespace kex
     m_labels << "Pauses for 30 seconds.";
     m_descriptions << ("When this action is inserted into a Event, a 30s pause "
                       "is performed at the point of its insertion.");
-    m_types.append(OutputComponent::RestActionType);
+    m_types.append(Component::RestActionType);
     m_durationMSecs.append(30000);
     m_childrenCount.append(0);
     
@@ -46,49 +46,49 @@ namespace kex
     m_labels << "Pauses for 60 seconds.";
     m_descriptions << ("When this action is inserted into a Event, a 60s "
                        "pause is performed at the point of its insertion.");
-    m_types.append(OutputComponent::RestActionType);
+    m_types.append(Component::RestActionType);
     m_durationMSecs.append(60000);
     m_childrenCount.append(0);
 
     // Event template one: Bar
     m_labels << "Bar";
     m_descriptions << "described";
-    m_types.append(OutputComponent::EventType);
+    m_types.append(Component::EventType);
     m_durationMSecs.append(90000);
     m_childrenCount.append(2);
     
     // Event template two
     m_labels << "";
     m_descriptions << "";
-    m_types.append(OutputComponent::EventType);
+    m_types.append(Component::EventType);
     m_durationMSecs.append(30000);
     m_childrenCount.append(1);
     
     // Trial template one:
     m_labels << "An amazing trial.";
     m_descriptions << "A truly amazing example of a trial";
-    m_types.append(OutputComponent::TrialType);
+    m_types.append(Component::TrialType);
     m_durationMSecs.append(120000);
     m_childrenCount.append(2);
     
     // Trial template two:
     m_labels << "";
     m_descriptions << "";
-    m_types.append(OutputComponent::TrialType);
+    m_types.append(Component::TrialType);
     m_durationMSecs.append(90000);
     m_childrenCount.append(1);
   
     // Experiment template one:
     m_labels << "An example experiment.";
     m_descriptions << "Description for the example experiment.";
-    m_types.append(OutputComponent::ExperimentType);
+    m_types.append(Component::ExperimentType);
     m_durationMSecs.append(120000);
     m_childrenCount.append(1);
     
     // Experiment template two:
     m_labels << "An second example experiment.";
     m_descriptions << "Description for the example experiment.";
-    m_types.append(OutputComponent::ExperimentType);
+    m_types.append(Component::ExperimentType);
     m_durationMSecs.append(120000);
     m_childrenCount.append(1);
   }

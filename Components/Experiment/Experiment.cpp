@@ -3,18 +3,18 @@
 namespace kex
 {
   Experiment::Experiment(QObject *parent) : 
-    OutputComponent(parent), _instructions()
+    Component(parent), _instructions()
   {
   }
 
-  void Experiment::updateFromTemplate(const OutputComponent::SharedPointer t)
+  void Experiment::updateFromTemplate(const Component::SharedPointer t)
   {
     Q_CHECK_PTR(t);
     
     QSharedPointer<const Experiment> exp = t.objectCast<const Experiment>();
     // ensure this is an experiment type component
     Q_CHECK_PTR(exp);
-    OutputComponent::updateFromTemplate(t);
+    Component::updateFromTemplate(t);
     
     // Experiments have a unique instructions field
     

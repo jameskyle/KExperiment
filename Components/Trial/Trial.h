@@ -3,7 +3,7 @@
 #include <QString>
 #include <QList>
 
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 
 namespace kex
 {
@@ -17,7 +17,7 @@ namespace kex
    * \date $LastChangedDate$
    * \version $Rev$  \sa Action OutputAction RestAction
    **/
-  class Trial : public OutputComponent
+  class Trial : public Component
   {
     Q_OBJECT
   public:
@@ -30,10 +30,10 @@ namespace kex
      * \date 2010-04-01
      * \sa Action()
      **/
-    Trial (QObject *parent = 0) : OutputComponent(parent) {}
+    Trial (QObject *parent = 0) : Component(parent) {}
     
     // TODO implement specifics
-    virtual void updateFromTemplate(const OutputComponent::SharedPointer t);
+    virtual void updateFromTemplate(const Component::SharedPointer t);
 
     
     /** \brief The destructor for the Event class

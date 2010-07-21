@@ -18,7 +18,7 @@ ENDIF(APPLE)
 SET(K_MOC_HDRS
     Models/ComponentModel.h
     Components/Actions/Action.h
-    Components/OutputComponent.h
+    Components/Component.h
     Components/Actions/RestAction.h
     Components/Actions/TextAction.h
     Components/Actions/ImageAction.h
@@ -54,7 +54,7 @@ SET(K_SRCS
     Models/ComponentModel.cpp
     Utilities/Utilities.cpp
     Components/Actions/Action.cpp
-    Components/OutputComponent.cpp
+    Components/Component.cpp
     Components/Actions/RestAction.cpp
     Components/Actions/TextAction.cpp
     Components/Actions/ImageAction.cpp

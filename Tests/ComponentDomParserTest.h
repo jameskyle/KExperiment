@@ -27,7 +27,7 @@ namespace kex
     QStringList m_names;
     QStringList m_labels;
     QStringList m_descriptions;
-    QList<OutputComponent::ComponentTypes> m_types;
+    QList<Component::ComponentTypes> m_types;
     QList<int> m_childrenCount;
     QList<int> m_durationMSecs;
     ComponentDomParser m_dom;

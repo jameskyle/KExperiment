@@ -2,8 +2,8 @@
 
 namespace kex
 {
-  void Trial::updateFromTemplate(const OutputComponent::SharedPointer t)
+  void Trial::updateFromTemplate(const Component::SharedPointer t)
   {
-    OutputComponent::updateFromTemplate(t);
+    Component::updateFromTemplate(t);
   }
 }

@@ -18,14 +18,14 @@ namespace kex
    * \date $LastChangedDate$
    * \version $Rev$
    **/
-  class OutputComponent : public QObject
+  class Component : public QObject
   {
     Q_OBJECT
     Q_FLAGS(ComponentType ComponentTypes)
 
   public:
-    typedef OutputComponent* Pointer;
-    typedef QSharedPointer<OutputComponent> SharedPointer;
+    typedef Component* Pointer;
+    typedef QSharedPointer<Component> SharedPointer;
 
     enum ComponentType
     {
@@ -45,9 +45,9 @@ namespace kex
     };
     Q_DECLARE_FLAGS(ComponentTypes, ComponentType)
 
-    OutputComponent(QObject *parent = 0);
+    Component(QObject *parent = 0);
 
-    /** \brief  Copy constructor
+    /** \brief  Clone constructor
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
@@ -58,10 +58,10 @@ namespace kex
      * \param component the component to be copied
      * \version $Rev$
      **/
-   // OutputComponent(const OutputComponent &component);
+//    virtual Component* clone() const = 0;
 
-    virtual ~OutputComponent();
-
+    virtual ~Component();
+    
     /** \brief Returns the name attribute.
      *
      * The name attribute serves as a unique identifier for every class
@@ -72,7 +72,7 @@ namespace kex
      * \return Returns the name of the Action.
      * \sa QList
      **/
-    const QString name() const;
+    const QString name() const; 
 
     /** \brief Returns the description for the Action class.
      *
@@ -165,14 +165,14 @@ namespace kex
 
     virtual const QString toString() const;
 
-    ComponentTypes componentType() const {return _componentType;}
+    ComponentTypes componentType() const {return m_componentType;}
 
     /** \brief  Holds the type of component represented.
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
      * This stores a mask for the various component types represented. For
-     * a componentType equal to OutputComponent::EventType the method
+     * a componentType equal to Component::EventType the method
      * toComponent() would return a pointer to a new Event object.
      *
      * \author James Kyle
@@ -193,14 +193,14 @@ namespace kex
     virtual void updateFromTemplate(const SharedPointer t);
 
   private:
-    quint32        _startTimeMSecs;
-    ComponentTypes _componentType;
-    QString        _name; //!< name of the component
-    QString        _description; //!< detailed description of the component
-    QString        _label; //!< brief description of the component
-    QString        _mainCategory; //!< main group identifier
-    QSet<QString>  _categorySet; //!< list of all categories for component
-    QIcon          _icon;
+    quint32        m_startTimeMSecs;
+    ComponentTypes m_componentType;
+    QString        m_name; //!< name of the component
+    QString        m_description; //!< detailed description of the component
+    QString        m_label; //!< brief description of the component
+    QString        m_mainCategory; //!< main group identifier
+    QSet<QString>  m_categorySet; //!< list of all categories for component
+    QIcon          m_icon;
 
   signals:
     void startTimeChanged();
@@ -212,5 +212,5 @@ namespace kex
     void updateStartTime(quint32 startTimeMSecs);
   };
 }
-Q_DECLARE_OPERATORS_FOR_FLAGS(kex::OutputComponent::ComponentTypes)
+Q_DECLARE_OPERATORS_FOR_FLAGS(kex::Component::ComponentTypes)
 #endif

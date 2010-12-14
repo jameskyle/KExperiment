@@ -9,7 +9,6 @@
 #include <QVariant>
 #include <QDir>
 
-#include "Components/Components.h"
 #include "Common/Uncopyable.h"
 
 #include "Common/Logger.h"
@@ -125,8 +124,10 @@ namespace kex
     const QString applicationName() const {return m_applicationName;}
     const QString storageLocation() const {return m_storageLocation;}
     const QString componentSchemaFile() const { return m_componentSchemaFile;}
+
     const QStringList templates(ApplicationDataDirectoryTypes t) const;
     void addTemplate(ApplicationDataDirectoryTypes storagePath, QString temp);
+
     /** \brief  Returns a list of paths to the component xml definition files
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.

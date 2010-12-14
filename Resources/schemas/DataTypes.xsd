@@ -13,131 +13,189 @@
   </xs:annotation>
   
   <!-- define basic elements -->
-  <xs:element name="name" type="xs:string" />
-  <xs:element name="label" type="xs:string"/>
-  <xs:element name="description" type="xs:string"/>
-  <xs:element name="item" type="xs:string" />
-  <xs:element name="duration" type="durationType" />
+  <xs:element name="name"         type="xs:string" />
+  <xs:element name="label"        type="xs:string"/>
+  <xs:element name="description"  type="xs:string"/>
+  <xs:element name="item"         type="xs:string" />
+  <xs:element name="duration"     type="xs:integer" />
+  <xs:element name="delay"        type="xs:integer" />
   <xs:element name="instructions" type="xs:string" />
-  <xs:element name="file" type="xs:string" />
-  <xs:element name="text" type="xs:string" />
+  <xs:element name="audio"        type="xs:string" />
+  <xs:element name="video"        type="xs:string" />
+  <xs:element name="icon"         type="xs:string" />
   
   <!-- define complex elements, custom types -->
-  <xs:element name="action" type="actionType" />
-  <xs:element name="event" type="eventType" />
-  <xs:element name="trial" type="trialType" />
-  <xs:element name="experiment" type="experimentType" />
-  <xs:element name="categories" type="categoryType" />
-  
+  <xs:element name="action"       type="actionType" />
+  <xs:element name="event"        type="eventType" />
+  <xs:element name="trial"        type="trialType" />
+  <xs:element name="experiment"   type="experimentType" />
+  <xs:element name="categories"   type="categoryType" />
+  <xs:element name="header"       type="headerType" />
+  <xs:element name="text"         type="textType" />
+  <xs:element name="image"        type="imageType" />
+
   
   <!--define attributes-->
   <!-- used to declare the action type -->
   <xs:attribute name="type">
     <xs:simpleType>
-      <xs:restriction base="xs:string">
-        <xs:enumeration value="rest" />
+      <xs:restriction   base="xs:string">
+        <xs:enumeration value="rest"  />
+        <xs:enumeration value="text"  />
         <xs:enumeration value="image" />
+        <xs:enumeration value="audio"  />
         <xs:enumeration value="video" />
-        <xs:enumeration value="text" />
       </xs:restriction>
     </xs:simpleType>
   </xs:attribute>
   
-  <xs:attribute name="template">
+  <xs:attribute name="position" default="center">
     <xs:simpleType>
-      <xs:restriction base="xs:string" >
-        <xs:enumeration value="true" />
-        <xs:enumeration value="false" />
+      <xs:restriction   base="xs:string">
+        <xs:enumeration value="center" />
+        <xs:enumeration value="center-left" />
+        <xs:enumeration value="center-right" />
+        <xs:enumeration value="top-center" />
+        <xs:enumeration value="top-right" />
+        <xs:enumeration value="top-left" />
+        <xs:enumeration value="bottom-center" />
+        <xs:enumeration value="bottom-right" />
+        <xs:enumeration value="bottom-left" />
       </xs:restriction>
     </xs:simpleType>
   </xs:attribute>
   
-  <!-- used to declare the time units used. default: msecs -->
-  <xs:attribute name="unit" default="msecs">
+  <xs:attribute name="foreground" default="black">
     <xs:simpleType>
       <xs:restriction base="xs:string">
-        <xs:enumeration value="secs" />
-        <xs:enumeration value="ksecs" />
-        <xs:enumeration value="msecs" />
+        <xs:enumeration value="black" />
+        <xs:enumeration value="white" />
+        <xs:enumeration value="red" />
+        <xs:enumeration value="green" />
+        <xs:enumeration value="blue" />
       </xs:restriction>
     </xs:simpleType>
   </xs:attribute>
   
+  <xs:attribute name="background" default="black">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="black" />
+        <xs:enumeration value="white" />
+        <xs:enumeration value="red" />
+        <xs:enumeration value="green" />
+        <xs:enumeration value="blue" />
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+
   <!--abstract types-->
   <xs:complexType abstract="true" name="component" >
-    <xs:sequence>
-      <xs:element ref="header" minOccurs="0" />
-    </xs:sequence>
-    <xs:attribute ref="template"/>
+      <xs:choice>
+      <xs:element ref="header" minOccurs="0" maxOccurs="1" />
+    </xs:choice>
   </xs:complexType>
   
   
   <!-- element types -->
-  <xs:complexType name="durationType">
+<!--  <xs:complexType name="durationType">
     <xs:simpleContent>
       <xs:extension base="xs:integer">
-        <xs:attribute ref="unit" use="optional" />
+        <xs:attribute name="delay" use="optional" type="xs:integer" />
       </xs:extension>
     </xs:simpleContent>
-  </xs:complexType>
-  
-  <xs:complexType name="headerType ">
-    <xs:sequence>
-        <xs:element ref="name" minOccurs="0" />
-        <xs:element ref="label" minOccurs="0" />  
+  </xs:complexType>-->
+
+  <xs:complexType name="headerType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="name"         minOccurs="0" />
+        <xs:element ref="icon"         minOccurs="0" />
+        <xs:element ref="label"        minOccurs="0" />  
         <xs:element ref="description"  minOccurs="0" /> 
-        <xs:element ref="categories" minOccurs="0" />         
-    </xs:sequence>
+        <xs:element ref="categories"   minOccurs="0" />         
+    </xs:choice>
   </xs:complexType>
-  <xs:element name="header" type="headerType" />
   
   <!-- component types -->
   <xs:complexType name="categoryType">
-    <xs:sequence>
+    <xs:choice>
       <xs:element ref="item" maxOccurs="unbounded" />
-    </xs:sequence>
+    </xs:choice>
   </xs:complexType>
-  
+
   <xs:complexType name="actionType">
     <xs:complexContent>
       <xs:extension base="component">
-        <xs:sequence>
+        <xs:choice minOccurs="1" maxOccurs="3">
+          <xs:element ref="audio"    minOccurs="0" />
+          <xs:element ref="video"    minOccurs="0" />
+          <xs:element ref="image"    minOccurs="0" />
+          <xs:element ref="text"     minOccurs="0" />
           <xs:element ref="duration" minOccurs="0" />
-          <xs:element ref="file" minOccurs="0" />
-          <xs:element ref="text" minOccurs="0" />
-        </xs:sequence>
-      <xs:attribute ref="type" use="required" />
+          <xs:element ref="delay"    minOccurs="0" />
+        </xs:choice>
+        <xs:attribute ref="type" use="required" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   
+  <xs:complexType name="textType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="font-family" type="xs:string" />
+        <xs:attribute name="font-size" default="12">
+          <xs:simpleType>
+            <xs:restriction base="xs:integer">
+              <xs:minInclusive value="8" />
+              <xs:maxInclusive value="48" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="xoffset" type="xs:integer" />
+        <xs:attribute name="yoffset" type="xs:integer" />
+        <xs:attribute ref="background" />    
+        <xs:attribute ref="foreground" />    
+        <xs:attribute ref="position" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute ref="position" />
+        <xs:attribute name="xoffset" type="xs:integer" />
+        <xs:attribute name="yoffset" type="xs:integer" />
+      </xs:extension>
+    </xs:simpleContent> 
+  </xs:complexType>
+
   <xs:complexType name="eventType">
     <xs:complexContent>
       <xs:extension base="component">
-        <xs:sequence maxOccurs="unbounded">
+        <xs:choice maxOccurs="unbounded">
           <xs:element ref="action" minOccurs="0" maxOccurs="unbounded" />
-        </xs:sequence>
+        </xs:choice>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   
   <xs:complexType name="trialType">
     <xs:complexContent>
-      <xs:extension base="component">
-        <xs:sequence maxOccurs="unbounded">
+      <xs:extension   base="component">
+        <xs:choice  maxOccurs="unbounded">
           <xs:element ref="event" minOccurs="0" maxOccurs="unbounded" />
-        </xs:sequence>
+        </xs:choice>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   
   <xs:complexType name="experimentType" >
     <xs:complexContent>
-      <xs:extension base="component">
-        <xs:sequence maxOccurs="unbounded">
+      <xs:extension   base="component">
+        <xs:choice  maxOccurs="unbounded">
           <xs:element ref="trial" minOccurs="0" maxOccurs="unbounded" />
-          <xs:element ref="instructions" minOccurs="0" />
-        </xs:sequence>
+        </xs:choice>
       </xs:extension>     
     </xs:complexContent>
   </xs:complexType>

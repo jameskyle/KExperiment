@@ -2,51 +2,43 @@
 
 namespace kex
 {
-  /**
-   * TODO
-   */
-  AudioAction::AudioAction(QObject *parent) : Action(parent)
+  AudioAction::AudioAction(QObject *parent,
+                           const QString& name,
+                           const QString& description,
+                           const QString& label,
+                           const QSet<QString>& categories,
+                           const QIcon& icon,
+                           quint64 delayMSecs,
+                           Phonon::MediaObject* sound) :
+  Component(parent, name, description, label, categories, icon),
+  m_delayMSecs(delayMSecs),
+  m_sound(sound)
   {
   }
-  
-  /**
-   * TODO rewrite this for proper media file handling
-   */
-  bool AudioAction::setFile(const QString& filePath)
-  {
-    bool success(true);
-    _audioFile.setFileName(filePath);
-    
-    if (!_audioFile.exists())
-    {
-      success = false;
-    }
-    
-    return success;
-  }
-  
 
-  /**
-   * TODO
-   */
   AudioAction::~AudioAction()
   {
-    
+    if(m_sound)
+      delete m_sound;
   }
 
-  /**
-   * TODO
-   */
-  void AudioAction::begin()
+  void AudioAction::setSound(Phonon::MediaObject* sound)
   {
-    
+    if(m_sound)
+      delete m_sound;
+
+    m_sound = sound;
   }
-  
-  /*
-  * TODO
-  */
-  void AudioAction::abort()
+
+  quint64 AudioAction::durationMSecs() const
   {
-    
+    return m_sound->totalTime();
+  }
+
+  AudioAction* AudioAction::copy() const
+  {
+    AudioAction* action = new AudioAction();
+
+    return action;
   }
 }

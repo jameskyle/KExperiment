@@ -284,7 +284,8 @@ namespace kex
         node->component()->setProperty("text", child.toElement().text());
       } else if (child.isElement())
       {
-        m_parseMap[child.toElement().tagName()](this, child.toElement(),node);
+        QString name = child.toElement().tagName();
+        m_parseMap[name](this, child.toElement(),node);
       }
 
       // TODO add checks for other action types

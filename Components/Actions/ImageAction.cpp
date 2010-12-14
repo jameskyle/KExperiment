@@ -2,48 +2,42 @@
 
 namespace kex
 {
-  /**
-   * TODO
-   */
-  ImageAction::ImageAction(QObject *parent) : Action(parent)
+  ImageAction::ImageAction (QObject *parent,
+                const QString& name,
+                const QString& description,
+                const QString& label,
+                const QSet<QString> categories,
+                const QIcon& icon,
+                quint64 durationMSecs,
+                int delayMSecs,
+                const QImage& image,
+                qint32 xoffset,
+                qint32 yoffset,
+                const Component::ComponentPositions& position
+                ) :
+  Component(parent, name, description, label, categories, icon),
+  m_durationMSecs(durationMSecs),
+  m_delayMSecs(delayMSecs),
+  m_image(image),
+  m_xoffset(xoffset),
+  m_yoffset(yoffset),
+  m_position(position)
   {
   }
 
-  /**
-   * TODO
-   */
   ImageAction::~ImageAction()
   {
-    
   }
 
-  /**
-   * TODO
-   */
-  void ImageAction::begin()
-  {
-    
-  }
-  
-  /*
-  * TODO
-  */
-  void ImageAction::abort()
-  {
-    
-  }
-  
-  bool ImageAction::setFile(const QString& filePath)
-  {
-    bool success(true);
-    _imageFile.setFileName(filePath);
-    
-    if (!_imageFile.exists())
-    {
-      success = false;
-    }
-    
-    return success;
-  }
 
+  ImageAction* ImageAction::copy() const
+  {
+    ImageAction* action = new ImageAction(parent(), name(), description(),
+                                          label(), categories(), icon(),
+                                          durationMSecs(), delayMSecs(),
+                                          image(), xoffset(), yoffset(),
+                                          position());
+
+    return action;
+  }
 }

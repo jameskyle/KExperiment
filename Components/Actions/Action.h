@@ -27,18 +27,9 @@ namespace kex
   class Action : public Component
   {
     Q_OBJECT
-    Q_FLAGS(UnitType UnitTypes)
     Q_PROPERTY(quint32 durationMSecs READ durationMSecs WRITE setDurationMSecs)
-    Q_PROPERTY(UnitTypes units         READ units         WRITE setUnits)
 
   public:
-    enum UnitType {
-      MilliSecondType = 0x1,
-      SecondType      = 0x1 << 1,
-      KiloSecondType  = 0x1 << 2,
-    };
-    Q_DECLARE_FLAGS(UnitTypes, UnitType)
-
     /** \brief Constructor for the Action class.
     *
     * \author James Kyle KSpace MRI
@@ -55,11 +46,7 @@ namespace kex
 
     virtual bool setDurationMSecs(quint32 duration);
     virtual quint32 durationMSecs() const { return m_durationMSecs;}
-    virtual void updateFromTemplate(const Component::SharedPointer t);
 
-    UnitTypes units() const {return m_durationUnits;}
-    void setUnits(UnitTypes t) {m_durationUnits = t;}
-    
     /** \brief Returns a list of Action types
     *
     * Each Action has a type specifier. That type must be registered in
@@ -77,10 +64,8 @@ namespace kex
 
   private:
     quint32   m_durationMSecs;
-    UnitTypes m_durationUnits;
 
   };
 }
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(kex::Action::UnitTypes)
 #endif

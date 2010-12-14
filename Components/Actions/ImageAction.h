@@ -1,31 +1,158 @@
 #ifndef IMAGEACTION_H
 #define IMAGEACTION_H
 
-#include <QFile>
+#include <QSet>
+#include <QImage>
 
 #include "Components/Component.h"
-#include "Action.h"
 
 namespace kex
 {
-  class ImageAction : public Action
+  class ImageAction : public Component
   {
     Q_OBJECT
     Q_PROPERTY(QString file READ file WRITE setFile)
-    
+
   public:
-    ImageAction(QObject *parent = 0);
+
+    /** \brief Default constructor for ImageAction.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \return ImageAction an image action with specified attributes.
+     **/
+    ImageAction(QObject *parent = 0,
+                const QString& name="",
+                const QString& description="",
+                const QString& label="",
+                const QSet<QString> categories=QSet<QString>(),
+                const QIcon& icon=QIcon(Component::DEFAULT_ICON),
+                quint64 durationMSecs=0,
+                int delayMSecs=0,
+                const QImage& image=QImage(),
+                qint32 xoffset=0,
+                qint32 yoffset=0,
+                const Component::ComponentPositions& position=Component::DefaultPosition
+                );
+
+    /** \brief Default destructor for component
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     **/
     ~ImageAction();
 
-    const QString file() const { return _imageFile.fileName();}
-    bool setFile(const QString& filePath);
+    /** \brief Returns the duration in milliseconds.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \return quint64 the duration of component in milliseconds
+     **/
+    quint64 durationMSecs() const {return m_durationMSecs;}
 
+    /** \brief Sets the duration in milliseconds.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \param durationMSecs the new value for duration in milliseconds
+     **/
+    void setDurationMSecs(quint64 durationMSecs) {
+      m_durationMSecs = durationMSecs;
+    }
+
+    /** \brief Returns the delay in milliseconds.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \return quint64 the delay of component in milliseconds
+     **/
+    int delayMSecs() const {return m_delayMSecs;}
+
+    /** \brief Sets the delay in milliseconds.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \param delayMSecs the new value for delay in milliseconds
+     **/
+    void setDelayMSecs(int delayMSecs) {m_delayMSecs = delayMSecs;}
+
+    /** \brief Returns the offset of component along x axis.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \return qint32 the x offset of component
+     **/
+    qint32 xoffset() const {return m_xoffset;}
+
+    /** \brief Sets the X offset for component.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \param xoffset the new offset for component along x axis
+     **/
+    void setXoffset(qint32 xoffset) { m_xoffset = xoffset;}
+
+    /** \brief Returns the offset for component along y axis.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \return qint32 the offset of component along y axis
+     **/
+    qint32 yoffset() const {return m_yoffset;}
+
+    /** \brief Sets the offset for component along y axis
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \param yoffset the new offset along the y axis
+     **/
+    void setYoffset(qint32 yoffset) {m_yoffset = yoffset;}
+
+    /** \brief Returns the position of the component in view.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \return Component::ComponentTypes the position of component in view
+     **/
+    Component::ComponentPositions position() const {return m_position;}
+
+    /** \brief Sets the position for the component in view.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \param position the new position for component
+     **/
+    void setPosition(const Component::ComponentPositions& position)
+    {
+      m_position = position;
+    }
+
+    /** \brief Returns the image object for the ImageAction.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \return QImage the image used by the ImageAction.
+     **/
+    const QImage& image() const { return m_image;}
+
+    /** \brief Sets the image for the ImageAction.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-13
+     * \param imageFile the file path for the new image.
+     **/
+    void setImage(const QImage& image) {m_image = image;}
+
+    ImageAction* copy() const;
   private:
-    QFile _imageFile;
-    
-  public slots:
-    void begin();
-    void abort();
+    quint64 m_durationMSecs; //!< duration for component in milliseconds
+    int     m_delayMSecs; //!< delay for component in milliseconds
+    QImage  m_image; //!< the image used for display.
+    qint32  m_xoffset; //!< the offset for component along x axis
+    qint32  m_yoffset; //!< the offset for component along y axis
+    Component::ComponentPositions m_position; //!< the position for component in view
+
+
   };
 }
 #endif

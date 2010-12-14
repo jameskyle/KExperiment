@@ -1,5 +1,5 @@
-#ifndef OUTPUTCOMPONENT_H
-#define OUTPUTCOMPONENT_H
+#ifndef COMPONENT_H
+#define COMPONENT_H
 
 #include <QObject>
 #include <QSet>
@@ -22,10 +22,13 @@ namespace kex
   {
     Q_OBJECT
     Q_FLAGS(ComponentType ComponentTypes)
+    Q_FLAGS(ComponentPosition ComponentPositions)
 
   public:
     typedef Component* Pointer;
     typedef QSharedPointer<Component> SharedPointer;
+
+    static const QString DEFAULT_ICON;
 
     enum ComponentType
     {
@@ -45,7 +48,27 @@ namespace kex
     };
     Q_DECLARE_FLAGS(ComponentTypes, ComponentType)
 
-    Component(QObject *parent = 0);
+    enum ComponentPosition
+    {
+      CenterPosition        = 0x1,
+      TopLeftPosition       = 0x1 << 1,
+      TopCenterPosition     = 0x1 << 2,
+      TopRightPosition      = 0x1 << 3,
+      CenterRightPosition   = 0x1 << 4,
+      BottomRightPosition   = 0x1 << 5,
+      BottomCenterPosition  = 0x1 << 6,
+      BottomLeftPosition    = 0x1 << 7,
+      CenterLeftPosition    = 0x1 << 8,
+      DefaultPosition       = 0x1,
+    };
+    Q_DECLARE_FLAGS(ComponentPositions, ComponentPosition)
+
+    Component(QObject *parent = 0,
+              const QString& name=QString(""),
+              const QString& description=QString(""),
+              const QString& label=QString(""),
+              const QSet<QString>& categories=QSet<QString>(),
+              const QIcon& icon=QIcon(DEFAULT_ICON));
 
     /** \brief  Clone constructor
      *
@@ -55,13 +78,13 @@ namespace kex
      * \author $LastChangedBy$
      * \date 2010-5-6
      * \date $LastChangedDate$
-     * \param component the component to be copied
+     * \return Component* a new component that is a logical copy
      * \version $Rev$
      **/
-//    virtual Component* clone() const = 0;
+    virtual Component* copy() const = 0;
 
     virtual ~Component();
-    
+
     /** \brief Returns the name attribute.
      *
      * The name attribute serves as a unique identifier for every class
@@ -72,7 +95,7 @@ namespace kex
      * \return Returns the name of the Action.
      * \sa QList
      **/
-    const QString name() const; 
+    const QString name() const;
 
     /** \brief Returns the description for the Action class.
      *
@@ -97,6 +120,29 @@ namespace kex
      **/
     const QString label() const;
 
+    /** \brief Sets the label of an Action class.
+     *
+     * An Action's label is a short description of the Action and is displayed
+     * in Action summaries and tables.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \param  label the user provided label for a an Action.
+     * \sa QString label()
+     **/
+    void setLabel(const QString& label);
+
+    /** \brief Returns the set of categories for the component.
+     *
+     * The categories are used
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \return Returns a QString containing a brief description of the Action.
+     * \sa QString
+     **/
+    const QSet<QString> categories() const {return m_categories;}
+
     /** \brief Returns the category for the Action class.
      *
      * The category for an Action class is used for sorting and filtering with
@@ -108,8 +154,6 @@ namespace kex
      * \sa QString
      **/
     const QString mainCategory() const;
-
-    void setMainCategory(const QString& cat);
 
     /** \brief Sets the name attribute of the Action class.
      *
@@ -137,80 +181,109 @@ namespace kex
      **/
     void setDescription(const QString& desc);
 
-    /** \brief Sets the label of an Action class.
+    /** \brief Adds a category for the Component instance.
      *
-     * An Action's label is a short description of the Action and is displayed
-     * in Action summaries and tables.
-     *
-     * \author James Kyle KSpace MRI
-     * \date 2010-04-01
-     * \param  label the user provided label for a an Action.
-     * \sa QString label()
-     **/
-    void setLabel(const QString& label);
-
-    /** \brief Sets the category for the Action instance.
-     *
-     * The category is used for sorting and library organization of Actions.
+     * The category is used for sorting and library organization of Components.
      *
      * \author James Kyle KSpace MRI
      * \date 2010-04-01
-     * \param  category the user provided category for the Action. Maximum of
-     * 56 characters.
-     * \sa QString category()
+     * \param  category category to add to set. Maximum of 56 characters.
      **/
     void addCategory(const QString& category);
 
+    /** \brief Removes a category for the Component instance.
+     *
+     * The category is used for sorting and library organization of Components.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \param  category category to remove from set. Maximum of 56 characters.
+     **/
     bool removeCategory(const QString& category);
 
+    /** \brief String representation for the Component.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \return QString representation of the component
+     **/
     virtual const QString toString() const;
 
-    ComponentTypes componentType() const {return m_componentType;}
-
-    /** \brief  Holds the type of component represented.
+    /** \brief Returns the type for Component.
      *
-     * Copyright 2010 KSpace MRI. All Rights Reserved.
-     *
-     * This stores a mask for the various component types represented. For
-     * a componentType equal to Component::EventType the method
-     * toComponent() would return a pointer to a new Event object.
-     *
-     * \author James Kyle
-     * \author $LastChangedBy$
-     * \date 2010-5-10
-     * \date $LastChangedDate$
-     * \param t the type of component
-     * \version $Rev$  \sa componentType()
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \return ComponentTypes type of component
      **/
-    void setComponentType(ComponentTypes t);
+    virtual ComponentTypes componentType() const;
 
-    const QIcon icon();
+    /** \brief Total duration of component in milliseconds
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \return quint64 duration of component in milliseconds
+     **/
+    virtual quint64 durationMSecs() const = 0;
+
+    /** \brief Returns the QIcon assigned to the Component.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \return QIcon icon for the component
+     **/
+    const QIcon icon() const;
+
+    /** \brief Sets the icon for the Component
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \param icon a QIcon used for the component
+     **/
     void setIcon(const QIcon& icon);
 
-    static const quint32 MAX_DURATION = 1800000; //!< maximum run time, 30m
+    static const quint64 MAX_DURATION = 1800000; //!< maximum run time, 30m
+
+    /** \brief Returns a QString representation of the component type.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \param t a ComponentTypes object
+     * \return QString the string  representation for t
+     **/
     static const QString componentTypeToString(ComponentTypes t);
 
-    virtual void updateFromTemplate(const SharedPointer t);
+    /** \brief Determines equality for Component and other
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \param other the component to determine equality with
+     * \return bool true if equal, false otherwise
+     **/
+    bool operator==(const Component& other) const;
+
+    /** \brief Determines inequality for Component and other
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \param other the component to determine inequality with
+     * \return bool true if not equal, false otherwise
+     **/
+    bool operator!=(const Component& other) const;
+
+  protected:
+    ComponentTypes  m_componentType; //!< type for component
 
   private:
-    quint32        m_startTimeMSecs;
-    ComponentTypes m_componentType;
-    QString        m_name; //!< name of the component
-    QString        m_description; //!< detailed description of the component
-    QString        m_label; //!< brief description of the component
-    QString        m_mainCategory; //!< main group identifier
-    QSet<QString>  m_categorySet; //!< list of all categories for component
-    QIcon          m_icon;
+    QString         m_name; //!< name of the component
+    QString         m_description; //!< detailed description of the component
+    QString         m_label; //!< brief description of the component
+    QSet<QString>   m_categories; //!< list of all categories for component
+    QIcon           m_icon;
 
-  signals:
-    void startTimeChanged();
-    void complete();
-
-  public slots:
-    virtual void begin() = 0;
-    virtual void abort() = 0;
-    void updateStartTime(quint32 startTimeMSecs);
   };
 }
+const QString kex::Component::DEFAULT_ICON(":/images/other/Science-64.png");
+
 Q_DECLARE_OPERATORS_FOR_FLAGS(kex::Component::ComponentTypes)
+Q_DECLARE_OPERATORS_FOR_FLAGS(kex::Component::ComponentPositions)
 #endif

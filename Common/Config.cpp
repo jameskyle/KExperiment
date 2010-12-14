@@ -20,6 +20,7 @@ namespace kex
     m_directoryTypeList[ExperimentDirectory] = "Experiments";
     m_directoryTypeList[EventDirectory]      = "Events";
     m_directoryTypeList[TrialDirectory]      = "Trials";
+
   }
 
   const QString
@@ -51,24 +52,24 @@ namespace kex
 
     return directoryList;
   }
-  
+
   QStringList Config::xmlFileComponentList(Config::ApplicationDataDirectoryTypes t)
   {
     QStringList         dirList;
     QStringList         xmlList;
-    
+
     dirList = dataDirectoryList(t);
-    
+
     foreach(QString path, dirList)
     {
       QDir dir(path);
       QStringList filters;
       QStringList fileList;
-      
+
       filters << "*.xml";
       dir.setNameFilters(filters);
       fileList = dir.entryList(QDir::Files);
-      
+
       foreach(QString file, fileList)
       {
         QString fullPath("%1/%2");
@@ -77,8 +78,8 @@ namespace kex
     }
     return xmlList;
   }
-  
-  
+
+
 //  bool Config::registerComponentMetaData(const QString& classid,
 //                                         QMap<Config::MetaDataType,
 //                                          QVariant> metadata)

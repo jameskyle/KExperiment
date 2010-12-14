@@ -2,108 +2,109 @@
 
 namespace kex
 {
-  Component::Component(QObject *parent) : 
+  Component::Component(QObject *parent,
+                       const QString &name,
+                       const QString &description,
+                       const QString &label,
+                       const QSet<QString> &categories,
+                       const QIcon &icon) :
     QObject(parent),
-    m_startTimeMSecs(),
-    m_componentType(),
-    m_name(),
-    m_description(),
-    m_label(),
-    m_mainCategory(),
-    m_categorySet(),
-    m_icon()
+    m_name(name),
+    m_description(description),
+    m_label(label),
+    m_categories(categories),
+    m_icon(icon)
   {
-    m_icon = QIcon(":/images/other/Science-64.png");
   }
-  
-  void Component::updateStartTime(quint32 startTimeMSecs)
-  {
-    m_startTimeMSecs = startTimeMSecs;
-  }
-  
+
   Component::~Component()
   {
   }
-  
+
+  const QString Component::mainCategory() const
+  {
+    return componentTypeToString(m_componentType);
+  }
+
   const QString Component::toString() const
   {
     QString output;
-    
+
     output.append("\nObject: %1\n");
     output.append("\tName: %2\n");
     output.append("\tDescription: %3\n");
     output.append("\tLabel: %4\n");
     output.append("\tMainCategory: %5\n");
-    
-    return output.arg(typeid(this).name(), name(), description(), label(), 
+
+    return output.arg(typeid(this).name(), name(), description(), label(),
                       mainCategory());
   }
-  
-  const QString Component::name() const 
+
+  const QString Component::name() const
   {
     return m_name;
   }
-  
-  const QString Component::description() const 
+
+  const QString Component::description() const
   {
     return m_description;
   }
-  
-  const QString Component::label() const 
+
+  const QString Component::label() const
   {
     return m_label;
   }
-  
-  const QString Component::mainCategory() const 
-  {
-    return m_mainCategory;
-  }
-  
-  void Component::setMainCategory(const QString& cat) 
-  {
-    m_mainCategory = cat.trimmed();
-  }
-  
-  void Component::setName(const QString& name) 
+
+  void Component::setName(const QString& name)
   {
     m_name = name.trimmed();
   }
-  
+
   void Component::setDescription(const QString& desc)
   {
     m_description = desc.trimmed();
   }
-  
+
   void Component::setLabel(const QString& label)
   {
     m_label = label.trimmed();
   }
-  
-  void Component::addCategory(const QString& category) 
+
+  void Component::addCategory(const QString& category)
   {
-    m_categorySet.insert(category);
+    m_categories.insert(category);
   }
-  
-  bool Component::removeCategory(const QString& category) 
+
+  bool Component::removeCategory(const QString& category)
   {
-    return m_categorySet.remove(category);
+    return m_categories.remove(category);
   }
-    
-  const QIcon Component::icon()
+
+  const QIcon Component::icon() const
   {
     return m_icon;
   }
-  
+
   void Component::setIcon(const QIcon& icon)
   {
     m_icon = icon;
   }
-    
-  void Component::setComponentType(ComponentTypes t)
+
+  bool Component::operator==(const Component& other) const
   {
-    m_componentType = t;
+    return true;
   }
-  
+
+  bool Component::operator!=(const Component& other) const
+  {
+    return !(*this == other);
+  }
+
+  Component::ComponentTypes Component::componentType() const
+  {
+    return m_componentType;
+  }
+
   const QString Component::componentTypeToString(ComponentTypes t)
   {
     QString typeString;
@@ -140,40 +141,7 @@ namespace kex
         typeString = "Undefined";
         break;
     }
-    
+
     return typeString;
-  }
-  
-  void Component::updateFromTemplate(const SharedPointer t)
-  {
-    Q_CHECK_PTR(t);
-    // the default updateFromTemplate pulls in the base information
-    // If our component has a field defined and it is not empty, we pull the 
-    // data form the provided template
-    
-    // We don't change the name
-    if (t->description() != m_description)
-    {
-      if (m_description.isEmpty())
-      {
-        m_description = t->description();
-      }
-    }
-    
-    if (t->label() != m_label)
-    {
-      if (m_label.isEmpty())
-      {
-        m_label = t->label();
-      }
-    }
-    
-    if (t->mainCategory() != m_mainCategory)
-    {
-      if (m_mainCategory.isEmpty())
-      {
-        m_mainCategory = t->mainCategory();
-      }
-    }
   }
 }

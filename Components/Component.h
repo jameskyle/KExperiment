@@ -67,8 +67,7 @@ namespace kex
               const QString& name=QString(""),
               const QString& description=QString(""),
               const QString& label=QString(""),
-              const QSet<QString>& categories=QSet<QString>(),
-              const QIcon& icon=QIcon(DEFAULT_ICON));
+              const QSet<QString>& categories=QSet<QString>());
 
     /** \brief  Clone constructor
      *
@@ -225,22 +224,6 @@ namespace kex
      **/
     virtual quint64 durationMSecs() const = 0;
 
-    /** \brief Returns the QIcon assigned to the Component.
-     *
-     * \author James Kyle KSpace MRI
-     * \date 2010-04-01
-     * \return QIcon icon for the component
-     **/
-    const QIcon icon() const;
-
-    /** \brief Sets the icon for the Component
-     *
-     * \author James Kyle KSpace MRI
-     * \date 2010-04-01
-     * \param icon a QIcon used for the component
-     **/
-    void setIcon(const QIcon& icon);
-
     static const quint64 MAX_DURATION = 1800000; //!< maximum run time, 30m
 
     /** \brief Returns a QString representation of the component type.
@@ -259,7 +242,7 @@ namespace kex
      * \param other the component to determine equality with
      * \return bool true if equal, false otherwise
      **/
-    bool operator==(const Component& other) const;
+    virtual bool operator==(const Component& other) const;
 
     /** \brief Determines inequality for Component and other
      *
@@ -268,7 +251,7 @@ namespace kex
      * \param other the component to determine inequality with
      * \return bool true if not equal, false otherwise
      **/
-    bool operator!=(const Component& other) const;
+    virtual bool operator!=(const Component& other) const;
 
   protected:
     ComponentTypes  m_componentType; //!< type for component
@@ -278,7 +261,6 @@ namespace kex
     QString         m_description; //!< detailed description of the component
     QString         m_label; //!< brief description of the component
     QSet<QString>   m_categories; //!< list of all categories for component
-    QIcon           m_icon;
 
   };
 }

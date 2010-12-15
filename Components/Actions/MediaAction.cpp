@@ -2,18 +2,19 @@
 
 namespace kex
 {
-  MediaAction::MediaAction(QObject *parent,
+  MediaAction::MediaAction(Phonon::MediaObject* mediaObject,
+                           QObject *parent,
                            const QString& name,
                            const QString& description,
                            const QString& label,
                            const QSet<QString>& categories,
-                           const QIcon& icon,
-                           quint64 delayMSecs,
-                           Phonon::MediaObject* mediaObject) :
-  Component(parent, name, description, label, categories, icon),
-  m_delayMSecs(delayMSecs),
-  m_mediaObject(sound)
+                           quint64 delayMSecs) :
+  Component(parent, name, description, label, categories),
+  m_mediaObject(mediaObject),
+  m_delayMSecs(delayMSecs)
   {
+    Q_CHECK_PTR(mediaObject);
+    setComponentType();
   }
 
   MediaAction::~MediaAction()
@@ -27,10 +28,51 @@ namespace kex
     return m_mediaObject->totalTime();
   }
 
+  void MediaAction::setMediaObject(Phonon::MediaObject* mediaObject)
+  {
+    Q_CHECK_PTR(mediaObject);
+    Q_CHECK_PTR(m_mediaObject);
+
+    delete m_mediaObject;
+
+    m_mediaObject = mediaObject;
+    setComponentType();
+
+  }
+
+  void MediaAction::setComponentType()
+  {
+    if(m_mediaObject->hasVideo())
+      m_componentType = Component::VideoActionType;
+    else
+      m_componentType = Component::AudioActionType;
+  }
+
   MediaAction* MediaAction::copy() const
   {
-    MediaAction* action = new MediaAction();
+    Phonon::MediaObject* m = new Phonon::MediaObject;
+    m->setCurrentSource(m_mediaObject->currentSource());
+
+    MediaAction* action = new MediaAction(m, parent(), name(), description(),
+                                          label(), categories(),
+                                          delayMSecs());
 
     return action;
+  }
+
+  bool MediaAction::operator==(const Component& other) const
+  {
+    const MediaAction* derived = qobject_cast<const MediaAction*>(&other);
+    bool equal = (derived &&
+      Component::operator==(other) &&
+      delayMSecs()                 == derived->delayMSecs()  &&
+      mediaObject()->currentSource() == derived->mediaObject()->currentSource());
+
+    return equal;
+  }
+
+  bool MediaAction::operator!=(const Component& other) const
+  {
+    return !(*this == other);
   }
 }

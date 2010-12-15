@@ -8,12 +8,9 @@ namespace kex
                          const QString& description,
                          const QString& label,
                          const QSet<QString>& categories,
-                         const QIcon& icon,
-                         quint64 durationMSecs,
-                         quint64 delayMSecs) :
-  Component(parent, name, description, label, categories, icon),
-  m_durationMSecs(durationMSecs),
-  m_delayMSecs(delayMSecs)
+                         quint64 durationMSecs) :
+  Component(parent, name, description, label, categories),
+  m_durationMSecs(durationMSecs)
   {
     m_componentType = Component::RestActionType;
   }
@@ -21,5 +18,29 @@ namespace kex
   RestAction::~RestAction()
   {
 
+  }
+
+  RestAction* RestAction::copy() const
+  {
+    RestAction *action = new RestAction(parent(),         name(),
+                                        description(),    label(),
+                                        categories(), durationMSecs());
+
+    return action;
+  }
+
+  bool RestAction::operator==(const Component& other) const
+  {
+    const RestAction* derived = qobject_cast<const RestAction*>(&other);
+    bool equal = (derived &&
+                  Component::operator==(other) &&
+                  durationMSecs() == derived->durationMSecs());
+
+    return equal;
+  }
+
+  bool RestAction::operator!=(const Component& other) const
+  {
+    return !(*this == other);
   }
 }

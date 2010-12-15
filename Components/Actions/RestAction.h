@@ -9,14 +9,12 @@ namespace kex
   {
     Q_OBJECT
   public:
-    RestAction(QObject *parent = 0,
+    explicit RestAction(QObject *parent = 0,
                const QString& name=QString(""),
                const QString& description=QString(""),
                const QString& label=QString(""),
                const QSet<QString>& categories=QSet<QString>(),
-               const QIcon& icon=QIcon(":/images/other/Science-64.png"),
-               quint64 duration=0,
-               quint64 delay=0);
+               quint64 durationMSecs=0);
     ~RestAction();
 
     /** \brief Sets the duration for RestAction in milliseconds.
@@ -35,11 +33,13 @@ namespace kex
     **/
     quint64 durationMSecs() const { return m_durationMSecs;}
 
-    bool operator==(const RestAction& other);
-    bool operator!=(const RestAction& other);
+    RestAction* copy() const;
+
+    bool operator==(const Component& other) const;
+    bool operator!=(const Component& other) const;
+
   private:
     quint64 m_durationMSecs;
-    quint64 m_delayMSecs;
     };
 }
 #endif

@@ -2,12 +2,10 @@
 #define COMPONENTS_H
 
 #include "Component.h"
-#include "Actions/Action.h"
 #include "Actions/RestAction.h"
 #include "Actions/TextAction.h"
 #include "Actions/ImageAction.h"
-#include "Actions/AudioAction.h"
-#include "Actions/VideoAction.h"
+#include "Actions/MediaAction.h"
 #include "Event/Event.h"
 #include "Trial/Trial.h"
 #include "Experiment/Experiment.h"

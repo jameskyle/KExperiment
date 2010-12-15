@@ -11,25 +11,31 @@ namespace kex
   {
       Q_OBJECT
   public:
-      explicit MediaAction(QObject *parent = 0,
-                const QString& name=QString(""),
-                const QString& description=QString(""),
-                const QString& label=QString(""),
-                const QSet<QString>& categories=QSet<QString>(),
-                const QIcon& icon=QIcon(Component::DEFAULT_ICON),
-                quint64 delayMSecs=0,
-                Phonon::MediaObject* mediaObject=0);
+      explicit MediaAction(Phonon::MediaObject* mediaObject,
+                           QObject *parent = 0,
+                           const QString& name=QString(""),
+                           const QString& description=QString(""),
+                           const QString& label=QString(""),
+                           const QSet<QString>& categories=QSet<QString>(),
+                           quint64 delayMSecs=0);
 
       ~MediaAction();
 
     Phonon::MediaObject* mediaObject() const {return m_mediaObject;}
-
+    void setMediaObject(Phonon::MediaObject* mediaObject);
     quint64 durationMSecs() const;
+    quint64 delayMSecs() const {return m_delayMSecs;}
+    void setDelayMSecs(quint64 delayMSecs) {m_delayMSecs = delayMSecs;}
+
     MediaAction* copy() const;
+    bool operator==(const Component& other) const;
+    bool operator!=(const Component& other) const;
 
   private:
-    quint64 m_delayMSecs;
+    void setComponentType();
+
     Phonon::MediaObject* m_mediaObject;
+    quint64 m_delayMSecs;
   };
 
   typedef MediaAction AudioAction;

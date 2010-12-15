@@ -6,14 +6,12 @@ namespace kex
                        const QString &name,
                        const QString &description,
                        const QString &label,
-                       const QSet<QString> &categories,
-                       const QIcon &icon) :
+                       const QSet<QString> &categories) :
     QObject(parent),
     m_name(name),
     m_description(description),
     m_label(label),
-    m_categories(categories),
-    m_icon(icon)
+    m_categories(categories)
   {
   }
 
@@ -80,26 +78,6 @@ namespace kex
     return m_categories.remove(category);
   }
 
-  const QIcon Component::icon() const
-  {
-    return m_icon;
-  }
-
-  void Component::setIcon(const QIcon& icon)
-  {
-    m_icon = icon;
-  }
-
-  bool Component::operator==(const Component& other) const
-  {
-    return true;
-  }
-
-  bool Component::operator!=(const Component& other) const
-  {
-    return !(*this == other);
-  }
-
   Component::ComponentTypes Component::componentType() const
   {
     return m_componentType;
@@ -144,4 +122,19 @@ namespace kex
 
     return typeString;
   }
+
+  bool Component::operator!=(const Component& other) const
+  {
+    return !(*this == other);
+  }
+
+  bool Component::operator==(const Component& other) const
+  {
+    bool equal = (name()        == other.name()        &&
+                  description() == other.description() &&
+                  label()       == other.label()       &&
+                  categories()  == other.categories());
+    return equal;
+  }
+
 }

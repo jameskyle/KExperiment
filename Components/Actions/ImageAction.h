@@ -26,9 +26,8 @@ namespace kex
                 const QString& description="",
                 const QString& label="",
                 const QSet<QString> categories=QSet<QString>(),
-                const QIcon& icon=QIcon(Component::DEFAULT_ICON),
                 quint64 durationMSecs=0,
-                int delayMSecs=0,
+                quint64 delayMSecs=0,
                 const QImage& image=QImage(),
                 qint32 xoffset=0,
                 qint32 yoffset=0,
@@ -66,7 +65,7 @@ namespace kex
      * \date 2010-12-13
      * \return quint64 the delay of component in milliseconds
      **/
-    int delayMSecs() const {return m_delayMSecs;}
+    quint64 delayMSecs() const {return m_delayMSecs;}
 
     /** \brief Sets the delay in milliseconds.
      *
@@ -74,7 +73,7 @@ namespace kex
      * \date 2010-12-13
      * \param delayMSecs the new value for delay in milliseconds
      **/
-    void setDelayMSecs(int delayMSecs) {m_delayMSecs = delayMSecs;}
+    void setDelayMSecs(quint64 delayMSecs) {m_delayMSecs = delayMSecs;}
 
     /** \brief Returns the offset of component along x axis.
      *
@@ -144,9 +143,12 @@ namespace kex
     void setImage(const QImage& image) {m_image = image;}
 
     ImageAction* copy() const;
+    bool operator==(const Component& other) const;
+    bool operator!=(const Component& other) const;
+
   private:
     quint64 m_durationMSecs; //!< duration for component in milliseconds
-    int     m_delayMSecs; //!< delay for component in milliseconds
+    quint64 m_delayMSecs; //!< delay for component in milliseconds
     QImage  m_image; //!< the image used for display.
     qint32  m_xoffset; //!< the offset for component along x axis
     qint32  m_yoffset; //!< the offset for component along y axis

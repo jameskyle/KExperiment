@@ -27,7 +27,6 @@ namespace kex
                const QString& description=QString(""),
                const QString& label=QString(""),
                const QSet<QString>& categories=QSet<QString>(),
-               const QIcon& icon=QIcon(Component::DEFAULT_ICON),
                quint64 durationMSecs=0,
                quint64 delayMSecs=0,
                const QString& text=QString(""),
@@ -220,6 +219,9 @@ namespace kex
     void setFont(const QFont& font) { m_font = font;}
 
     TextAction* copy() const;
+
+    bool operator==(const Component& other) const;
+    bool operator!=(const Component& other) const;
 
   private:
     quint64     m_durationMSecs; //!< duration for component in milliseconds

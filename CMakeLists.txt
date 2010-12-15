@@ -52,6 +52,7 @@ SET(K_SRCS
     Models/ComponentModel.cpp
     Utilities/Utilities.cpp
     Components/Component.cpp
+    Components/ComponentExceptions.cpp
     Components/Actions/RestAction.cpp
     Components/Actions/TextAction.cpp
     Components/Actions/ImageAction.cpp
@@ -83,7 +84,7 @@ FOREACH(file ${K_SRCS})
   SET(K_SRC_HDRS ${K_SRC_HDRS} ${file_src})
 ENDFOREACH(file ${K_SRCS})
 
-SET(K_SRC_HDRS ${K_SRC_HDRS} Components/Components.h)
+SET(K_SRC_HDRS ${K_SRC_HDRS} Components/Components.h )
 SET(CMAKE_C_FLAGS_DEBUG "-Wall -g")
 SET(CMAKE_CXX_FLAGS_DEBUG "-Wall -g")
 

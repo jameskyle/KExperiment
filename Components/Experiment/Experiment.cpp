@@ -2,28 +2,92 @@
 
 namespace kex
 {
-  Experiment::Experiment(QObject *parent) :
-    Component(parent), _instructions()
+  Experiment::Experiment(QObject *parent,
+          const QString& name,
+          const QString& description,
+          const QString& label,
+          const QSet<QString>& categories) :
+  Component(parent, name, description, label, categories),
+  m_components()
   {
   }
 
-  void Experiment::updateFromTemplate(const Component::SharedPointer t)
+  quint64 Experiment::durationMSecs() const
   {
-    Q_CHECK_PTR(t);
+    Component* comp;
+    quint64 duration = 0;
+    // all children are trials
+    foreach(comp, m_components)
+    {
+      Trial* trial;
+      trial = qobject_cast<Trial *>(comp);
 
-    QSharedPointer<const Experiment> exp = t.objectCast<const Experiment>();
-    // ensure this is an experiment type component
-    Q_CHECK_PTR(exp);
-//    Component::updateFromTemplate(t);
+      if(!trial)
+      {
+        QString msg = "Received %1, but expected Component::EventType";
+        InvalidComponentType e(msg.arg(
+            Component::componentTypeToString(
+                comp->componentType())).toAscii());
 
-    // Experiments have a unique instructions field
+        throw e;
+      }
 
-//    if (exp->instructions() != _instructions)
-//    {
-//      if (_instructions.isEmpty())
-//      {
-//        _instructions = exp->instructions();
-//      }
-//    }
+      Component* child;
+      foreach(child, trial->components())
+      {
+        duration += child->durationMSecs();
+      }
+    }
+
+    return duration;
+  }
+
+  void Experiment::appendComponent(Component* component)
+  {
+    if(!component->componentType() & Component::TrialType)
+    {
+      QString msg = "Received %1, but expected Component::ActionType";
+
+      InvalidComponentType e(msg.arg(
+          Component::componentTypeToString(
+              component->componentType())).toAscii());
+
+      throw e;
+    }
+    m_components.append(component);
+  }
+
+  void Experiment::removeComponentAt(int index)
+  {
+    m_components.removeAt(index);
+  }
+
+  bool Experiment::operator==(const Component& other) const
+  {
+    const Experiment* derived = qobject_cast<const Experiment*>(&other);
+    bool equal = (derived &&
+      Component::operator==(other) &&
+      components() == derived->components());
+
+    return equal;
+  }
+
+  bool Experiment::operator!=(const Component& other) const
+  {
+    return !(*this == other);
+  }
+
+  Experiment* Experiment::copy() const
+  {
+    Experiment *experiment = new Experiment(parent(), name(), description(), label(),
+                             categories());
+
+    Component* comp;
+    foreach(comp, m_components)
+    {
+      experiment->appendComponent(comp->copy());
+    }
+
+    return experiment;
   }
 }

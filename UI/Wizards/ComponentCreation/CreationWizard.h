@@ -9,7 +9,7 @@
 #include "UI/Wizards/ComponentCreation/ConfigurationPage.h"
 #include "UI/Wizards/ComponentCreation/FinishedPage.h"
 
-#include "Components/Actions/Action.h"
+#include "Components/Component.h"
 #include "Common/Config.h"
 
 namespace kex
@@ -45,9 +45,9 @@ namespace kex
     **/
     CreationWizard(const Component::ComponentTypes component,
                    QWidget *parent = 0);
-    
+
     ~CreationWizard() {}
-      
+
     enum {
       Page_Welcome,
       Page_Information,

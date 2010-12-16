@@ -77,7 +77,7 @@ namespace kex
     return !(*this == other);
   }
 
-  Trial* Trial::copy() const
+  Trial::Pointer Trial::clone() const
   {
     Trial *event = new Trial(parent(), name(), description(), label(),
                              categories());
@@ -85,7 +85,7 @@ namespace kex
     Component* comp;
     foreach(comp, m_components)
     {
-      event->appendComponent(comp->copy());
+      event->appendComponent(comp->clone());
     }
 
     return event;

@@ -16,6 +16,8 @@ namespace kex
     Q_PROPERTY(QString text READ text WRITE setText)
 
   public:
+    typedef TextAction* Pointer;
+
     /** \brief Default constructor for TextAction
      *
      * \author James Kyle KSpace MRI
@@ -218,7 +220,7 @@ namespace kex
      **/
     void setFont(const QFont& font) { m_font = font;}
 
-    TextAction* copy() const;
+    Pointer clone() const;
 
     bool operator==(const Component& other) const;
     bool operator!=(const Component& other) const;

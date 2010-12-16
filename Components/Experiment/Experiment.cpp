@@ -77,7 +77,7 @@ namespace kex
     return !(*this == other);
   }
 
-  Experiment* Experiment::copy() const
+  Experiment::Pointer Experiment::clone() const
   {
     Experiment *experiment = new Experiment(parent(), name(), description(), label(),
                              categories());
@@ -85,7 +85,7 @@ namespace kex
     Component* comp;
     foreach(comp, m_components)
     {
-      experiment->appendComponent(comp->copy());
+      experiment->appendComponent(comp->clone());
     }
 
     return experiment;

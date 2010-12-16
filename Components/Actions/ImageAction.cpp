@@ -30,13 +30,13 @@ namespace kex
   }
 
 
-  ImageAction* ImageAction::copy() const
+  ImageAction::Pointer ImageAction::clone() const
   {
-    ImageAction* action = new ImageAction(parent(), name(), description(),
-                                          label(), categories(),
-                                          durationMSecs(), delayMSecs(),
-                                          image(), xoffset(), yoffset(),
-                                          position());
+    Pointer action = new ImageAction(parent(), name(), description(),
+                                     label(), categories(),
+                                     durationMSecs(), delayMSecs(),
+                                     image(), xoffset(), yoffset(),
+                                     position());
 
     return action;
   }

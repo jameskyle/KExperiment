@@ -25,6 +25,7 @@ namespace kex
   {
     Q_OBJECT
   public:
+    typedef Experiment* Pointer;
     /** \brief Constructor for the Experiment class.
     *
     * The constructor for the Experiment class ensures all core type have been
@@ -100,9 +101,9 @@ namespace kex
     *
     * \author James Kyle KSpace MRI
     * \date 2010-12-15
-    * \return Experiment* pointer to a new component that is a copy of original
+    * \return Experiment::Pointer pointer to a new component that is a copy of original
     **/
-    Experiment* copy() const;
+    Experiment::Pointer clone() const;
 
   private:
     QList<Component *> m_components; //!< list of components

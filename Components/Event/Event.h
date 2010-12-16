@@ -29,6 +29,7 @@ namespace kex
   {
     Q_OBJECT
   public:
+    typedef Event* Pointer;
     /** \brief Constructor for the Event class.
     *
     * The constructor for the Event class ensures all core type have been
@@ -69,7 +70,7 @@ namespace kex
     * \date 2010-04-01
     * \return QList<Component *> list of components
     **/
-    const QList<Component *> components() const {return m_components;}
+    const QList<Component::Pointer> components() const {return m_components;}
 
    /** \brief Appends the given component to the child list
     *
@@ -107,9 +108,9 @@ namespace kex
     *
     * \author James Kyle KSpace MRI
     * \date 2010-04-01
-    * \return Event* pointer to a new component that is a copy of original
+    * \return Event::Pointer pointer to a new component that is a copy of original
     **/
-    Event* copy() const;
+    Pointer clone() const;
 
   private:
     QList<Component *> m_components; //!< list of components

@@ -22,6 +22,8 @@ namespace kex
   {
     Q_OBJECT
   public:
+    typedef Trial* Pointer;
+
    /** \brief Constructor for the Trial class.
     *
     * The constructor for the Trial class ensures all core type have been
@@ -100,9 +102,9 @@ namespace kex
     *
     * \author James Kyle KSpace MRI
     * \date 2010-12-15
-    * \return Trial* pointer to a new component that is a copy of original
+    * \return Trial::Pointer pointer to a new component that is a copy of original
     **/
-    Trial* copy() const;
+    Trial::Pointer clone() const;
 
   private:
     QList<Component *> m_components; //!< list of components

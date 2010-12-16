@@ -35,16 +35,16 @@ namespace kex
 //    m_text.prepare(0, m_font);
   }
 
-  TextAction* TextAction::copy() const
+  TextAction::Pointer TextAction::clone() const
   {
-    TextAction* action = new TextAction(parent(),           name(),
-                                        description(),      label(),
-                                        categories(),       durationMSecs(),
-                                        delayMSecs(),       m_text.text(),
-                                        m_font.family(),    m_font.pointSize(),
-                                        foreground(),       background(),
-                                        xoffset(),          yoffset(),
-                                        position());
+    Pointer action = new TextAction(parent(),           name(),
+                                    description(),      label(),
+                                    categories(),       durationMSecs(),
+                                    delayMSecs(),       m_text.text(),
+                                    m_font.family(),    m_font.pointSize(),
+                                    foreground(),       background(),
+                                    xoffset(),          yoffset(),
+                                    position());
     return action;
   }
 

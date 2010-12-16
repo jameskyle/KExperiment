@@ -14,7 +14,7 @@ namespace kex
     Q_PROPERTY(QString file READ file WRITE setFile)
 
   public:
-
+    typedef ImageAction* Pointer;
     /** \brief Default constructor for ImageAction.
      *
      * \author James Kyle KSpace MRI
@@ -142,7 +142,7 @@ namespace kex
      **/
     void setImage(const QImage& image) {m_image = image;}
 
-    ImageAction* copy() const;
+    Pointer clone() const;
     bool operator==(const Component& other) const;
     bool operator!=(const Component& other) const;
 

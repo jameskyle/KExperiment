@@ -9,7 +9,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-#include "Components/Actions/Action.h"
+#include "Components/Component.h"
 
 namespace kex
 {

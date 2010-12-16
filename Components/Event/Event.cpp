@@ -60,7 +60,7 @@ namespace kex
     return !(*this == other);
   }
 
-  Event* Event::copy() const
+  Event::Pointer Event::clone() const
   {
     Event *event = new Event(parent(), name(), description(), label(),
                              categories());
@@ -68,7 +68,7 @@ namespace kex
     Component* comp;
     foreach(comp, m_components)
     {
-      event->appendComponent(comp->copy());
+      event->appendComponent(comp->clone());
     }
 
     return event;

@@ -2,19 +2,25 @@
 
 namespace kex
 {
-  MediaAction::MediaAction(Phonon::MediaObject* mediaObject,
-                           QObject *parent,
+
+  MediaAction::MediaAction(QObject *parent,
                            const QString& name,
                            const QString& description,
                            const QString& label,
                            const QSet<QString>& categories,
-                           quint64 delayMSecs) :
+                           quint64 delayMSecs,
+                           Phonon::MediaObject* mediaObject) :
   Component(parent, name, description, label, categories),
   m_mediaObject(mediaObject),
   m_delayMSecs(delayMSecs)
   {
     Q_CHECK_PTR(mediaObject);
-    setComponentType();
+    if(m_mediaObject)
+    {
+      setComponentType();
+    } else {
+      m_componentType = Component::ActionType;
+    }
   }
 
   MediaAction::~MediaAction()
@@ -48,14 +54,14 @@ namespace kex
       m_componentType = Component::AudioActionType;
   }
 
-  MediaAction* MediaAction::copy() const
+  MediaAction::Pointer MediaAction::clone() const
   {
     Phonon::MediaObject* m = new Phonon::MediaObject;
     m->setCurrentSource(m_mediaObject->currentSource());
 
-    MediaAction* action = new MediaAction(m, parent(), name(), description(),
-                                          label(), categories(),
-                                          delayMSecs());
+    Pointer action = new MediaAction(parent(), name(), description(),
+                                     label(), categories(),
+                                     delayMSecs(), m);
 
     return action;
   }

@@ -20,7 +20,7 @@ namespace kex
 
   }
 
-  RestAction* RestAction::copy() const
+  RestAction::Pointer RestAction::clone() const
   {
     RestAction *action = new RestAction(parent(),         name(),
                                         description(),    label(),

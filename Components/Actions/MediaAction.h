@@ -11,13 +11,14 @@ namespace kex
   {
       Q_OBJECT
   public:
-      explicit MediaAction(Phonon::MediaObject* mediaObject,
-                           QObject *parent = 0,
-                           const QString& name=QString(""),
-                           const QString& description=QString(""),
-                           const QString& label=QString(""),
-                           const QSet<QString>& categories=QSet<QString>(),
-                           quint64 delayMSecs=0);
+    typedef MediaAction* Pointer;
+    explicit MediaAction(QObject *parent = 0,
+                         const QString& name=QString(""),
+                         const QString& description=QString(""),
+                         const QString& label=QString(""),
+                         const QSet<QString>& categories=QSet<QString>(),
+                         quint64 delayMSecs=0,
+                         Phonon::MediaObject* mediaObject=0);
 
       ~MediaAction();
 
@@ -27,7 +28,7 @@ namespace kex
     quint64 delayMSecs() const {return m_delayMSecs;}
     void setDelayMSecs(quint64 delayMSecs) {m_delayMSecs = delayMSecs;}
 
-    MediaAction* copy() const;
+    Pointer clone() const;
     bool operator==(const Component& other) const;
     bool operator!=(const Component& other) const;
 

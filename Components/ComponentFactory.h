@@ -66,7 +66,7 @@ namespace kex
     Component::Pointer create(Component::ComponentTypes key,
                                const QString& templateName) const;
 
-    /** \brief Returns a list of Action types
+    /** \brief Returns a list of Component types
     *
     * Each Action has a type specifier. That type must be registered in
     * order to appear in selections or filter options in Libraries. Once
@@ -79,12 +79,12 @@ namespace kex
     * /sa registerComponentTypes() registerComponentType()
     **/
     const QList<Component::ComponentTypes> componentList();
-    
+
   private:
     ~ComponentFactory () {}
     ComponentFactory();    //!< private constructor
 
-    QMap<Component::ComponentTypes, Creator> _componentCreatorMap;
+    QMap<Component::ComponentTypes, Creator> m_componentCreatorMap;
 
   };
 

@@ -63,11 +63,11 @@ namespace kex
     };
     Q_DECLARE_FLAGS(ComponentPositions, ComponentPosition)
 
-    Component(QObject *parent = 0,
-              const QString& name=QString(""),
-              const QString& description=QString(""),
-              const QString& label=QString(""),
-              const QSet<QString>& categories=QSet<QString>());
+    explicit Component(QObject *parent = 0,
+                       const QString& name=QString(""),
+                       const QString& description=QString(""),
+                       const QString& label=QString(""),
+                       const QSet<QString>& categories=QSet<QString>());
 
     /** \brief  Clone constructor
      *
@@ -77,10 +77,10 @@ namespace kex
      * \author $LastChangedBy$
      * \date 2010-5-6
      * \date $LastChangedDate$
-     * \return Component* a new component that is a logical copy
+     * \return Component::Pointer a new component that is a logical copy
      * \version $Rev$
      **/
-    virtual Component* copy() const = 0;
+    virtual Component::Pointer clone() const = 0;
 
     virtual ~Component();
 

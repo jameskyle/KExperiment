@@ -9,6 +9,7 @@ namespace kex
   {
     Q_OBJECT
   public:
+    typedef RestAction* Pointer ;
     explicit RestAction(QObject *parent = 0,
                const QString& name=QString(""),
                const QString& description=QString(""),
@@ -33,7 +34,7 @@ namespace kex
     **/
     quint64 durationMSecs() const { return m_durationMSecs;}
 
-    RestAction* copy() const;
+    Pointer clone() const;
 
     bool operator==(const Component& other) const;
     bool operator!=(const Component& other) const;

@@ -13,6 +13,7 @@ namespace kex
   public:
     typedef MediaAction* Pointer;
     explicit MediaAction(QObject *parent = 0,
+                         Component::Pointer parentComponent=0,
                          const QString& name=QString(""),
                          const QString& description=QString(""),
                          const QString& label=QString(""),

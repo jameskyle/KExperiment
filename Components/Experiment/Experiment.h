@@ -35,10 +35,11 @@ namespace kex
     * \date 2010-12-15
     **/
     Experiment(QObject *parent = 0,
-          const QString& name=QString(""),
-          const QString& description=QString(""),
-          const QString& label=QString(""),
-          const QSet<QString>& categories=QSet<QString>());
+               Component::Pointer parentComponent=0,
+               const QString& name=QString(""),
+               const QString& description=QString(""),
+               const QString& label=QString(""),
+               const QSet<QString>& categories=QSet<QString>());
 
     /** \brief The destructor for the Experiment class
     *

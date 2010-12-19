@@ -34,6 +34,7 @@ namespace kex
     * \sa Action()
     **/
     Trial(QObject *parent = 0,
+          Component::Pointer parentComponent=0,
           const QString& name=QString(""),
           const QString& description=QString(""),
           const QString& label=QString(""),

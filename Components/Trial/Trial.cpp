@@ -3,11 +3,12 @@
 namespace kex
 {
   Trial::Trial(QObject *parent,
-          const QString& name,
-          const QString& description,
-          const QString& label,
-          const QSet<QString>& categories) :
-  Component(parent, name, description, label, categories),
+               Component::Pointer parentComponent,
+               const QString& name,
+               const QString& description,
+               const QString& label,
+               const QSet<QString>& categories) :
+  Component(parent, parentComponent, name, description, label, categories),
   m_components()
   {
   }
@@ -79,8 +80,8 @@ namespace kex
 
   Trial::Pointer Trial::clone() const
   {
-    Trial *event = new Trial(parent(), name(), description(), label(),
-                             categories());
+    Trial *event = new Trial(parent(),      parentComponent(), name(),
+                             description(), label(),           categories());
 
     Component* comp;
     foreach(comp, m_components)

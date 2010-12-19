@@ -3,11 +3,12 @@
 namespace kex
 {
   Event::Event(QObject *parent,
-          const QString& name,
-          const QString& description,
-          const QString& label,
-          const QSet<QString>& categories) :
-  Component(parent, name, description, label, categories),
+               Component::Pointer parentComponent,
+               const QString& name,
+               const QString& description,
+               const QString& label,
+               const QSet<QString>& categories) :
+  Component(parent, parentComponent, name, description, label, categories),
   m_components()
   {
   }
@@ -62,8 +63,8 @@ namespace kex
 
   Event::Pointer Event::clone() const
   {
-    Event *event = new Event(parent(), name(), description(), label(),
-                             categories());
+    Event *event = new Event(parent(),      parentComponent(), name(),
+                             description(), label(),           categories());
 
     Component* comp;
     foreach(comp, m_components)

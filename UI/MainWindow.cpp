@@ -4,7 +4,7 @@ namespace kex
 {
   MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      m_components(ComponentList::globalList()),
+      m_components(),
       m_componentLibraryDock(new ComponentLibrary(this)),
       m_mapper(new QDataWidgetMapper(this)),
       m_componentModel(ComponentModel::globalInstance())
@@ -23,10 +23,10 @@ namespace kex
 
 
     Q_CHECK_PTR(m_componentLibraryDock->model());
-    
+
     // Make connections
-    
-    connect(m_componentLibraryDock, SIGNAL(selectedIndexChanged(const QModelIndex&)), 
+
+    connect(m_componentLibraryDock, SIGNAL(selectedIndexChanged(const QModelIndex&)),
             m_mapper, SLOT(setCurrentModelIndex(const QModelIndex&)));
     connect(m_componentLibraryDock, SIGNAL(selectedIndexChanged(const QModelIndex&)),
             this, SLOT(updateTreeViewRoot(const QModelIndex&)));
@@ -34,7 +34,7 @@ namespace kex
 
   MainWindow::~MainWindow()
   {
-    Utilities::deleteAll(m_components);
+    m_components.clear();
   }
 
   void MainWindow::showLiveView()
@@ -55,7 +55,7 @@ namespace kex
     m_mapper->addMapping(componentDurationLabel, 4, "text");
     m_mapper->addMapping(componentIcon, 5, "pixmap");
     m_mapper->toFirst();
-    
+
 
     updateTreeViewRoot(m_mapper->model()->index(0, 0));
   }
@@ -76,12 +76,12 @@ namespace kex
     menuLibrary->addAction(m_componentLibraryDock->toggleAllComponentsAction());
     menuLibrary->addSeparator();
   }
-  
+
   void MainWindow::updateTreeViewRoot(const QModelIndex& index)
   {
     QSortFilterProxyModel *proxy;
     proxy = qobject_cast<QSortFilterProxyModel *>(m_componentLibraryDock->model());
-    
+
     if (proxy)
     {
       componentTreeView->setRootIndex(proxy->mapToSource(index));
@@ -116,7 +116,7 @@ namespace kex
     componentTreeView->setColumnHidden(2, true);
     componentTreeView->setColumnHidden(3, true);
     componentTreeView->setColumnHidden(5, true);
-    
+
     setUpWidgetMapper();
   }
 

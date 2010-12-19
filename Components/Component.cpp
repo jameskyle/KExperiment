@@ -2,18 +2,20 @@
 
 namespace kex
 {
-  Component::Component(QObject *parent,
-                       const QString &name,
-                       const QString &description,
-                       const QString &label,
-                       const QSet<QString> &categories) :
-    QObject(parent),
-    m_name(name),
-    m_description(description),
-    m_label(label),
-    m_categories(categories)
-  {
-  }
+//  Component::Component(QObject *parent,
+//                       Component::Pointer parentComponent,
+//                       const QString &name,
+//                       const QString &description,
+//                       const QString &label,
+//                       const QSet<QString> &categories) :
+//    QObject(parent),
+//    m_parentComponent(parentComponent),
+//    m_name(name),
+//    m_description(description),
+//    m_label(label),
+//    m_categories(categories)
+//  {
+//  }
 
   Component::~Component()
   {
@@ -137,4 +139,16 @@ namespace kex
     return equal;
   }
 
+  const QStringList Component::actionTypes()
+  {
+   QStringList list;
+
+   list << componentTypeToString(Component::RestActionType);
+   list << componentTypeToString(Component::TextActionType);
+   list << componentTypeToString(Component::ImageActionType);
+   list << componentTypeToString(Component::AudioActionType);
+   list << componentTypeToString(Component::VideoActionType);
+
+   return list;
+  }
 }

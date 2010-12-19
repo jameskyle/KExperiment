@@ -3,11 +3,12 @@
 namespace kex
 {
   Experiment::Experiment(QObject *parent,
-          const QString& name,
-          const QString& description,
-          const QString& label,
-          const QSet<QString>& categories) :
-  Component(parent, name, description, label, categories),
+                         Component::Pointer parentComponent,
+                         const QString& name,
+                         const QString& description,
+                         const QString& label,
+                         const QSet<QString>& categories) :
+  Component(parent, parentComponent, name, description, label, categories),
   m_components()
   {
   }
@@ -79,8 +80,9 @@ namespace kex
 
   Experiment::Pointer Experiment::clone() const
   {
-    Experiment *experiment = new Experiment(parent(), name(), description(), label(),
-                             categories());
+    Experiment *experiment = new Experiment(parent(), parentComponent(),
+                                            name(),   description(),
+                                            label(),  categories());
 
     Component* comp;
     foreach(comp, m_components)

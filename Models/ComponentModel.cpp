@@ -8,13 +8,13 @@ namespace kex
     return model;
   }
 
-  ComponentModel::ComponentModel(ComponentList *c_list, QObject *parent) 
+  ComponentModel::ComponentModel(ComponentList *c_list, QObject *parent)
     : QAbstractItemModel(parent),
       m_components(*c_list)
   {
   }
 
- 
+
   QVariant ComponentModel::headerData(int section, Qt::Orientation /*orient*/,
                       int role) const
   {
@@ -23,9 +23,9 @@ namespace kex
     // 1         ComponentType
     // 2         Label
     // 3         Description
-    // 4         Duration 
+    // 4         Duration
     // 5         Component's Icon
-    
+
     QVariant result;
     if (role == Qt::DisplayRole)
     {
@@ -46,11 +46,8 @@ namespace kex
         case 4:
           result.setValue(QString("Duration"));
           break;
-        case 5:
-          result.setValue(QString("Icon"));
-          break;
         default:
-                      
+
           break;
       }
     }
@@ -64,18 +61,18 @@ namespace kex
   }
 
 
-  int ComponentModel::rowCount(const QModelIndex &parent) const 
+  int ComponentModel::rowCount(const QModelIndex &parent) const
   {
     int count(0);
-    
+
     if (parent.isValid())
     {
       ComponentList::Node::Pointer node = getItem(parent);
       // if the index isValid() we should always get a valid node
       Q_CHECK_PTR(node);
-      
+
       count = node->children().size();
-      
+
     } else
     {
       count = m_components.size();
@@ -83,35 +80,35 @@ namespace kex
 
     return count;
   }
-  
-  int ComponentModel::columnCount(const QModelIndex &parent) const 
+
+  int ComponentModel::columnCount(const QModelIndex &parent) const
   {
-    int count(5);
-    
+    int count(4);
+
     if (parent.isValid())
     {
       count = 5;
     }
-    
+
     return count;
   }
-  
-  QVariant ComponentModel::data(const QModelIndex &index, int role) const 
+
+  QVariant ComponentModel::data(const QModelIndex &index, int role) const
   {
     // Columns   Value
     // 0         Component Name
     // 1         ComponentType
     // 2         Label
     // 3         Description
-    // 4         Duration 
+    // 4         Duration
     // 5         Component's Icon
-    
+
     QVariant result;
-   
+
     if (index.isValid())
     {
       ComponentList::Node::Pointer node;
-      
+
       if (!index.parent().isValid())
       {
         ComponentList::iterator it(m_components.begin());
@@ -121,7 +118,7 @@ namespace kex
         node = getItem(index);
         // if the index isValid() we should always get a valid node
         Q_CHECK_PTR(node);
-        
+
       }
 
       if (role == Qt::DisplayRole  || role == Qt::EditRole)
@@ -147,22 +144,17 @@ namespace kex
                             .toString("mm:ss.zzz"));
           }
             break;
-          case 5:
-            result.setValue(node->component()->icon());
-            break;
-
           default:
-            
             break;
         }
       }    }
       return result;
   }
-  
-  QModelIndex ComponentModel::parent(const QModelIndex &index) const 
+
+  QModelIndex ComponentModel::parent(const QModelIndex &index) const
   {
     QModelIndex p_index;
-    
+
     if (index.isValid())
     {
       ComponentList::Node::Pointer node = getItem(index);
@@ -170,20 +162,20 @@ namespace kex
       Q_CHECK_PTR(node);
       ComponentList::Node::Pointer p_node;
       p_node = node->parent();
-      
+
       if (p_node)
       {
-        p_index = createIndex(p_node->position(),0, p_node); 
+        p_index = createIndex(p_node->position(),0, p_node);
       }
     }
     return p_index;
   }
-  
-  QModelIndex 
+
+  QModelIndex
   ComponentModel::index(int row, int column, const QModelIndex &parent) const
   {
     QModelIndex ind;
-    
+
     if(hasIndex(row, column, parent))
     {
       if(parent.isValid())
@@ -194,12 +186,12 @@ namespace kex
 
         ComponentList::iterator it(parentItem->children().begin());
         it += row;
-        
+
         if (it != parentItem->children().end())
         {
           ind = createIndex(row, column, *it);
         }
-        
+
       } else
       {
         ComponentList::iterator it(m_components.begin() + row);
@@ -211,24 +203,24 @@ namespace kex
       }
 
     }
-    
+
     return ind;
   }
-  
-  ComponentList::Node::Pointer 
+
+  ComponentList::Node::Pointer
   ComponentModel::getItem(const QModelIndex& index) const
   {
     ComponentList::Node::Pointer parentItem;
-    
+
     void *p = index.internalPointer();
     parentItem = static_cast<ComponentList::Node::Pointer>(p);
     return parentItem;
   }
-  
+
   Qt::ItemFlags ComponentModel::flags(const QModelIndex &index) const
   {
     Qt::ItemFlags flags(QAbstractItemModel::flags(index));
-    
+
     if (index.parent().isValid())
     {
       flags = Qt::ItemIsEnabled;

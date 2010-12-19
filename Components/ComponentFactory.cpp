@@ -42,7 +42,6 @@ namespace kex
     if(it != m_componentCreatorMap.end() && (*it))
     {
       component = (*it)();
-      component->setComponentType(key);
     }
 
     return component;

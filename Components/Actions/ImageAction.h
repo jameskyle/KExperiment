@@ -11,7 +11,13 @@ namespace kex
   class ImageAction : public Component
   {
     Q_OBJECT
-    Q_PROPERTY(QString file READ file WRITE setFile)
+    Q_PROPERTY(quint64 durationMSecs READ durationMSecs WRITE setDurationMSecs)
+    Q_PROPERTY(QImage image          READ image         WRITE setImage)
+    Q_PROPERTY(quint64 delayMSecs    READ delayMSecs    WRITE setDelayMSecs)
+    Q_PROPERTY(qint32 xoffset        READ xoffset       WRITE setXoffset)
+    Q_PROPERTY(qint32 yoffset        READ yoffset       WRITE setYoffset)
+    Q_PROPERTY(Component::ComponentPositions position READ position
+               WRITE setPosition)
 
   public:
     typedef ImageAction* Pointer;
@@ -22,6 +28,7 @@ namespace kex
      * \return ImageAction an image action with specified attributes.
      **/
     ImageAction(QObject *parent = 0,
+                Component::Pointer parentComponent=0,
                 const QString& name="",
                 const QString& description="",
                 const QString& label="",
@@ -156,5 +163,5 @@ namespace kex
 
 
   };
-}
+};
 #endif

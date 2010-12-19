@@ -45,10 +45,10 @@ namespace kex
     * \version $Rev$
     **/
     //void connectButtonToLibraryDock(QToolButton *button, );
-    
+
   private:
-    ComponentList& m_components;
-    
+    ComponentDomParser::ComponentList m_components;
+
     /** \brief  Creates an Experiment Library dock widget
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -92,7 +92,7 @@ namespace kex
     void updateTreeViewRoot(const QModelIndex& index);
 
     void showLiveView();
-    
+
   signals:
     void filterComponents(Component::ComponentTypes c_types);
   };

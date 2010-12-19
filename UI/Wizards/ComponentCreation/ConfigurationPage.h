@@ -34,31 +34,31 @@ namespace kex
     ~ConfigurationPage();
 
     void initializePage();
-    
+
     QLabel         durationLabel;
     QLabel         componentListLabel;
 
     QListView       componentListView;
-  
+
     QDoubleSpinBox durationSpinBoxMsecs;
-    
+
     QHBoxLayout*   libraryToolButtonHLayout;
     QHBoxLayout     actionTypeHLayout;
     QVBoxLayout     componentListVLayout;
     QHBoxLayout     durationHLayout;
-  
+
   private:
     QHBoxLayout* getLibraryButtonLayout();
     void setTitles();
-    
+
     Component::ComponentTypes _component;
-    
+
   signals:
     void launchComponentLibraryRequested(Component::ComponentTypes component);
-    
+
   private slots:
     void dispatchLibraryRequest(const QString& libraryType);
-    
+
   };
 
 }

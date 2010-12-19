@@ -28,7 +28,7 @@ namespace kex
     Q_OBJECT
 
   public:
-    
+
     /** \brief  Default constructor.
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -41,12 +41,12 @@ namespace kex
      * \date $LastChangedDate$
      * \param types a mask of the types of components
      * \param parent pointer to the parent classe.
-     * \version $Rev$  
+     * \version $Rev$
      * \sa Component Component::ComponentTypes
      **/
     ComponentModel(ComponentList *c_list = &ComponentList::globalList(),
                    QObject *parent = 0);
-    
+
     /** \brief  Default destructor.
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -58,25 +58,25 @@ namespace kex
      * \version $Rev$
      **/
     ~ComponentModel() {}
-    
+
     static ComponentModel& globalInstance();
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-    
+
     QModelIndex parent(const QModelIndex& index) const;
-    
-    QModelIndex index(int row, int column, 
+
+    QModelIndex index(int row, int column,
                       const QModelIndex &parent) const;
-    
+
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-        
+
   private:
     ComponentList::Node::Pointer  getItem(const QModelIndex& index) const;
-    
+
     ComponentList& m_components;
 
   public slots:
@@ -84,5 +84,5 @@ namespace kex
   };
 
 
-}
+};
 #endif

@@ -2,9 +2,11 @@
 #define COMPONENT_H
 
 #include <QObject>
+#include <QStringList>
 #include <QSet>
 #include <QIcon>
 #include <QDebug>
+#include <QVariant>
 
 namespace kex
 {
@@ -23,6 +25,7 @@ namespace kex
     Q_OBJECT
     Q_FLAGS(ComponentType ComponentTypes)
     Q_FLAGS(ComponentPosition ComponentPositions)
+    Q_PROPERTY(quint64 durationMSecs READ durationMSecs)
 
   public:
     typedef Component* Pointer;
@@ -63,11 +66,21 @@ namespace kex
     };
     Q_DECLARE_FLAGS(ComponentPositions, ComponentPosition)
 
-    explicit Component(QObject *parent = 0,
-                       const QString& name=QString(""),
-                       const QString& description=QString(""),
-                       const QString& label=QString(""),
-                       const QSet<QString>& categories=QSet<QString>());
+    explicit Component(QObject             *parent = 0,
+                       Component::Pointer   parentComponent=0,
+                       const QString&       name=QString(""),
+                       const QString&       description=QString(""),
+                       const QString&       label=QString(""),
+                       const QSet<QString>& categories=QSet<QString>()) :
+    QObject(parent),
+    m_parentComponent(parentComponent),
+    m_name(name),
+    m_description(description),
+    m_label(label),
+    m_categories(categories)
+    {
+      this->setProperty("durationMSecs", QVariant(200));
+    }
 
     /** \brief  Clone constructor
      *
@@ -235,6 +248,15 @@ namespace kex
      **/
     static const QString componentTypeToString(ComponentTypes t);
 
+    /** \brief Returns a QString representation of the component type.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \param t a ComponentTypes object
+     * \return QString the string  representation for t
+     **/
+    static const QStringList actionTypes();
+
     /** \brief Determines equality for Component and other
      *
      * \author James Kyle KSpace MRI
@@ -253,18 +275,34 @@ namespace kex
      **/
     virtual bool operator!=(const Component& other) const;
 
+    /** \brief Returns a pointer to the parent component
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-17
+     * \return Pointer a pointer to the parent component
+     **/
+    Pointer parentComponent() const {return m_parentComponent;}
+
+    /** \brief Sets the parent component
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-12-17
+     * \param p parent to the component to set as parent
+     **/
+    void setParentComponent(Pointer p) {m_parentComponent = p;}
+
   protected:
     ComponentTypes  m_componentType; //!< type for component
 
   private:
+    Component::Pointer m_parentComponent; //!< the component parent
     QString         m_name; //!< name of the component
     QString         m_description; //!< detailed description of the component
     QString         m_label; //!< brief description of the component
     QSet<QString>   m_categories; //!< list of all categories for component
-
   };
-}
-const QString kex::Component::DEFAULT_ICON(":/images/other/Science-64.png");
+  const QString Component::DEFAULT_ICON(":/images/other/Science-64.png");
+};
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(kex::Component::ComponentTypes)
 Q_DECLARE_OPERATORS_FOR_FLAGS(kex::Component::ComponentPositions)

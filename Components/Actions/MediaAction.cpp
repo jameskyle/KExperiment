@@ -4,13 +4,14 @@ namespace kex
 {
 
   MediaAction::MediaAction(QObject *parent,
+                           Component::Pointer parentComponent,
                            const QString& name,
                            const QString& description,
                            const QString& label,
                            const QSet<QString>& categories,
                            quint64 delayMSecs,
                            Phonon::MediaObject* mediaObject) :
-  Component(parent, name, description, label, categories),
+  Component(parent,  parentComponent, name, description, label, categories),
   m_mediaObject(mediaObject),
   m_delayMSecs(delayMSecs)
   {
@@ -59,8 +60,9 @@ namespace kex
     Phonon::MediaObject* m = new Phonon::MediaObject;
     m->setCurrentSource(m_mediaObject->currentSource());
 
-    Pointer action = new MediaAction(parent(), name(), description(),
-                                     label(), categories(),
+    Pointer action = new MediaAction(parent(),     parentComponent(),
+                                     name(),       description(),
+                                     label(),      categories(),
                                      delayMSecs(), m);
 
     return action;

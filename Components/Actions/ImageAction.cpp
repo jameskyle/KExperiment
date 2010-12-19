@@ -3,18 +3,18 @@
 namespace kex
 {
   ImageAction::ImageAction (QObject *parent,
-                const QString& name,
-                const QString& description,
-                const QString& label,
-                const QSet<QString> categories,
-                quint64 durationMSecs,
-                quint64 delayMSecs,
-                const QImage& image,
-                qint32 xoffset,
-                qint32 yoffset,
-                const Component::ComponentPositions& position
-                ) :
-  Component(parent, name, description, label, categories),
+                            Component::Pointer parentComponent,
+                            const QString& name,
+                            const QString& description,
+                            const QString& label,
+                            const QSet<QString> categories,
+                            quint64 durationMSecs,
+                            quint64 delayMSecs,
+                            const QImage& image,
+                            qint32 xoffset,
+                            qint32 yoffset,
+                            const Component::ComponentPositions& position) :
+  Component(parent, parentComponent, name, description, label, categories),
   m_durationMSecs(durationMSecs),
   m_delayMSecs(delayMSecs),
   m_image(image),
@@ -32,11 +32,12 @@ namespace kex
 
   ImageAction::Pointer ImageAction::clone() const
   {
-    Pointer action = new ImageAction(parent(), name(), description(),
-                                     label(), categories(),
+    Pointer action = new ImageAction(parent(),        parentComponent(),
+                                     name(),          description(),
+                                     label(),         categories(),
                                      durationMSecs(), delayMSecs(),
-                                     image(), xoffset(), yoffset(),
-                                     position());
+                                     image(),         xoffset(),
+                                     yoffset(),       position());
 
     return action;
   }

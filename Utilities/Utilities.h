@@ -20,6 +20,7 @@
 
 namespace kex
 {
+  class Component;
   namespace Utilities
   {
     void setupAppStorageEnvironment();
@@ -107,14 +108,14 @@ namespace kex
      * \version $Rev$
      **/
     QString componentNameFromBaseName(const QString& fileName);
-    
+
     QString componentNameFromFilePath(const QString& path);
-    
-    /** \brief  Deletes all the items in the range [begin, end)  
-     *  
+
+    /** \brief  Deletes all the items in the range [begin, end)
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
-     * 
-     * Delets all the items in the range [begin, end] using the C++ delete 
+     *
+     * Delets all the items in the range [begin, end] using the C++ delete
      * operator. The item type must be a pointer type.
      *
      *
@@ -129,16 +130,16 @@ namespace kex
     template <class ForwardIterator>
     void deleteAll(ForwardIterator begin, ForwardIterator end)
     {
-      while(begin != end) 
+      while(begin != end)
       {
         delete *(begin++);
       }
     }
 
     /** \brief  Deletes all the items in the container
-     *  
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
-     * 
+     *
      * Delets all the items in the container. The container must have a begin()
      * and end() method that returns an STL iterator.
      *
@@ -154,13 +155,13 @@ namespace kex
     {
       deleteAll(c.begin(), c.end());
     }
-    
-    
+
+
     // a find method. For some reason the boost::iterator_facade iterators is
-    // throwing a compile error in std::find for the value. When that is 
+    // throwing a compile error in std::find for the value. When that is
     // addressed, std::find can be replaced for this method
     template<class ForwardIterator, class ValueType>
-    ForwardIterator find(ForwardIterator begin, ForwardIterator end, 
+    ForwardIterator find(ForwardIterator begin, ForwardIterator end,
                          ValueType value)
     {
       while (begin != end)
@@ -171,10 +172,10 @@ namespace kex
         }
         ++begin;
       }
-      
+
       return begin;
     }
-    
+
     bool sortComponentQList(const Component::Pointer c1,
                             const Component::Pointer *c2);
   };

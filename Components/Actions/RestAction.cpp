@@ -3,13 +3,14 @@
 namespace kex
 {
 
-  RestAction::RestAction(QObject *parent,
-                         const QString& name,
-                         const QString& description,
-                         const QString& label,
+  RestAction::RestAction(QObject             *parent,
+                         Component::Pointer   parentComponent,
+                         const QString&       name,
+                         const QString&       description,
+                         const QString&       label,
                          const QSet<QString>& categories,
-                         quint64 durationMSecs) :
-  Component(parent, name, description, label, categories),
+                         quint64              durationMSecs) :
+  Component(parent, parentComponent, name, description, label, categories),
   m_durationMSecs(durationMSecs)
   {
     m_componentType = Component::RestActionType;
@@ -22,9 +23,10 @@ namespace kex
 
   RestAction::Pointer RestAction::clone() const
   {
-    RestAction *action = new RestAction(parent(),         name(),
-                                        description(),    label(),
-                                        categories(), durationMSecs());
+    RestAction *action = new RestAction(parent(),     parentComponent(),
+                                        name(),       description(),
+                                        label(),      categories(),
+                                        durationMSecs());
 
     return action;
   }

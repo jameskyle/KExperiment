@@ -4,8 +4,8 @@
 #include <QStaticText>
 #include <QColor>
 
-#include "Components/Component.h"
 #include "Common/Config.h"
+#include "Components/Component.h"
 
 
 namespace kex
@@ -17,7 +17,16 @@ namespace kex
 
   public:
     typedef TextAction* Pointer;
-
+    Q_PROPERTY(quint64 durationMSecs READ durationMSecs WRITE setDurationMSecs)
+    Q_PROPERTY(QString text          READ text          WRITE setText)
+    Q_PROPERTY(QString family        READ family        WRITE setFamily)
+    Q_PROPERTY(int     pointSize     READ pointSize     WRITE setPointSize)
+    Q_PROPERTY(QColor  background    READ background    WRITE setBackground)
+    Q_PROPERTY(QColor  foreground    READ foreground    WRITE setForeground)
+    Q_PROPERTY(qint32  xoffset       READ xoffset       WRITE setXoffset)
+    Q_PROPERTY(qint32  yoffset       READ yoffset       WRITE setYoffset)
+    Q_PROPERTY(Component::ComponentPositions position   READ position
+                                                        WRITE setPosition)
     /** \brief Default constructor for TextAction
      *
      * \author James Kyle KSpace MRI
@@ -25,6 +34,7 @@ namespace kex
      * \return TextAction a text action with specified attributes
      **/
     TextAction(QObject *parent = 0,
+               Component::Pointer parentComponent=0,
                const QString& name=QString(""),
                const QString& description=QString(""),
                const QString& label=QString(""),
@@ -40,6 +50,11 @@ namespace kex
                qint32 yoffset=0,
                const Component::ComponentPositions& position=Component::DefaultPosition
                );
+   /** \brief Destructor for object
+    *
+    * \author James Kyle KSpace MRI
+    * \date 2010-04-01
+    **/
     ~TextAction();
 
     /** \brief Returns the delay in milliseconds.
@@ -56,7 +71,7 @@ namespace kex
      * \date 2010-12-13
      * \param durationMSecs the new value for duration in milliseconds
      **/
-    void setDuration(const quint64 durationMSecs){ m_durationMSecs = durationMSecs;}
+    void setDurationMSecs(const quint64 durationMSecs){ m_durationMSecs = durationMSecs;}
 
     /** \brief Returns the delay in milliseconds.
      *
@@ -236,5 +251,5 @@ namespace kex
     Component::ComponentPositions m_position; //!< starting position for text rendering
     QFont       m_font; //!< font used for text display
     };
-}
+};
 #endif

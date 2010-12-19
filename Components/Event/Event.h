@@ -40,6 +40,7 @@ namespace kex
     * \sa Action()
     **/
     Event(QObject *parent = 0,
+          Component::Pointer parentComponent=0,
           const QString& name=QString(""),
           const QString& description=QString(""),
           const QString& label=QString(""),

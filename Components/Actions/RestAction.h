@@ -8,7 +8,7 @@ namespace kex
   class RestAction : public Component
   {
     Q_OBJECT
-    Q_PROPERTY(quint64 durationMSecs READ durationMSecs WRITE setDurationMSecs)
+    Q_PROPERTY(quint64 duration READ durationMSecs WRITE setDurationMSecs)
   public:
     typedef RestAction* Pointer;
 

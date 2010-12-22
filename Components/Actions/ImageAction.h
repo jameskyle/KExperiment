@@ -11,13 +11,12 @@ namespace kex
   class ImageAction : public Component
   {
     Q_OBJECT
-    Q_PROPERTY(quint64 durationMSecs READ durationMSecs WRITE setDurationMSecs)
-    Q_PROPERTY(QImage image          READ image         WRITE setImage)
-    Q_PROPERTY(quint64 delayMSecs    READ delayMSecs    WRITE setDelayMSecs)
-    Q_PROPERTY(qint32 xoffset        READ xoffset       WRITE setXoffset)
-    Q_PROPERTY(qint32 yoffset        READ yoffset       WRITE setYoffset)
-    Q_PROPERTY(Component::ComponentPositions position READ position
-               WRITE setPosition)
+    Q_PROPERTY(quint64 duration      READ durationMSecs  WRITE setDurationMSecs)
+    Q_PROPERTY(QString image         READ imagePath      WRITE setImageFromFile)
+    Q_PROPERTY(quint64 delay         READ delayMSecs     WRITE setDelayMSecs)
+    Q_PROPERTY(qint32  xoffset       READ xoffset        WRITE setXoffset)
+    Q_PROPERTY(qint32  yoffset       READ yoffset        WRITE setYoffset)
+    Q_PROPERTY(kex::Component::ComponentPositions position READ position WRITE setPosition)
 
   public:
     typedef ImageAction* Pointer;
@@ -27,17 +26,17 @@ namespace kex
      * \date 2010-12-13
      * \return ImageAction an image action with specified attributes.
      **/
-    ImageAction(QObject *parent = 0,
-                Component::Pointer parentComponent=0,
-                const QString& name="",
-                const QString& description="",
-                const QString& label="",
+    ImageAction(QObject            *parent = 0,
+                Component::Pointer  parentComponent=0,
+                const QString&      name="",
+                const QString&      description=QString(""),
+                const QString&      label=QString(""),
                 const QSet<QString> categories=QSet<QString>(),
-                quint64 durationMSecs=0,
-                quint64 delayMSecs=0,
-                const QImage& image=QImage(),
-                qint32 xoffset=0,
-                qint32 yoffset=0,
+                quint64             durationMSecs=0,
+                quint64             delayMSecs=0,
+                const QString&      imagePath=QString(""),
+                qint32              xoffset=0,
+                qint32              yoffset=0,
                 const Component::ComponentPositions& position=Component::DefaultPosition
                 );
 
@@ -141,13 +140,8 @@ namespace kex
      **/
     const QImage& image() const { return m_image;}
 
-    /** \brief Sets the image for the ImageAction.
-     *
-     * \author James Kyle KSpace MRI
-     * \date 2010-12-13
-     * \param imageFile the file path for the new image.
-     **/
-    void setImage(const QImage& image) {m_image = image;}
+    QString imagePath() const {return m_imagePath;}
+    void setImageFromFile(const QString& imagePath);
 
     Pointer clone() const;
     bool operator==(const Component& other) const;
@@ -157,6 +151,7 @@ namespace kex
     quint64 m_durationMSecs; //!< duration for component in milliseconds
     quint64 m_delayMSecs; //!< delay for component in milliseconds
     QImage  m_image; //!< the image used for display.
+    QString m_imagePath; //!< the path for the image resource
     qint32  m_xoffset; //!< the offset for component along x axis
     qint32  m_yoffset; //!< the offset for component along y axis
     Component::ComponentPositions m_position; //!< the position for component in view

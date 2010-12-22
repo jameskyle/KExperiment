@@ -13,11 +13,9 @@ namespace kex
   class TextAction : public Component
   {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText)
-
-  public:
-    typedef TextAction* Pointer;
-    Q_PROPERTY(quint64 durationMSecs READ durationMSecs WRITE setDurationMSecs)
+    Q_PROPERTY(QString text          READ text          WRITE setText)
+    Q_PROPERTY(quint64 duration      READ durationMSecs WRITE setDurationMSecs)
+    Q_PROPERTY(quint64 delay         READ delayMSecs    WRITE setDelayMSecs)
     Q_PROPERTY(QString text          READ text          WRITE setText)
     Q_PROPERTY(QString family        READ family        WRITE setFamily)
     Q_PROPERTY(int     pointSize     READ pointSize     WRITE setPointSize)
@@ -25,8 +23,10 @@ namespace kex
     Q_PROPERTY(QColor  foreground    READ foreground    WRITE setForeground)
     Q_PROPERTY(qint32  xoffset       READ xoffset       WRITE setXoffset)
     Q_PROPERTY(qint32  yoffset       READ yoffset       WRITE setYoffset)
-    Q_PROPERTY(Component::ComponentPositions position   READ position
-                                                        WRITE setPosition)
+    Q_PROPERTY(kex::Component::ComponentPositions position   READ position WRITE setPosition)
+
+ public:
+    typedef TextAction* Pointer;
     /** \brief Default constructor for TextAction
      *
      * \author James Kyle KSpace MRI
@@ -87,7 +87,7 @@ namespace kex
      * \date 2010-12-13
      * \param delayMSecs the new value for delay in milliseconds
      **/
-    void setDelay(const quint64 delayMSecs) {m_delayMSecs = delayMSecs;}
+    void setDelayMSecs(const quint64 delayMSecs) {m_delayMSecs = delayMSecs;}
 
     /** \brief Returns the  QStaticText object for component
      *

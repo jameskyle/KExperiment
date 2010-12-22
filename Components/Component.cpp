@@ -2,20 +2,22 @@
 
 namespace kex
 {
-//  Component::Component(QObject *parent,
-//                       Component::Pointer parentComponent,
-//                       const QString &name,
-//                       const QString &description,
-//                       const QString &label,
-//                       const QSet<QString> &categories) :
-//    QObject(parent),
-//    m_parentComponent(parentComponent),
-//    m_name(name),
-//    m_description(description),
-//    m_label(label),
-//    m_categories(categories)
-//  {
-//  }
+
+  const QString Component::DEFAULT_ICON(":/images/other/Science-64.png");
+  Component::Component(QObject *parent,
+                       Component::Pointer parentComponent,
+                       const QString &name,
+                       const QString &description,
+                       const QString &label,
+                       const QSet<QString> &categories) :
+    QObject(parent),
+    m_parentComponent(parentComponent),
+    m_name(name),
+    m_description(description),
+    m_label(label),
+    m_categories(categories)
+  {
+  }
 
   Component::~Component()
   {
@@ -72,12 +74,12 @@ namespace kex
 
   void Component::addCategory(const QString& category)
   {
-    m_categories.insert(category);
+    m_categories.insert(category.trimmed());
   }
 
   bool Component::removeCategory(const QString& category)
   {
-    return m_categories.remove(category);
+    return m_categories.remove(category.trimmed());
   }
 
   Component::ComponentTypes Component::componentType() const

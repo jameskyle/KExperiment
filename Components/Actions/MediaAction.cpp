@@ -10,46 +10,28 @@ namespace kex
                            const QString& label,
                            const QSet<QString>& categories,
                            quint64 delayMSecs,
-                           Phonon::MediaObject* mediaObject) :
+                           const QString& source) :
   Component(parent,  parentComponent, name, description, label, categories),
-  m_mediaObject(mediaObject),
+  m_mediaObject(),
   m_delayMSecs(delayMSecs)
   {
-    Q_CHECK_PTR(mediaObject);
-    if(m_mediaObject)
-    {
-      setComponentType();
-    } else {
-      m_componentType = Component::ActionType;
-    }
+    Phonon::MediaSource s(source);
+    m_mediaObject.setCurrentSource(s);
+    setComponentType();
   }
 
   MediaAction::~MediaAction()
   {
-    if(m_mediaObject)
-      delete m_mediaObject;
   }
 
   quint64 MediaAction::durationMSecs() const
   {
-    return m_mediaObject->totalTime();
-  }
-
-  void MediaAction::setMediaObject(Phonon::MediaObject* mediaObject)
-  {
-    Q_CHECK_PTR(mediaObject);
-    Q_CHECK_PTR(m_mediaObject);
-
-    delete m_mediaObject;
-
-    m_mediaObject = mediaObject;
-    setComponentType();
-
+    return m_mediaObject.totalTime();
   }
 
   void MediaAction::setComponentType()
   {
-    if(m_mediaObject->hasVideo())
+    if(m_mediaObject.hasVideo())
       m_componentType = Component::VideoActionType;
     else
       m_componentType = Component::AudioActionType;
@@ -57,13 +39,12 @@ namespace kex
 
   MediaAction::Pointer MediaAction::clone() const
   {
-    Phonon::MediaObject* m = new Phonon::MediaObject;
-    m->setCurrentSource(m_mediaObject->currentSource());
+    QString fileName = m_mediaObject.currentSource().fileName();
 
     Pointer action = new MediaAction(parent(),     parentComponent(),
                                      name(),       description(),
                                      label(),      categories(),
-                                     delayMSecs(), m);
+                                     delayMSecs(), fileName);
 
     return action;
   }
@@ -74,7 +55,7 @@ namespace kex
     bool equal = (derived &&
       Component::operator==(other) &&
       delayMSecs()                 == derived->delayMSecs()  &&
-      mediaObject()->currentSource() == derived->mediaObject()->currentSource());
+      mediaObject().currentSource() == derived->mediaObject().currentSource());
 
     return equal;
   }
@@ -82,5 +63,16 @@ namespace kex
   bool MediaAction::operator!=(const Component& other) const
   {
     return !(*this == other);
+  }
+
+  QString MediaAction::source() const
+  {
+    return m_mediaObject.currentSource().fileName();
+  }
+
+  void MediaAction::setSource(const QString& sourceFile)
+  {
+    Phonon::MediaSource source(sourceFile.trimmed());
+    m_mediaObject.setCurrentSource(source);
   }
 }

@@ -2,6 +2,23 @@
 
 namespace kex
 {
+  const QString kex::ComponentDomParser::ActionTagName          = "action";
+  const QString kex::ComponentDomParser::EventTagName           = "event";
+  const QString kex::ComponentDomParser::TrialTagName           = "trial";
+  const QString kex::ComponentDomParser::ExperimentTagName      = "experiment";
+  const QString kex::ComponentDomParser::HeaderTagName          = "header";
+  const QString kex::ComponentDomParser::CategoriesTagName      = "categories";
+  const QString kex::ComponentDomParser::ItemTagName            = "item";
+  const QString kex::ComponentDomParser::NameTagName            = "name";
+  const QString kex::ComponentDomParser::DurationTagName        = "duration";
+  const QString kex::ComponentDomParser::CreateChildParseAction = "create_child";
+  const QString kex::ComponentDomParser::AudioTagName           = "audio";
+  const QString kex::ComponentDomParser::ImageTagName           = "image";
+  const QString kex::ComponentDomParser::VideoTagName           = "video";
+  const QString kex::ComponentDomParser::SourcePropertyName     = "source";
+  const QString kex::ComponentDomParser::RestTagName            = "rest";
+  const QString kex::ComponentDomParser::TextTagName            = "text";
+
   ComponentDomParser::ComponentDomParser(const QString& fileName) :
     m_filename(fileName),
   m_globalList(ComponentDomParser::ComponentList())
@@ -139,28 +156,28 @@ namespace kex
 
     Component::SharedPointer c_template(0);
     QString name("");
-    QDomNode child = root.firstChild();
+    QDomElement child = root.firstChildElement();
 
     while (!child.isNull())
     {
       if (!name.isEmpty()) break;
 
-      if (child.toElement().tagName() == HeaderTagName)
+      if (child.tagName() == HeaderTagName)
       {
-        QDomNode c = child.firstChild();
+        QDomElement c = child.firstChildElement();
 
         while (!c.isNull())
         {
-          if (c.toElement().tagName() == NameTagName)
+          if (c.tagName() == NameTagName)
           {
-            name = c.toElement().text();
+            name = c.text();
             break;
           }
-          c = c.nextSibling();
+          c = c.nextSiblingElement();
         }
       }
 
-      child = child.nextSibling();
+      child = child.nextSiblingElement();
     }
 
     if(!name.isEmpty())
@@ -201,29 +218,29 @@ namespace kex
     {
       QString t = root.attribute("type").simplified();
 
-      if (t == "rest")
+      if (t == RestTagName)
         c_type = Component::RestActionType;
 
-      else if (t == "text")
+      else if (t == TextTagName)
         c_type = Component::TextActionType;
 
-      else if (t == "image")
+      else if (t == ImageTagName)
         c_type = Component::ImageActionType;
 
-      else if (t == "audio")
+      else if (t == AudioTagName)
         c_type = Component::AudioActionType;
 
-      else if (t == "video")
+      else if (t == VideoTagName)
         c_type = Component::VideoActionType;
 
-    } else if (rootName == "event")
+    } else if (rootName == EventTagName)
     {
       c_type = Component::EventType;
-    } else if (rootName == "trial")
+    } else if (rootName == TrialTagName)
     {
       c_type = Component::TrialType;
 
-    } else if (rootName == "experiment")
+    } else if (rootName == ExperimentTagName)
     {
       c_type = Component::ExperimentType;
     }
@@ -238,9 +255,11 @@ namespace kex
   {
     bool isValid(false);
 
-    if (element.tagName() == ActionTagName || element.tagName() == "event" ||
-        element.tagName() == "trial"  || element.tagName() == "experiment" ||
-        element.tagName() == "header")
+    if (element.tagName() == ActionTagName     ||
+        element.tagName() == EventTagName      ||
+        element.tagName() == TrialTagName      ||
+        element.tagName() == ExperimentTagName ||
+        element.tagName() == HeaderTagName)
     {
       isValid = true;
     }
@@ -252,12 +271,12 @@ namespace kex
   ComponentDomParser::parseElement(const QDomElement &element,
                                    Component::Pointer component) const
   {
+    QString tag = element.tagName();
     // should only receive valid elements.
     Q_ASSERT(isValidElement(element));
     Q_CHECK_PTR(component);
     // this method should never be passed a header tag
-    Q_ASSERT(element.tagName() != "header");
-
+    Q_ASSERT(element.tagName() != HeaderTagName);
     // map created in ComponentDomParser::setupParseMap()
     m_parseMap[element.tagName()](this, element, component);
   }
@@ -271,23 +290,23 @@ namespace kex
 
     QString tag;
 
-    QDomNode child = element.firstChild();
+    QDomElement child = element.firstChildElement();
 
     while (!child.isNull())
     {
-      tag = child.toElement().tagName();
+      tag = child.tagName();
 
       if (tag != CategoriesTagName)
       {
-        QVariant value(child.toElement().text());
+        QVariant value(child.text());
         setComponentProperty(tag, value, component);
 
       } else {
 
-        m_parseMap[tag](this, child.toElement(),component);
+        m_parseMap[tag](this, child, component);
       }
 
-      child = child.nextSibling();
+      child = child.nextSiblingElement();
     }
   }
 
@@ -295,23 +314,31 @@ namespace kex
   ComponentDomParser::parseActionElement(const QDomElement &element,
                                          Component::Pointer component) const
   {
-    Q_ASSERT(element.tagName() == ActionTagName);
     Q_CHECK_PTR(component);
+    Q_ASSERT(element.tagName() == ActionTagName);
+    Q_ASSERT(component->componentType() & Component::ActionType);
 
-    QDomNode child  = element.firstChild();
+    QDomElement child  = element.firstChildElement();
 
     while (!child.isNull())
     {
-      QString tag = child.toElement().tagName();
+      QString tag = child.tagName();
+
       if(tag == HeaderTagName)
       {
-        m_parseMap[tag](this, child.toElement(), component);
+        m_parseMap[tag](this, child, component);
+
+      } else if(tag == AudioTagName || tag == VideoTagName)
+      {
+        QVariant value(child.text());
+        setComponentProperty(SourcePropertyName, value, component);
+
       } else {
-        QVariant value(child.toElement().text());
+        QVariant value(child.text());
         setComponentProperty(tag, value, component);
       }
 
-      child = child.nextSibling();
+      child = child.nextSiblingElement();
     }
   }
 
@@ -324,8 +351,7 @@ namespace kex
     bool success = false;
 
     if(old_value != value)
-      component->setProperty("hello", QVariant("goodbye"));
-//      success = component->setProperty(qPrintable(property), value);
+      success = component->setProperty(qPrintable(property), value);
     else
       // we don't bother setting equal values
       success = true;
@@ -347,21 +373,21 @@ namespace kex
                                         Component::Pointer component) const
   {
     Q_CHECK_PTR(component);
-    QDomNode child = element.firstChild();
+    Q_ASSERT(component->componentType() & Component::EventType);
+    QDomElement child = element.firstChildElement();
     QString tag;
 
     while (!child.isNull())
     {
-      tag = child.toElement().tagName();
+      tag = child.tagName();
 
       if (tag == ActionTagName)
       {
         tag = CreateChildParseAction;
       }
+      m_parseMap[tag](this, child, component);
 
-      m_parseMap[tag](this, child.toElement(), component);
-
-      child = child.nextSibling();
+      child = child.nextSiblingElement();
     }
 
   }
@@ -371,16 +397,15 @@ namespace kex
                                         Component::Pointer component) const
   {
     Q_CHECK_PTR(component);
-    Q_ASSERT(component->componentType() == Component::EventType ||
-             component->componentType() == Component::ActionType);
+    Q_ASSERT(component->componentType() & Component::TrialType);
 
-    QDomNode child = element.firstChild();
+    QDomElement child = element.firstChildElement();
     QString key;
     QString tagName;
 
     while (!child.isNull())
     {
-      tagName = child.toElement().tagName();
+      tagName = child.tagName();
 
       if (tagName == ActionTagName || tagName == EventTagName)
       {
@@ -398,9 +423,9 @@ namespace kex
                                QMessageBox::Ok, Logger::WarningLogLevel);
       }
 
-      m_parseMap[key](this, child.toElement(), component);
+      m_parseMap[key](this, child, component);
 
-      child = child.nextSibling();
+      child = child.nextSiblingElement();
     }
   }
 
@@ -409,22 +434,22 @@ namespace kex
                                              Component::Pointer component) const
   {
     Q_CHECK_PTR(component);
-    Q_ASSERT(component->componentType() == Component::TrialType);
-    QDomNode child = element.firstChild();
+    Q_ASSERT(component->componentType() & Component::ExperimentType);
+    QDomElement child = element.firstChildElement();
 
     while (!child.isNull())
     {
-      if (child.toElement().tagName() == TrialTagName ||
-          child.toElement().tagName() == ActionTagName)
+      if (child.tagName() == TrialTagName ||
+          child.tagName() == ActionTagName)
       {
-        m_parseMap[CreateChildParseAction](this, child.toElement(), component);
+        m_parseMap[CreateChildParseAction](this, child, component);
 
-      } else if (child.toElement().tagName() == HeaderTagName)
+      } else if (child.tagName() == HeaderTagName)
       {
-        m_parseMap[HeaderTagName](this, child.toElement(), component);
+        m_parseMap[HeaderTagName](this, child, component);
 
       }
-      child = child.nextSibling();
+      child = child.nextSiblingElement();
     }
   }
 
@@ -434,22 +459,21 @@ namespace kex
   {
     Q_CHECK_PTR(component);
 
-    QDomNode item = element.firstChild();
+    QDomElement item = element.firstChildElement();
     QString cat("");
 
     while (!item.isNull())
     {
-      if (item.toElement().tagName() == ItemTagName)
+      if (item.tagName() == ItemTagName)
       {
-        cat = item.toElement().text();
+        cat = item.text();
         if (!cat.isEmpty())
         {
           component->addCategory(cat);
         }
       }
-      item = item.nextSibling();
+      item = item.nextSiblingElement();
     }
-
   }
 
   void
@@ -466,13 +490,6 @@ namespace kex
     // Only non Action components  can have children, we assert this here
 
     parseElement(element, child);
-    // Since this is a child element, it could be a template. Templates must
-    // Declare a specific name of a predefined item for lookup purposes.
-    // This item could be a defined previously within the parent component
-    // OR it could be defined at the top most level of components in an
-    // xml file. Since templates work on an overloading principle, we start by
-    // looking at the top most level and then work to the inner scope.
-    QString name = component->name();
 
     if (child)
     {

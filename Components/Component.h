@@ -25,7 +25,9 @@ namespace kex
     Q_OBJECT
     Q_FLAGS(ComponentType ComponentTypes)
     Q_FLAGS(ComponentPosition ComponentPositions)
-    Q_PROPERTY(quint64 durationMSecs READ durationMSecs)
+    Q_PROPERTY(QString name          READ name        WRITE setName)
+    Q_PROPERTY(QString description   READ description WRITE setDescription)
+    Q_PROPERTY(QString label         READ label       WRITE setLabel)
 
   public:
     typedef Component* Pointer;
@@ -71,16 +73,7 @@ namespace kex
                        const QString&       name=QString(""),
                        const QString&       description=QString(""),
                        const QString&       label=QString(""),
-                       const QSet<QString>& categories=QSet<QString>()) :
-    QObject(parent),
-    m_parentComponent(parentComponent),
-    m_name(name),
-    m_description(description),
-    m_label(label),
-    m_categories(categories)
-    {
-      this->setProperty("durationMSecs", QVariant(200));
-    }
+                       const QSet<QString>& categories=QSet<QString>());
 
     /** \brief  Clone constructor
      *
@@ -301,7 +294,6 @@ namespace kex
     QString         m_label; //!< brief description of the component
     QSet<QString>   m_categories; //!< list of all categories for component
   };
-  const QString Component::DEFAULT_ICON(":/images/other/Science-64.png");
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(kex::Component::ComponentTypes)

@@ -11,6 +11,7 @@ namespace kex
   Component(parent, parentComponent, name, description, label, categories),
   m_components()
   {
+    m_componentType = Component::EventType;
   }
 
   quint64 Event::durationMSecs() const
@@ -28,6 +29,8 @@ namespace kex
 
   void Event::appendComponent(Component* component)
   {
+    Q_CHECK_PTR(component);
+
     if(!component->componentType() & Component::ActionType)
     {
       QString msg = "Received %1, but expected Component::ActionType";
@@ -38,6 +41,8 @@ namespace kex
 
       throw e;
     }
+    component->setParentComponent(this);
+    component->setParent(this);
     m_components.append(component);
   }
 

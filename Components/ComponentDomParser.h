@@ -41,8 +41,14 @@ namespace kex
     static const QString ItemTagName;
     static const QString NameTagName;
     static const QString DurationTagName;
+    static const QString AudioTagName;
+    static const QString ImageTagName;
+    static const QString VideoTagName;
+    static const QString SourcePropertyName;
     static const QString CategoriesTagName;
     static const QString CreateChildParseAction;
+    static const QString RestTagName;
+    static const QString TextTagName;
 
     explicit ComponentDomParser(const QString& fileName=QString());
     void clear() {m_globalList.clear();}
@@ -110,15 +116,5 @@ namespace kex
 
   };
 }
-const QString kex::ComponentDomParser::ActionTagName          = "action";
-const QString kex::ComponentDomParser::EventTagName           = "event";
-const QString kex::ComponentDomParser::TrialTagName           = "trial";
-const QString kex::ComponentDomParser::ExperimentTagName      = "experiment";
-const QString kex::ComponentDomParser::HeaderTagName          = "header";
-const QString kex::ComponentDomParser::CategoriesTagName      = "categories";
-const QString kex::ComponentDomParser::ItemTagName            = "item";
-const QString kex::ComponentDomParser::NameTagName            = "item";
-const QString kex::ComponentDomParser::DurationTagName        = "duration";
-const QString kex::ComponentDomParser::CreateChildParseAction = "create_child";
 
 #endif // COMPONENTDOMPARSSER_HisValidElement

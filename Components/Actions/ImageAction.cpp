@@ -10,14 +10,15 @@ namespace kex
                             const QSet<QString> categories,
                             quint64 durationMSecs,
                             quint64 delayMSecs,
-                            const QImage& image,
+                            const QString& imagePath,
                             qint32 xoffset,
                             qint32 yoffset,
                             const Component::ComponentPositions& position) :
   Component(parent, parentComponent, name, description, label, categories),
   m_durationMSecs(durationMSecs),
   m_delayMSecs(delayMSecs),
-  m_image(image),
+  m_image(imagePath),
+  m_imagePath(imagePath),
   m_xoffset(xoffset),
   m_yoffset(yoffset),
   m_position(position)
@@ -36,7 +37,7 @@ namespace kex
                                      name(),          description(),
                                      label(),         categories(),
                                      durationMSecs(), delayMSecs(),
-                                     image(),         xoffset(),
+                                     imagePath(),         xoffset(),
                                      yoffset(),       position());
 
     return action;
@@ -60,5 +61,11 @@ namespace kex
   bool ImageAction::operator!=(const Component& other) const
   {
     return !(*this == other);
+  }
+
+  void ImageAction::setImageFromFile(const QString& imagePath)
+  {
+    m_imagePath = imagePath;
+    m_image.load(m_imagePath);
   }
 }

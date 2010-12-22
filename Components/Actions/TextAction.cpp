@@ -2,9 +2,6 @@
 
 namespace kex
 {
-  /**
-   * TODO
-   */
   TextAction::TextAction (QObject *parent,
                           Component::Pointer parentComponent,
                           const QString& name,
@@ -35,6 +32,8 @@ namespace kex
     m_componentType = Component::TextActionType;
 //    m_text.prepare(0, m_font);
   }
+
+  TextAction::~TextAction() {}
 
   TextAction::Pointer TextAction::clone() const
   {

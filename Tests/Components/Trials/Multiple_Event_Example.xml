@@ -1,0 +1,19 @@
+<trial>
+  <header>
+    <label>An Event Label</label>
+    <description>An event description.</description>
+  </header>
+  
+  <event>
+    <header>
+      <name>Multiple Action Event Example</name>
+    </header>
+  </event>
+
+  <event>
+    <header>
+      <name>Multiple Action Event Example</name>
+    </header>
+  </event>
+
+</trial>

@@ -1,0 +1,27 @@
+<event>
+  <header>
+    <label>Bar</label>
+    <description>described</description>
+  </header>
+
+  <action type="image">
+    <header>
+      <name>30 Second Pause</name>
+      <label>Pauses for 30 seconds.</label>
+      <description>
+        When this action is inserted into a Event, a 30s pause is performed at
+        the point of its insertion.
+      </description>
+    </header>
+
+    <duration>30000</duration> <!-- 30 seconds in milliseconds -->
+  </action>
+
+  <action type="rest" template="true">
+    <!-- we can reference previous template declarations
+    by simply specifying the name -->
+    <header>
+      <name>Rest 60 Seconds</name>
+    </header>
+  </action>
+</event>

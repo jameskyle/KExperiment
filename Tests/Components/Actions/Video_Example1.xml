@@ -1,0 +1,12 @@
+<action type="video">
+  <header>
+    <label>Play video.</label>
+    <description>
+      This action is used, the specified video file is played. 
+    </description>
+  </header>
+
+  <video>
+    /Volumes/Data/Projects/WebKit/LayoutTests/media/content/test.mp4
+  </video>
+</action>

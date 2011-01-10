@@ -1,0 +1,14 @@
+<action type="text">
+  <header>
+    <label>Display text for 60 seconds.</label>
+    <description>
+      This action is used, the specified text is displayed for 60 seconds. 
+    </description>
+  </header>
+
+  <duration>60000</duration>
+  <text position="top-center" font-family="Monaco" font-size='18'>
+    Zerg University!
+  </text>
+  <delay>5000</delay>
+</action>

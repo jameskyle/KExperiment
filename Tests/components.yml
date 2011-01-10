@@ -1,0 +1,136 @@
+# Define Actions
+-
+  name: "Audio Example1"
+  label: "Play audio."
+  description: "This action is used, the specified audio file is played."
+  type: "AudioActionType"
+  durationMSecs: 28028
+  audio: "/Volumes/Data/iTunes/Compilations/Complete Beethoven Edition, Volume 18_ Secular Choral Works (disc 2)/41 _Ich bitt' dich, schreib mir die Es-Skala auf_, WoO 172.mp3"
+  file: "./Components/Actions/Audio_Example1.xml"
+  delay: 0
+-
+  name: "Image Example1"
+  label: "Display image for 60 seconds."
+  description: "This action is used, the specified image  is displayed for 60 seconds."
+  type: "ImageActionType"
+  durationMSecs: 10000
+  file: "./Components/Actions/Image_Example1.xml"
+  delay: 0
+
+-
+  name: "Rest 10 Seconds"
+  label: "Pauses for 10 seconds."
+  description: " When this action is inserted into a Event, a 10 pause is performed at\nthe point of its insertion."
+  type: "RestActionType"
+  durationMSecs: 10000
+  file: "./Components/Actions/Rest_10_Seconds.xml"
+  delay: 0
+
+-
+  name: "Rest 30 Seconds"
+  label: "Pauses for 30 seconds."
+  description: "When this action is inserted into a Event, a 30s pause is performed at\nthe point of its insertion.
+"
+  type: "RestActionType"
+  durationMSecs: 30000
+  file: "./Components/Actions/Rest_30_Seconds.xml"
+  delay: 0
+
+-
+  name: "Rest 60 Seconds" 
+  label: "Pauses for 60 seconds."
+  description: "When this action is inserted into a Event, a 60s pause is performed at\nthe point of its insertion."
+  type: "RestActionType"
+  durationMSecs: 60000
+  file: "./Components/Actions/Rest_60_Seconds.xml"
+  delay: 0
+
+-
+  name: "Text Example1"
+  label: "Display text for 60 seconds."
+  description: "This action is used, the specified text is displayed for 60 seconds."
+  type: "TextActionType"
+  durationMSecs: 60000
+  file: "./Components/Actions/Text_Example1.xml"
+  text: "Zerg University!"
+  delay: 5000
+-
+  name: "Video Example1"
+  label: "Play video."
+  description: "This action is used, the specified video file is played."
+  type: "VideoActionType"
+  durationMSecs: 8400
+  file: "./Components/Actions/Video_Example1.xml"
+  video: "/Volumes/Data/Projects/WebKit/LayoutTests/media/content/test.mp4"
+  delay: 0
+
+# Define Events
+-
+  name: "Double Pause Event"
+  label: "Bar"
+  description: "described"
+  type: "EventType"
+  durationMSecs: 90000
+  file: "./Components/Events/Double_Pause_Event.xml"
+  children: 2
+
+-
+  name: "Multiple Action Event Example"
+  label: "Bar"
+  description: "described"
+  type: "EventType"
+  durationMSecs: 53400
+  file: "./Components/Events/Multiple_Action_Event_Example.xml"
+  children: 8
+-
+  name: "Single Pause Event"
+  label: "Bar"
+  description: "described"
+  type: "EventType"
+  durationMSecs: 30000
+  file: "./Components/Events/Single_Pause_Event.xml"
+  children: 1
+
+# Trials
+-
+  name: "Double Event Example"
+  label: ""
+  description: ""
+  type: "TrialType"
+  durationMSecs: 120000 
+  file: "./Components/Trials/Double_Event_Example.xml"
+  children: 2
+-
+  name: "Multiple Event Example"
+  label: "An Event Label"
+  description: "An event description."
+  type: "TrialType"
+  durationMSecs: 106800
+  file: "./Components/Trials/Multiple_Event_Example.xml"
+  children: 2
+-
+  name: "Single Event Example"
+  label: "Trial Label"
+  description: "Trial Description"
+  type: "TrialType"
+  durationMSecs: 90000
+  file: "./Components/Trials/Single_Event_Example.xml"
+  children: 1
+
+# Experiments
+-
+  name: "Example Experiment"
+  label: "An example experiment."
+  description: "Description for the example experiment."
+  type: "ExperimentType"
+  durationMSecs: 120000 
+  file: "./Components/Experiments/Example_Experiment.xml"
+  children: 1 
+-
+  name: "Example Experiment2"
+  label: "An second example experiment."
+  description: "Description for the example experiment."
+  type: "ExperimentType"
+  durationMSecs: 120000
+  file: "./Components/Experiments/Example_Experiment2.xml"
+  children: 1

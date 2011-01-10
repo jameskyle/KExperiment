@@ -1,0 +1,12 @@
+<event>
+  <header>
+    <label>Bar</label>
+    <description>described</description>
+  </header>
+  
+    <action type="rest">
+        <header>
+            <name>Rest 30 Seconds</name>
+        </header>
+    </action>
+</event>

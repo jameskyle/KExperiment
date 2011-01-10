@@ -18,6 +18,7 @@ ENDIF(APPLE)
 SET(K_MOC_HDRS
     Models/ComponentModel.h
     Components/Component.h
+    Components/ComponentCollection.h
     Components/Actions/RestAction.h
     Components/Actions/TextAction.h
     Components/Actions/ImageAction.h
@@ -52,6 +53,7 @@ SET(K_SRCS
     Models/ComponentModel.cpp
     Utilities/Utilities.cpp
     Components/Component.cpp
+    Components/ComponentCollection.cpp
     Components/ComponentExceptions.cpp
     Components/Actions/RestAction.cpp
     Components/Actions/TextAction.cpp
@@ -85,8 +87,8 @@ FOREACH(file ${K_SRCS})
 ENDFOREACH(file ${K_SRCS})
 
 SET(K_SRC_HDRS ${K_SRC_HDRS} Components/Components.h )
-SET(CMAKE_C_FLAGS_DEBUG "-Wall -g")
-SET(CMAKE_CXX_FLAGS_DEBUG "-Wall -g")
+SET(CMAKE_C_FLAGS_DEBUG "-Wall -ggdb")
+SET(CMAKE_CXX_FLAGS_DEBUG "-Wall -ggdb")
 
 SET(QT_USE_QTXML true)
 SET(QT_USE_QTXMLPATTERNS true)

@@ -8,21 +8,21 @@ namespace kex
                const QString& description,
                const QString& label,
                const QSet<QString>& categories) :
-  Component(parent, parentComponent, name, description, label, categories),
-  m_components()
+  ComponentCollection(parent, parentComponent, name, description, label,
+                      categories)
   {
     m_componentType = Component::TrialType;
   }
 
   quint64 Trial::durationMSecs() const
   {
-    Component* comp;
+    Component::SharedPointer comp;
     quint64 duration = 0;
     // all children are events
     foreach(comp, m_components)
     {
       Event* event;
-      event = qobject_cast<Event *>(comp);
+      event = qobject_cast<Event *>(comp.data());
 
       if(!event)
       {
@@ -34,7 +34,7 @@ namespace kex
         throw e;
       }
 
-      Component* child;
+      Component::SharedPointer child;
       foreach(child, event->components())
       {
         duration += child->durationMSecs();
@@ -44,50 +44,12 @@ namespace kex
     return duration;
   }
 
-  void Trial::appendComponent(Component* component)
-  {
-    Q_CHECK_PTR(component);
-    if(!component->componentType() & Component::ActionType)
-    {
-      QString msg = "Received %1, but expected Component::ActionType";
-
-      InvalidComponentType e(msg.arg(
-          Component::componentTypeToString(
-              component->componentType())).toAscii());
-
-      throw e;
-    }
-    component->setParentComponent(this);
-    component->setParent(this);
-    m_components.append(component);
-  }
-
-  void Trial::removeComponentAt(int index)
-  {
-    m_components.removeAt(index);
-  }
-
-  bool Trial::operator==(const Component& other) const
-  {
-    const Trial* derived = qobject_cast<const Trial*>(&other);
-    bool equal = (derived &&
-      Component::operator==(other) &&
-      components() == derived->components());
-
-    return equal;
-  }
-
-  bool Trial::operator!=(const Component& other) const
-  {
-    return !(*this == other);
-  }
-
   Trial::Pointer Trial::clone() const
   {
     Trial *event = new Trial(parent(),      parentComponent(), name(),
                              description(), label(),           categories());
 
-    Component* comp;
+    Component::SharedPointer comp;
     foreach(comp, m_components)
     {
       event->appendComponent(comp->clone());

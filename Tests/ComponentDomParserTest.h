@@ -3,7 +3,8 @@
 
 #include <QTest>
 #include <QDebug>
-#include <QStringList>
+#include <QVariant>
+#include <QMap>
 
 #include <boost/function.hpp>
 
@@ -11,34 +12,47 @@
 #include "Components/ComponentDomParser.h"
 #include "Common/Config.h"
 #include "Utilities/Utilities.h"
+#include "ComponentTemplates.h"
 
 namespace kex
 {
   class ComponentDomParser;
-  
+
   class ComponentDomParserTest : public QObject
   {
     Q_OBJECT
   public:
     ComponentDomParserTest();
-    
+
   private:
-    QStringList m_componentFiles;
-    QStringList m_names;
-    QStringList m_labels;
-    QStringList m_descriptions;
-    QList<Component::ComponentTypes> m_types;
-    QList<int> m_childrenCount;
-    QList<int> m_durationMSecs;
     ComponentDomParser m_dom;
-    
+    ComponentTemplates m_templates;
+
+    const QString LabelKey;
+    const QString DescriptionKey;
+    const QString TypeKey;
+    const QString DurationMSecsKey;
+    const QString DelayMSecsKey;
+    const QString FileKey;
+    const QString NameKey;
+
+    template<class T>
+    void verifyValues(const T& val1, const T& val2, const QString& name) const
+    {
+      QString msg = "Expected: %1, Received: %2, for component: %3";
+      msg = msg.arg(val1).arg(val2).arg(name);
+
+      QVERIFY2(val1 == val2, msg.toAscii());
+    }
+
   private slots:
     void initTestCase();
-    
+
     // iterator methods
     void readFileTest();
     void componentsTest();
     void cleanupTestCase();
+
   };
-}  
+}
 #endif // COMPONENTDOMPARSERTEST_H

@@ -21,14 +21,9 @@ namespace kex
 
   ComponentDomParser::ComponentDomParser(const QString& fileName) :
     m_filename(fileName),
-  m_globalList(ComponentDomParser::ComponentList())
+  m_globalList(Component::globalList())
   {
     setupParseMap();
-  }
-
-  const ComponentDomParser::ComponentList& ComponentDomParser::components() const
-  {
-    return m_globalList;
   }
 
   ComponentDomParser& ComponentDomParser::operator<<(QFile& file)
@@ -153,7 +148,6 @@ namespace kex
   ComponentDomParser::templateComponent(const QDomElement &root) const
   {
     Q_ASSERT(isValidElement(root));
-
     Component::SharedPointer c_template(0);
     QString name("");
     QDomElement child = root.firstChildElement();
@@ -170,7 +164,7 @@ namespace kex
         {
           if (c.tagName() == NameTagName)
           {
-            name = c.text();
+            name = cleanText(c.text());
             break;
           }
           c = c.nextSiblingElement();
@@ -298,7 +292,7 @@ namespace kex
 
       if (tag != CategoriesTagName)
       {
-        QVariant value(child.text());
+        QVariant value(cleanText(child.text()));
         setComponentProperty(tag, value, component);
 
       } else {
@@ -330,11 +324,11 @@ namespace kex
 
       } else if(tag == AudioTagName || tag == VideoTagName)
       {
-        QVariant value(child.text());
+        QVariant value(cleanText(child.text()));
         setComponentProperty(SourcePropertyName, value, component);
 
       } else {
-        QVariant value(child.text());
+        QVariant value(cleanText(child.text()));
         setComponentProperty(tag, value, component);
       }
 
@@ -466,7 +460,7 @@ namespace kex
     {
       if (item.tagName() == ItemTagName)
       {
-        cat = item.text();
+        cat = cleanText(item.text());
         if (!cat.isEmpty())
         {
           component->addCategory(cat);
@@ -483,17 +477,17 @@ namespace kex
     Q_CHECK_PTR(component);
     Q_ASSERT(isValidElement(element));
     Q_ASSERT(component->componentType() & ~Component::ActionType);
-
     Component::Pointer child = createComponent(element);
 
     Q_CHECK_PTR(child);
-    // Only non Action components  can have children, we assert this here
-
     parseElement(element, child);
 
     if (child)
     {
-      //component->appendComponent(child);
+      ComponentCollection::Pointer cp;
+      cp = qobject_cast<ComponentCollection::Pointer>(component);
+      Q_CHECK_PTR(cp);
+      cp->appendComponent(child);
     } else
     {
       Logger *logger = &Logger::instance();
@@ -504,5 +498,25 @@ namespace kex
       logger->displayMessage(msg, info.arg(component->name()),
                              QMessageBox::Ok, Logger::WarningLogLevel);
     }
+  }
+
+  QString ComponentDomParser::cleanText(const QString& text) const
+  {
+    QString new_text;
+    QStringList lines = text.split("\n", QString::SkipEmptyParts);
+
+    if(lines.size() < 2)
+    {
+      new_text = text.trimmed();
+
+    } else {
+      for(int i = 0;i < lines.size();++i)
+      {
+        new_text.append(lines[i].trimmed());
+        new_text.append("\n");
+      }
+    }
+
+    return new_text;
   }
 }

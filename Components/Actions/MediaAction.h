@@ -2,6 +2,7 @@
 #define MEDIAACTION_H
 
 #include <Phonon/MediaObject>
+#include <QDebug>
 
 #include <Components/Component.h>
 

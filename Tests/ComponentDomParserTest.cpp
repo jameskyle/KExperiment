@@ -2,133 +2,82 @@
 
 namespace kex
 {
-  ComponentDomParserTest::ComponentDomParserTest() : 
-  m_componentFiles(),
-  m_names(),
-  m_labels(),
-  m_descriptions(),
-  m_types(),
-  m_childrenCount(),
-  m_durationMSecs(),
-  m_dom()
+  ComponentDomParserTest::ComponentDomParserTest() :
+  m_dom(),
+  m_templates(ComponentTemplates()),
+  LabelKey("label"),
+  DescriptionKey("description"),
+  TypeKey("type"),
+  DurationMSecsKey("durationMSecs"),
+  DelayMSecsKey("delay"),
+  FileKey("file"),
+  NameKey("name")
   {
+    QCoreApplication::setApplicationName(
+          kex::Config::instance().applicationName());
     Config::ApplicationDataDirectoryTypes t;
-    
-    t = Config::ActionDirectory;
-    m_componentFiles << QStringList(Config::instance().xmlFileComponentList(t));
-    
-    t = Config::EventDirectory;
-    m_componentFiles << QStringList(Config::instance().xmlFileComponentList(t));
-    
-    t = Config::TrialDirectory;
-    m_componentFiles << QStringList(Config::instance().xmlFileComponentList(t));
-    
-    t = Config::ExperimentDirectory;
-    m_componentFiles << QStringList(Config::instance().xmlFileComponentList(t));
-   
-    // Action template one: Rest 10 Seconds
-    m_labels << "Pauses for 10 seconds.";
-    m_descriptions << ("When this action is inserted into a Event, a 10 pause "
-                       "is performed at the point of its insertion.");
-    m_types.append(Component::RestActionType);
-    m_durationMSecs.append(10000);
-    m_childrenCount.append(0);
-    
-    // Action template two: Rest 30 Seconds
-    m_labels << "Pauses for 30 seconds.";
-    m_descriptions << ("When this action is inserted into a Event, a 30s pause "
-                      "is performed at the point of its insertion.");
-    m_types.append(Component::RestActionType);
-    m_durationMSecs.append(30000);
-    m_childrenCount.append(0);
-    
-    // Action template three: Rest 60 Seconds
-    m_labels << "Pauses for 60 seconds.";
-    m_descriptions << ("When this action is inserted into a Event, a 60s "
-                       "pause is performed at the point of its insertion.");
-    m_types.append(Component::RestActionType);
-    m_durationMSecs.append(60000);
-    m_childrenCount.append(0);
 
-    // Event template one: Bar
-    m_labels << "Bar";
-    m_descriptions << "described";
-    m_types.append(Component::EventType);
-    m_durationMSecs.append(90000);
-    m_childrenCount.append(2);
-    
-    // Event template two
-    m_labels << "";
-    m_descriptions << "";
-    m_types.append(Component::EventType);
-    m_durationMSecs.append(30000);
-    m_childrenCount.append(1);
-    
-    // Trial template one:
-    m_labels << "An amazing trial.";
-    m_descriptions << "A truly amazing example of a trial";
-    m_types.append(Component::TrialType);
-    m_durationMSecs.append(120000);
-    m_childrenCount.append(2);
-    
-    // Trial template two:
-    m_labels << "";
-    m_descriptions << "";
-    m_types.append(Component::TrialType);
-    m_durationMSecs.append(90000);
-    m_childrenCount.append(1);
-  
-    // Experiment template one:
-    m_labels << "An example experiment.";
-    m_descriptions << "Description for the example experiment.";
-    m_types.append(Component::ExperimentType);
-    m_durationMSecs.append(120000);
-    m_childrenCount.append(1);
-    
-    // Experiment template two:
-    m_labels << "An second example experiment.";
-    m_descriptions << "Description for the example experiment.";
-    m_types.append(Component::ExperimentType);
-    m_durationMSecs.append(120000);
-    m_childrenCount.append(1);
   }
-  
+
   void ComponentDomParserTest::initTestCase()
   {
   }
-  
+
   void ComponentDomParserTest::readFileTest()
   {
-    boost::function<QString (const QString&)> getName;
-    getName = &Utilities::componentNameFromFilePath;
-    
-    ComponentList::Node::Pointer node;
+    Component::SharedPointer sp;
+    QString name;
+    QMap<QString, QString>* map;
 
-    for (int i = 0; i < m_componentFiles.size(); ++i)
+    for (int i = 0; i < m_templates.c_list.size(); ++i)
     {
-      m_dom.readFile(m_componentFiles[i]);
-      node = m_dom.components().back();
-      
-      QVERIFY(m_dom.components().size() == (i + 1));
-      QVERIFY(node->component()->componentType() & m_types[i]);
-      QVERIFY(node->component()->name() == getName(m_componentFiles[i]));
-      QVERIFY(node->component()->label() == m_labels[i]);
-      QVERIFY(node->component()->description() == m_descriptions[i]);
-      QVERIFY(node->durationMSecs() == m_durationMSecs[i]);
-      QVERIFY(node->children().size() == m_childrenCount[i]);
+      map = m_templates.c_list[i];
+      name = (*map)[NameKey];
+
+      m_dom.readFile((*map)[FileKey]);
+      sp = Component::globalList().back();
+
+      verifyValues((i + 1), Component::globalList().size(), name);
+
+      Component::ComponentTypes t;
+      t = Component::componentTypeFromString((*map)[TypeKey]);
+      verifyValues(t, sp->componentType(), sp->name());
+
+      verifyValues(name, sp->name(), sp->name());
+      verifyValues((*map)[LabelKey], sp->label(), sp->name());
+      verifyValues((*map)[DescriptionKey], sp->description(), sp->name());
+      verifyValues((quint64)(*map)[DurationMSecsKey].toUInt(), sp->durationMSecs(), sp->name());
+
+      if(sp->componentType() & ~Component::ActionType)
+      {
+        QSharedPointer<ComponentCollection> spd;
+        spd = sp.dynamicCast<ComponentCollection>();
+
+        verifyValues((*map)["children"].toInt(),
+                      spd->components().size(),
+                      spd->name());
+
+      } else if(sp->componentType() &
+         (Component::ActionType & ~Component::RestActionType))
+      {
+        quint64 spec_delay = (*map)[DelayMSecsKey].toUInt();
+        quint64 comp_delay = sp->property("delay").toUInt();
+
+        verifyValues(spec_delay, comp_delay, sp->name());
+      }
     }
   }
-  
+
   void ComponentDomParserTest::componentsTest()
   {
-    
+
   }
-  
+
   void ComponentDomParserTest::cleanupTestCase()
   {
-    
+
   }
-  
+
 }
 
 QTEST_MAIN(kex::ComponentDomParserTest)

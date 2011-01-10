@@ -87,6 +87,32 @@ namespace kex
     return m_componentType;
   }
 
+  Component::ComponentTypes Component::componentTypeFromString(QString st)
+  {
+    ComponentTypes t;
+
+    if(st == "RestActionType")
+      t = Component::RestActionType;
+    else if(st == "TextActionType")
+      t = Component::TextActionType;
+    else if(st == "ImageActionType")
+      t = Component::ImageActionType;
+    else if(st == "AudioActionType")
+      t = Component::AudioActionType;
+    else if(st == "VideoActionType")
+      t = Component::VideoActionType;
+    else if(st == "ActionType")
+      t = Component::ActionType;
+    else if(st == "EventType")
+      t = Component::EventType;
+    else if(st == "TrialType")
+      t = Component::TrialType;
+    else if(st == "ExperimentType")
+      t = Component::ExperimentType;
+
+    return t;
+  }
+
   const QString Component::componentTypeToString(ComponentTypes t)
   {
     QString typeString;
@@ -137,7 +163,8 @@ namespace kex
     bool equal = (name()        == other.name()        &&
                   description() == other.description() &&
                   label()       == other.label()       &&
-                  categories()  == other.categories());
+                  categories()  == other.categories()  &&
+                  durationMSecs() == other.durationMSecs());
     return equal;
   }
 
@@ -152,5 +179,15 @@ namespace kex
    list << componentTypeToString(Component::VideoActionType);
 
    return list;
+  }
+
+  Component::ComponentList& Component::globalList()
+  {
+    static ComponentList g_list;
+    return g_list;
+  }
+  void Component::setParentComponent(Pointer p) {
+    Q_ASSERT(p->componentType() & ~Component::ActionType);
+    m_parentComponent = p;
   }
 }

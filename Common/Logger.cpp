@@ -7,17 +7,17 @@ namespace kex
     static Logger log;
     return log;
   }
-  
-  void Logger::log(const char* msg, const QObject *obj, 
+
+  void Logger::log(const char* msg, const QObject *obj,
                               Logger::LogLevelType level)
   {
-    QString prefix("[Unspecified]");
-    
+    QString prefix("[Unspecified Object]");
+
     if (obj)
     {
       prefix = QString("[%1]").arg(obj->metaObject()->className());
     }
-    
+
     switch (level)
     {
       case Logger::DebugLogLevel:
@@ -37,15 +37,15 @@ namespace kex
         break;
     }
   }
-  
-  void Logger::log(const QString& msg, const QObject *obj, 
+
+  void Logger::log(const QString& msg, const QObject *obj,
                    Logger::LogLevelType level)
   {
     log(qPrintable(msg), obj, level);
   }
-  
-  void Logger::displayMessage(const QString& text, 
-                              const QString& info, 
+
+  void Logger::displayMessage(const QString& text,
+                              const QString& info,
                               QMessageBox::StandardButton button,
                               Logger::LogLevelType level) const
   {
@@ -70,7 +70,7 @@ namespace kex
       default:
         qDebug() << "Log function passed an unknown LogLevel";
         break;
-    }        
+    }
     box.exec();
 
   }

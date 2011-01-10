@@ -8,21 +8,21 @@ namespace kex
                          const QString& description,
                          const QString& label,
                          const QSet<QString>& categories) :
-  Component(parent, parentComponent, name, description, label, categories),
-  m_components()
+  ComponentCollection(parent, parentComponent, name, description, label,
+                      categories)
   {
     m_componentType = Component::ExperimentType;
   }
 
   quint64 Experiment::durationMSecs() const
   {
-    Component* comp;
+    Component::SharedPointer comp;
     quint64 duration = 0;
     // all children are trials
     foreach(comp, m_components)
     {
       Trial* trial;
-      trial = qobject_cast<Trial *>(comp);
+      trial = qobject_cast<Trial *>(comp.data());
 
       if(!trial)
       {
@@ -34,7 +34,7 @@ namespace kex
         throw e;
       }
 
-      Component* child;
+      Component::SharedPointer child;
       foreach(child, trial->components())
       {
         duration += child->durationMSecs();
@@ -44,52 +44,13 @@ namespace kex
     return duration;
   }
 
-  void Experiment::appendComponent(Component* component)
-  {
-    Q_CHECK_PTR(component);
-
-    if(!component->componentType() & Component::TrialType)
-    {
-      QString msg = "Received %1, but expected Component::ActionType";
-
-      InvalidComponentType e(msg.arg(
-          Component::componentTypeToString(
-              component->componentType())).toAscii());
-
-      throw e;
-    }
-    component->setParentComponent(this);
-    component->setParent(this);
-    m_components.append(component);
-  }
-
-  void Experiment::removeComponentAt(int index)
-  {
-    m_components.removeAt(index);
-  }
-
-  bool Experiment::operator==(const Component& other) const
-  {
-    const Experiment* derived = qobject_cast<const Experiment*>(&other);
-    bool equal = (derived &&
-      Component::operator==(other) &&
-      components() == derived->components());
-
-    return equal;
-  }
-
-  bool Experiment::operator!=(const Component& other) const
-  {
-    return !(*this == other);
-  }
-
   Experiment::Pointer Experiment::clone() const
   {
     Experiment *experiment = new Experiment(parent(), parentComponent(),
                                             name(),   description(),
                                             label(),  categories());
 
-    Component* comp;
+    Component::SharedPointer comp;
     foreach(comp, m_components)
     {
       experiment->appendComponent(comp->clone());

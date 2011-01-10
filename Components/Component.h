@@ -7,6 +7,7 @@
 #include <QIcon>
 #include <QDebug>
 #include <QVariant>
+#include <QList>
 
 namespace kex
 {
@@ -32,6 +33,7 @@ namespace kex
   public:
     typedef Component* Pointer;
     typedef QSharedPointer<Component> SharedPointer;
+    typedef QList<Component::SharedPointer> ComponentList;
 
     static const QString DEFAULT_ICON;
 
@@ -49,7 +51,7 @@ namespace kex
                                    ImageActionType | AudioActionType |
                                    VideoActionType),
       AllComponents             = (ActionType | EventType |
-                                   TrialType | ExperimentType),
+                                   TrialType | ExperimentType)
     };
     Q_DECLARE_FLAGS(ComponentTypes, ComponentType)
 
@@ -64,7 +66,7 @@ namespace kex
       BottomCenterPosition  = 0x1 << 6,
       BottomLeftPosition    = 0x1 << 7,
       CenterLeftPosition    = 0x1 << 8,
-      DefaultPosition       = 0x1,
+      DefaultPosition       = 0x1
     };
     Q_DECLARE_FLAGS(ComponentPositions, ComponentPosition)
 
@@ -241,6 +243,15 @@ namespace kex
      **/
     static const QString componentTypeToString(ComponentTypes t);
 
+     /** \brief Returns a ComponentType for the string representation of type.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2010-04-01
+     * \param t a ComponentTypes object
+     * \return QString the string  representation for t
+     **/
+    static ComponentTypes componentTypeFromString(QString t);
+
     /** \brief Returns a QString representation of the component type.
      *
      * \author James Kyle KSpace MRI
@@ -274,7 +285,7 @@ namespace kex
      * \date 2010-12-17
      * \return Pointer a pointer to the parent component
      **/
-    Pointer parentComponent() const {return m_parentComponent;}
+    virtual Pointer parentComponent() const {return m_parentComponent;}
 
     /** \brief Sets the parent component
      *
@@ -282,7 +293,9 @@ namespace kex
      * \date 2010-12-17
      * \param p parent to the component to set as parent
      **/
-    void setParentComponent(Pointer p) {m_parentComponent = p;}
+    virtual void setParentComponent(Pointer p);
+
+    static ComponentList& globalList();
 
   protected:
     ComponentTypes  m_componentType; //!< type for component

@@ -74,5 +74,6 @@ namespace kex
   {
     Phonon::MediaSource source(sourceFile.trimmed());
     m_mediaObject.setCurrentSource(source);
+    setComponentType();
   }
 }

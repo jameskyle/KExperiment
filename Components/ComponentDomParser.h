@@ -31,8 +31,6 @@ namespace kex
   class ComponentDomParser
   {
   public:
-    typedef QList<Component::SharedPointer> ComponentList;
-
     static const QString ActionTagName;
     static const QString EventTagName;
     static const QString TrialTagName;
@@ -58,8 +56,6 @@ namespace kex
     ComponentDomParser& readFile();
 
     Component::Pointer createComponent(const QDomElement& root) const;
-
-    const ComponentList& components() const;
 
     ComponentDomParser& operator<<(QFile& file);
     ComponentDomParser& operator<<(const QString& fileName);
@@ -100,6 +96,8 @@ namespace kex
 
     void setupParseMap();
 
+    QString cleanText(const QString& text) const;
+
     typedef boost::function<void (const ComponentDomParser*,
                                   const QDomElement &element,
                                   Component::Pointer component)>
@@ -110,7 +108,7 @@ namespace kex
 
 
     QString m_filename;
-    ComponentList m_globalList;
+    Component::ComponentList& m_globalList;
     QMap<QString, parseFunc> m_parseMap;
     QMap<QString, setComponentValue> m_setValueMap;
 

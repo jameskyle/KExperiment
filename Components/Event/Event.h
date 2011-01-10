@@ -1,10 +1,6 @@
 #ifndef EVENT_H
 #define EVENT_H
-#include <QString>
-#include <QList>
-
-#include "../Component.h"
-#include "../ComponentExceptions.h"
+#include "../ComponentCollection.h"
 
 namespace kex
 {
@@ -25,7 +21,7 @@ namespace kex
   * \version $Rev$  \sa Action OutputAction RestAction
   **/
 
-  class Event : public Component
+  class Event : public ComponentCollection
   {
     Q_OBJECT
   public:
@@ -65,46 +61,6 @@ namespace kex
     **/
     quint64 durationMSecs() const;
 
-   /** \brief Returns the list of child components for Event
-    *
-    * \author James Kyle KSpace MRI
-    * \date 2010-04-01
-    * \return QList<Component *> list of components
-    **/
-    const QList<Component::Pointer> components() const {return m_components;}
-
-   /** \brief Appends the given component to the child list
-    *
-    * \author James Kyle KSpace MRI
-    * \date 2010-04-01
-    * \param component the component to be appended
-    **/
-    void appendComponent(Component* component);
-
-   /** \brief Removes the given component found at index
-    *
-    * \author James Kyle KSpace MRI
-    * \date 2010-04-01
-    * \param index the index for the component to be removed
-    **/
-    void removeComponentAt(int index);
-
-   /** \brief The equivalence operator for the Event object.
-    *
-    * \author James Kyle KSpace MRI
-    * \date 2010-04-01
-    * \return bool true if equal, false otherwise
-    **/
-    bool operator==(const Component& other) const;
-
-   /** \brief The inequivalence operator for the Event object.
-    *
-    * \author James Kyle KSpace MRI
-    * \date 2010-04-01
-    * \return bool false if equal, true if not
-    **/
-    bool operator!=(const Component& other) const;
-
    /** \brief Creates a copy of the component.
     *
     * \author James Kyle KSpace MRI
@@ -112,10 +68,6 @@ namespace kex
     * \return Event::Pointer pointer to a new component that is a copy of original
     **/
     Pointer clone() const;
-
-  private:
-    QList<Component *> m_components; //!< list of components
-
   };
 }
 #endif

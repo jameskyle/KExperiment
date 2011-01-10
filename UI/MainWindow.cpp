@@ -185,7 +185,7 @@ namespace kex
       dom << path;
     }
 
-    m_components = dom.components();
+    m_components = Component::globalList();
   }
 } // END_KEX_NAMESPACE
 

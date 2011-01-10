@@ -47,7 +47,7 @@ namespace kex
     //void connectButtonToLibraryDock(QToolButton *button, );
 
   private:
-    ComponentDomParser::ComponentList m_components;
+    Component::ComponentList m_components;
 
     /** \brief  Creates an Experiment Library dock widget
      *

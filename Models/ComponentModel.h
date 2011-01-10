@@ -6,10 +6,11 @@
 #include <QIcon>
 #include <Qt>
 #include <QTime>
+#include <QDebug>
 
 #include "Common/Config.h"
-#include "Components/ComponentList.h"
 #include "Components/Component.h"
+#include "Components/ComponentCollection.h"
 
 namespace kex
 {
@@ -44,7 +45,7 @@ namespace kex
      * \version $Rev$
      * \sa Component Component::ComponentTypes
      **/
-    ComponentModel(ComponentList *c_list = &ComponentList::globalList(),
+    ComponentModel(Component::ComponentList *c_list = &Component::globalList(),
                    QObject *parent = 0);
 
     /** \brief  Default destructor.
@@ -75,9 +76,11 @@ namespace kex
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
   private:
-    ComponentList::Node::Pointer  getItem(const QModelIndex& index) const;
-
-    ComponentList& m_components;
+    Component::Pointer  getItem(const QModelIndex& index) const;
+    ComponentCollection::Pointer getCollectionItem(const QModelIndex& index) const;
+    int getIndexForItem(const Component::ComponentList& list,
+                        Component::Pointer component) const;
+    Component::ComponentList& m_components;
 
   public slots:
     void updateComponentList();

@@ -8,7 +8,7 @@ namespace kex
     return model;
   }
 
-  ComponentModel::ComponentModel(ComponentList *c_list, QObject *parent)
+  ComponentModel::ComponentModel(Component::ComponentList *c_list, QObject *parent)
     : QAbstractItemModel(parent),
       m_components(*c_list)
   {
@@ -47,7 +47,6 @@ namespace kex
           result.setValue(QString("Duration"));
           break;
         default:
-
           break;
       }
     }
@@ -67,11 +66,14 @@ namespace kex
 
     if (parent.isValid())
     {
-      ComponentList::Node::Pointer node = getItem(parent);
-      // if the index isValid() we should always get a valid node
-      Q_CHECK_PTR(node);
+      Component::Pointer p = getItem(parent);
+      Q_CHECK_PTR(p);
 
-      count = node->children().size();
+      if(p->componentType() & ~Component::ActionType)
+      {
+        ComponentCollection::Pointer collection = getCollectionItem(parent);
+        count = collection->components().size();
+      }
 
     } else
     {
@@ -107,18 +109,17 @@ namespace kex
 
     if (index.isValid())
     {
-      ComponentList::Node::Pointer node;
+      Component::Pointer component;
 
       if (!index.parent().isValid())
       {
-        ComponentList::iterator it(m_components.begin());
-        node = it[index.row()];
+        Component::ComponentList::iterator it(m_components.begin());
+        component = it[index.row()].data();
       } else
       {
-        node = getItem(index);
-        // if the index isValid() we should always get a valid node
-        Q_CHECK_PTR(node);
-
+        component = getItem(index);
+        // if the index isValid() we should always get a valid component
+        Q_CHECK_PTR(component);
       }
 
       if (role == Qt::DisplayRole  || role == Qt::EditRole)
@@ -126,21 +127,21 @@ namespace kex
         switch (index.column())
         {
           case 0:
-            result.setValue(node->component()->name());
+            result.setValue(component->name());
             break;
           case 1:
-            result.setValue(node->component()->mainCategory());
+            result.setValue(component->mainCategory());
             break;
           case 2:
-            result.setValue(node->component()->label());
+            result.setValue(component->label());
             break;
           case 3:
-            result.setValue(node->component()->description());
+            result.setValue(component->description());
             break;
           case 4:
           {
             QTime time(0,0,0);
-            result.setValue(time.addMSecs(node->durationMSecs())
+            result.setValue(time.addMSecs(component->durationMSecs())
                             .toString("mm:ss.zzz"));
           }
             break;
@@ -153,21 +154,23 @@ namespace kex
 
   QModelIndex ComponentModel::parent(const QModelIndex &index) const
   {
+    Q_ASSERT(index.isValid());
     QModelIndex p_index;
 
-    if (index.isValid())
+    if(index.isValid())
     {
-      ComponentList::Node::Pointer node = getItem(index);
-      // if the index isValid() we should always get a valid node
-      Q_CHECK_PTR(node);
-      ComponentList::Node::Pointer p_node;
-      p_node = node->parent();
-
-      if (p_node)
+      Component::Pointer p = getItem(index);
+      Component::Pointer pp = p->parentComponent();
+      if(pp)
       {
-        p_index = createIndex(p_node->position(),0, p_node);
+        ComponentCollection::Pointer pp;
+        pp = qobject_cast<ComponentCollection::Pointer>(p->parentComponent());
+        Q_CHECK_PTR(pp);
+        int row = getIndexForItem(pp->components(), p);
+        p_index = createIndex(row, 0, pp);
       }
     }
+
     return p_index;
   }
 
@@ -176,45 +179,38 @@ namespace kex
   {
     QModelIndex ind;
 
-    if(hasIndex(row, column, parent))
+    if(parent.isValid())
     {
-      if(parent.isValid())
-      {
-        ComponentList::Node::Pointer parentItem = getItem(parent);
-        // if the index isValid() we should always get a valid node
-        Q_CHECK_PTR(parentItem);
-
-        ComponentList::iterator it(parentItem->children().begin());
-        it += row;
-
-        if (it != parentItem->children().end())
-        {
-          ind = createIndex(row, column, *it);
-        }
-
-      } else
-      {
-        ComponentList::iterator it(m_components.begin() + row);
-        // make sure the requested node/row is valid
-        if (it != m_components.end())
-        {
-          ind = createIndex(row, column, (*it));
-        }
-      }
-
+      ComponentCollection::Pointer pp = getCollectionItem(parent);
+      Q_ASSERT(pp->componentType() & ~Component::ActionType);
+      ind = createIndex(row, column, (pp->components()[row]).data());
+    } else {
+      ind = createIndex(row, column, (m_components[row]).data());
     }
-
     return ind;
   }
 
-  ComponentList::Node::Pointer
+  Component::Pointer
   ComponentModel::getItem(const QModelIndex& index) const
   {
-    ComponentList::Node::Pointer parentItem;
+    Component::Pointer parentItem;
+    void *p = index.internalPointer();
+    parentItem = static_cast<Component::Pointer>(p);
+    Q_CHECK_PTR(parentItem);
+    return parentItem;
+  }
+
+  ComponentCollection::Pointer
+  ComponentModel::getCollectionItem(const QModelIndex& index) const
+  {
+    Q_ASSERT(index.isValid());
+    ComponentCollection::Pointer collection;
 
     void *p = index.internalPointer();
-    parentItem = static_cast<ComponentList::Node::Pointer>(p);
-    return parentItem;
+    collection = static_cast<ComponentCollection::Pointer>(p);
+    Component::ComponentTypes t  = collection->componentType();
+    Q_ASSERT(collection->componentType() & ~Component::ActionType);
+    return collection;
   }
 
   Qt::ItemFlags ComponentModel::flags(const QModelIndex &index) const
@@ -227,4 +223,24 @@ namespace kex
     }
     return flags;
   }
+
+  int ComponentModel::getIndexForItem(const Component::ComponentList& list,
+                                      Component::Pointer component) const
+  {
+    int index(-1);
+    Component::SharedPointer p;
+
+    for(int i =0;i < list.size(); ++i)
+    {
+      p = list[i];
+      if(component == p.data())
+      {
+        index = i;
+        break;
+      }
+    }
+
+    return index;
+  }
+
 }

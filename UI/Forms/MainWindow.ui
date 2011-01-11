@@ -131,7 +131,7 @@
             <item>
              <widget class="QLabel" name="componentDurationLabel">
               <property name="text">
-               <string>0:15.25</string>
+               <string>mm:ss:ms</string>
               </property>
              </widget>
             </item>
@@ -171,41 +171,11 @@
          </layout>
         </item>
         <item>
-         <widget class="QTextEdit" name="descriptionTextEdit"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <item>
-           <widget class="QLabel" name="instructionLabel">
-            <property name="whatsThis">
-             <string>Description of component purpose.</string>
-            </property>
-            <property name="text">
-             <string>Instructions</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_7">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>388</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTextEdit" name="instructionTextEdit"/>
+         <widget class="QTextEdit" name="descriptionTextEdit">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -460,8 +430,6 @@ or Experiments.</string>
   </action>
  </widget>
  <resources>
-  <include location="../../Resources/resources.qrc"/>
-  <include location="../../Resources/resources.qrc"/>
   <include location="../../Resources/resources.qrc"/>
  </resources>
  <connections/>

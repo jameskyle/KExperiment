@@ -53,7 +53,7 @@ namespace kex
     // TODO add label to display column 2
     m_mapper->addMapping(descriptionTextEdit, 3, "plainText");
     m_mapper->addMapping(componentDurationLabel, 4, "text");
-    m_mapper->addMapping(componentIcon, 5, "pixmap");
+//    m_mapper->addMapping(componentIcon, 5);
     m_mapper->toFirst();
 
 

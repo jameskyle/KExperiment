@@ -85,14 +85,7 @@ namespace kex
 
   int ComponentModel::columnCount(const QModelIndex &parent) const
   {
-    int count(4);
-
-    if (parent.isValid())
-    {
-      count = 5;
-    }
-
-    return count;
+    return 5;
   }
 
   QVariant ComponentModel::data(const QModelIndex &index, int role) const
@@ -148,7 +141,8 @@ namespace kex
           default:
             break;
         }
-      }    }
+      }
+    }
       return result;
   }
 

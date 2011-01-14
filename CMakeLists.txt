@@ -36,6 +36,7 @@ SET(K_MOC_HDRS
     UI/Wizards/ComponentCreation/InformationPage.h
     UI/Wizards/ComponentCreation/WelcomePage.h
     UI/ComponentLibrary.h
+    UI/ComponentGraphicsItem.h
     UI/LiveView.h
     UI/MainWindow.h)
 
@@ -68,6 +69,7 @@ SET(K_SRCS
     Components/MetaData.cpp
     Models/ComponentSortFilterProxyModel.cpp
     UI/ComponentLibrary.cpp
+    UI/ComponentGraphicsItem.cpp
     UI/LiveView.cpp
     UI/MainWindow.cpp
     UI/Wizards/ComponentCreation/BaseConfigurationPage.cpp
@@ -121,4 +123,3 @@ ADD_EXECUTABLE(ComponentDomParserTest Tests/ComponentDomParserTest.cpp
                ${ComponentDomParser_MOC_SRCS})
 TARGET_LINK_LIBRARIES(ComponentListTest ${QT_LIBRARIES} K)
 TARGET_LINK_LIBRARIES(ComponentDomParserTest ${QT_LIBRARIES} K)
-

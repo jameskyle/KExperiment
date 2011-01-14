@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>692</width>
-    <height>307</height>
+    <height>308</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_8">
          <item>
-          <widget class="QLabel" name="rightViewerLabel">
+          <widget class="QLabel" name="leftViewerLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -46,7 +46,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Right Viewer</string>
+            <string>Left Viewer</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -75,18 +75,15 @@
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_10">
             <item>
-             <widget class="QLabel" name="rightTextView">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+             <widget class="QGraphicsView" name="leftGraphicsView">
+              <property name="enabled">
+               <bool>true</bool>
               </property>
-              <property name="text">
-               <string>Right Text View</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+              <property name="baseSize">
+               <size>
+                <width>200</width>
+                <height>150</height>
+               </size>
               </property>
              </widget>
             </item>
@@ -98,7 +95,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_9">
          <item>
-          <widget class="QLabel" name="leftViewerLabel">
+          <widget class="QLabel" name="rightViewerLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -117,7 +114,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Left Viewer</string>
+            <string>Right Viewer</string>
            </property>
            <property name="scaledContents">
             <bool>false</bool>
@@ -149,20 +146,7 @@
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
-             <widget class="QLabel" name="leftTextView">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Left Text View</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
+             <widget class="QGraphicsView" name="rightGraphicsView"/>
             </item>
            </layout>
           </widget>

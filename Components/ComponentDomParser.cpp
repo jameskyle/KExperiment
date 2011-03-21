@@ -324,11 +324,11 @@ namespace kex
 
       } else if(tag == AudioTagName || tag == VideoTagName)
       {
-        QVariant value(cleanText(child.text()));
+        QVariant value(cleanText(child.text().trimmed()));
         setComponentProperty(SourcePropertyName, value, component);
 
       } else {
-        QVariant value(cleanText(child.text()));
+        QVariant value(cleanText(child.text().trimmed()));
         setComponentProperty(tag, value, component);
       }
 

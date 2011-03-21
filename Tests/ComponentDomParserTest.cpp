@@ -46,7 +46,8 @@ namespace kex
       verifyValues(name, sp->name(), sp->name());
       verifyValues((*map)[LabelKey], sp->label(), sp->name());
       verifyValues((*map)[DescriptionKey], sp->description(), sp->name());
-      verifyValues((quint64)(*map)[DurationMSecsKey].toUInt(), sp->durationMSecs(), sp->name());
+      verifyValues((quint64)(*map)[DurationMSecsKey].toUInt(),
+                    sp->durationMSecs(), sp->name());
 
       if(sp->componentType() & ~Component::ActionType)
       {

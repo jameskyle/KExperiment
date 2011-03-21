@@ -63,9 +63,43 @@ namespace kex
     return !(*this == other);
   }
 
-  void ImageAction::setImageFromFile(const QString& imagePath)
+  void ImageAction::setImagePath(const QString& imagePath)
   {
     m_imagePath = imagePath;
     m_image.load(m_imagePath);
+  }
+
+  const QString ImageAction::toString() const
+  {
+    QString output(Component::toString());
+    output.append("\nDurationMSecs: %1");
+    output.append("\nDelayMSecs: %2");
+    output.append("\nxoffset: %3");
+    output.append("\nyoffset: %4");
+    output.append("\nimagePath: %5");
+
+    return output.arg(durationMSecs()).arg(delayMSecs()).arg(xoffset()).
+                  arg(yoffset()).arg(imagePath());
+  }
+
+  void ImageAction::setDurationMSecs(quint64 durationMSecs)
+  {
+    if (durationMSecs > Component::MAX_DURATION) {
+      QString msg;
+      msg = "ImageAction::setDurationMSecs argument exceeds maximum allowed duration";
+
+      InvalidDurationValue exc(msg.toAscii());
+      throw  exc;
+
+    } else if(durationMSecs < 0) {
+      QString msg;
+      msg = "ImageAction::setDurationMSecs durationMSecs must be positive";
+
+      InvalidDurationValue exc(msg.toAscii());
+      throw exc;
+    }
+
+    m_durationMSecs = durationMSecs;
+
   }
 }

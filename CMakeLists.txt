@@ -15,6 +15,12 @@ IF(APPLE)
   SET(GCC_ENABLE_FIX_AND_CONTINUE YES)
 ENDIF(APPLE)
 
+ADD_CUSTOM_COMMAND(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ComponentTemplates.h
+  COMMAND ${CMAKE_SOURCE_DIR}/Tests/create_components.py  ${CMAKE_CURRENT_BINARY_DIR}
+)
+ADD_CUSTOM_TARGET(generate DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ComponentTemplates.h)
+
 SET(K_MOC_HDRS
     Models/ComponentModel.h
     Components/Component.h
@@ -65,6 +71,7 @@ SET(K_SRCS
     Components/Experiment/Experiment.cpp
     Components/ComponentList.cpp
     Components/ComponentDomParser.cpp
+    Components/ComponentDomParser.cpp
     Components/ComponentFactory.cpp
     Components/MetaData.cpp
     Models/ComponentSortFilterProxyModel.cpp
@@ -100,8 +107,8 @@ FIND_PACKAGE(Qt4 REQUIRED)
 
 QT4_ADD_RESOURCES(K_RC_SRCS   ${K_RCS})
 QT4_WRAP_CPP(     K_MOC_SRCS  ${K_MOC_HDRS})
-QT4_WRAP_CPP(     CompListTest_MOC_SRCS Tests/ComponentListTest.h)
-QT4_WRAP_CPP(     ComponentDomParser_MOC_SRCS Tests/ComponentDomParserTest.h)
+
+
 QT4_WRAP_UI(      K_UI_HDRS   ${K_UI_FILES})
 
 INCLUDE(${QT_USE_FILE})
@@ -117,9 +124,16 @@ ADD_EXECUTABLE(KExperiment MACOSX_BUNDLE ${K_RC_SRCS} ${KEXP_SRCS})
 
 TARGET_LINK_LIBRARIES(KExperiment ${QT_LIBRARIES} K)
 
-ADD_EXECUTABLE(ComponentListTest Tests/ComponentListTest.cpp
-               ${CompListTest_MOC_SRCS})
-ADD_EXECUTABLE(ComponentDomParserTest Tests/ComponentDomParserTest.cpp
-               ${ComponentDomParser_MOC_SRCS})
-TARGET_LINK_LIBRARIES(ComponentListTest ${QT_LIBRARIES} K)
-TARGET_LINK_LIBRARIES(ComponentDomParserTest ${QT_LIBRARIES} K)
+FILE(GLOB TEST_FILES "Tests/*.h")
+
+FOREACH(test ${TEST_FILES})
+  GET_FILENAME_COMPONENT(BASENAME ${test} NAME_WE)
+  STRING(REPLACE ".h" ".cpp" SRC_NAME ${test})
+
+  QT4_WRAP_CPP("${BASENAME}_MOC_SRCS" ${test})
+  ADD_EXECUTABLE(${BASENAME} ${SRC_NAME} ${${BASENAME}_MOC_SRCS})  
+  ADD_DEPENDENCIES(${BASENAME} generate)
+  TARGET_LINK_LIBRARIES(${BASENAME} ${QT_LIBRARIES} K)
+
+ENDFOREACH(test)
+

@@ -12,6 +12,17 @@ namespace kex
   {
     return m_message;
   }
+
+  InvalidDurationValue::InvalidDurationValue(const char* msg) :
+      exception(),
+      m_message(msg)
+  {
+  }
+
+  const char* InvalidDurationValue::what() const throw()
+  {
+    return m_message;
+  }
 }
 
 

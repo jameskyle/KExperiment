@@ -36,6 +36,18 @@ namespace kex
     const QString FileKey;
     const QString NameKey;
 
+    /** \brief Method for testing two values of the same type for equivalence
+    *
+    * This method takes the first and second argument and tests for equivalence.
+    * If they are not equal, a log message is printed out which specifies the
+    * expected value, the received value, and the name of the component.
+    *
+    * \author James Kyle KSpace MRI
+    * \date 2011-03-16
+    * \param val1 the first value to test equivalence
+    * \param val2 the second value to test for equivalence
+    * \param name the name of the component being tested
+    **/
     template<class T>
     void verifyValues(const T& val1, const T& val2, const QString& name) const
     {
@@ -54,5 +66,6 @@ namespace kex
     void cleanupTestCase();
 
   };
+
 }
 #endif // COMPONENTDOMPARSERTEST_H

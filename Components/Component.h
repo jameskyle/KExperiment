@@ -232,8 +232,6 @@ namespace kex
      **/
     virtual quint64 durationMSecs() const = 0;
 
-    static const quint64 MAX_DURATION = 1800000; //!< maximum run time, 30m
-
     /** \brief Returns a QString representation of the component type.
      *
      * \author James Kyle KSpace MRI
@@ -296,6 +294,8 @@ namespace kex
     virtual void setParentComponent(Pointer p);
 
     static ComponentList& globalList();
+
+    static const quint64 MAX_DURATION = 1800000; //!< maximum run time, 30m
 
   protected:
     ComponentTypes  m_componentType; //!< type for component

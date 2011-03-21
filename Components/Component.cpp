@@ -32,13 +32,13 @@ namespace kex
   {
     QString output;
 
-    output.append("\nObject: %1\n");
-    output.append("\tName: %2\n");
-    output.append("\tDescription: %3\n");
-    output.append("\tLabel: %4\n");
-    output.append("\tMainCategory: %5\n");
+    output.append("Object: %1");
+    output.append("\nName: %2");
+    output.append("\nDescription: %3");
+    output.append("\nLabel: %4");
+    output.append("\nMainCategory: %5");
 
-    return output.arg(typeid(this).name(), name(), description(), label(),
+    return output.arg(componentTypeToString(m_componentType), name(), description(), label(),
                       mainCategory());
   }
 

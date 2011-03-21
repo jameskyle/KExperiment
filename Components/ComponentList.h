@@ -141,6 +141,7 @@ namespace kex
     void              remove(Node::Pointer node);
     iterator          findByName(const QString& name) const;
     static ComponentList&    globalList();
+    // TODO: implement find method
 //    iterator find(Node::Pointer node) const;
 
 

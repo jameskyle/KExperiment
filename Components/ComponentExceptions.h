@@ -16,6 +16,21 @@ namespace kex
   private:
       const char* m_message;
   };
+
+  class InvalidDurationValue : public std::exception
+  {
+  public:
+    explicit InvalidDurationValue(const char* msg);
+
+    const char* what() const throw();
+
+    ~InvalidDurationValue() throw() {}
+
+  private:
+    const char* m_message;
+
+
+  };
 }
 
 #endif // COMPONENTEXCEPTIONS_H

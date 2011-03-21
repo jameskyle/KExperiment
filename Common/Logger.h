@@ -24,7 +24,7 @@ namespace kex
       DebugLogLevel      = 0x1,
       WarningLogLevel    = 0x2,
       CriticalLogLevel  = 0x4,
-      FatalLogLevel      = 0x8,
+      FatalLogLevel      = 0x8
     };
     /** \brief  Returns an instance of the Logger class
      * 

@@ -3,8 +3,10 @@
 
 #include <Phonon/MediaObject>
 #include <QDebug>
+#include <QFile>
 
-#include <Components/Component.h>
+#include "Components/Component.h"
+#include "Common/Logger.h"
 
 namespace kex
 {

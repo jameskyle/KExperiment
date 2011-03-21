@@ -2,6 +2,7 @@
 
 import yaml
 import os
+import sys
 
 def setup_template():
     template = """
@@ -41,7 +42,12 @@ def finalize_template(template):
     return template
 
 def write_template(template):
-    f = open("ComponentTemplates.h", "w")
+    output = os.path.abspath(os.getcwd())
+    
+    if len(sys.argv) > 1:
+        output = sys.argv[1]
+
+    f = open(os.path.join(output, "ComponentTemplates.h"), "w")
     print >>f, template
 
 def main():
@@ -85,4 +91,6 @@ def main():
     write_template(template)
 
 if __name__ == "__main__":
+    root = os.path.abspath(os.path.dirname(__file__))
+    os.chdir(root)
     main()

@@ -5,6 +5,7 @@
 #include <QImage>
 
 #include "Components/Component.h"
+#include "Components/ComponentExceptions.h"
 
 namespace kex
 {
@@ -12,7 +13,7 @@ namespace kex
   {
     Q_OBJECT
     Q_PROPERTY(quint64 duration      READ durationMSecs  WRITE setDurationMSecs)
-    Q_PROPERTY(QString image         READ imagePath      WRITE setImageFromFile)
+    Q_PROPERTY(QString image         READ imagePath      WRITE setImagePath)
     Q_PROPERTY(quint64 delay         READ delayMSecs     WRITE setDelayMSecs)
     Q_PROPERTY(qint32  xoffset       READ xoffset        WRITE setXoffset)
     Q_PROPERTY(qint32  yoffset       READ yoffset        WRITE setYoffset)
@@ -61,9 +62,14 @@ namespace kex
      * \date 2010-12-13
      * \param durationMSecs the new value for duration in milliseconds
      **/
-    void setDurationMSecs(quint64 durationMSecs) {
-      m_durationMSecs = durationMSecs;
-    }
+    void setDurationMSecs(quint64 durationMSecs);
+    /** \brief String representation for the ImageAction.
+     *
+     * \author James Kyle KSpace MRI
+     * \date 2011-03-18
+     * \return QString representation of the component
+     **/
+     const QString toString() const;
 
     /** \brief Returns the delay in milliseconds.
      *
@@ -74,7 +80,7 @@ namespace kex
     quint64 delayMSecs() const {return m_delayMSecs;}
 
     /** \brief Sets the delay in milliseconds.
-     *
+        *
      * \author James Kyle KSpace MRI
      * \date 2010-12-13
      * \param delayMSecs the new value for delay in milliseconds
@@ -141,7 +147,7 @@ namespace kex
     const QImage& image() const { return m_image;}
 
     QString imagePath() const {return m_imagePath;}
-    void setImageFromFile(const QString& imagePath);
+    void setImagePath(const QString& imagePath);
 
     Pointer clone() const;
     bool operator==(const Component& other) const;

@@ -9,6 +9,10 @@ IF(APPLE)
   SET(CMAKE_OSX_ARCHITECTURES i386;x86_64)
 ENDIF(APPLE)
 
+ADD_CUSTOM_COMMAND(
+  OUTPUT ComponentTemplates.h
+  COMMAND create_components.py 
+  )
 ADD_DEFINITIONS(-Wall)
 
 SET(QT_USE_QTXML true)
@@ -24,4 +28,8 @@ INCLUDE(${QT_USE_FILE})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR} ../3rd .)
 
 ADD_EXECUTABLE(ComponentListTest ComponentListTest.cpp ${KTEST_MOC_SRCS})
+ADD_DEPENDENCIES(componentListTest ComponentTemplates.h)
+
 TARGET_LINK_LIBRARIES(ComponentListTest ${QT_LIBRARIES})
+
+

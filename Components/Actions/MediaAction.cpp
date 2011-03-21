@@ -15,6 +15,12 @@ namespace kex
   m_mediaObject(),
   m_delayMSecs(delayMSecs)
   {
+    if(source.size() > 0 &&  !QFile::exists(source)) {
+      Logger& logger = Logger::instance();
+      QString msg("Source for %1 does not exist: %2");
+      logger.log(msg.arg(name).arg(source), this, Logger::WarningLogLevel);
+    }
+
     Phonon::MediaSource s(source);
     m_mediaObject.setCurrentSource(s);
     setComponentType();
@@ -72,6 +78,17 @@ namespace kex
 
   void MediaAction::setSource(const QString& sourceFile)
   {
+    if(!QFile::exists(sourceFile)) {
+      Logger& logger = Logger::instance();
+      QString msg("Source for %1 does not exist: %2");
+      QString n = name();
+
+      if (n.size() == 0) {n = "Unknown";}
+
+      logger.log(msg.arg(n).arg(sourceFile), this, Logger::WarningLogLevel);
+      logger.log("got here");
+    }
+
     Phonon::MediaSource source(sourceFile.trimmed());
     m_mediaObject.setCurrentSource(source);
     setComponentType();

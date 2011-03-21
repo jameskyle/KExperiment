@@ -2,7 +2,7 @@
 
 namespace kex
 {
-  ImageActionTest::ImageActionTest() : m_categories(), m_action()
+  ImageActionTest::ImageActionTest() : QObject(0), m_categories(), m_action()
   {
     m_categories.insert(QString("Cat1"));
     m_categories.insert(QString("Cat2"));

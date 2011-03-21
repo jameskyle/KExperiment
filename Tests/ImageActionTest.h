@@ -2,13 +2,8 @@
 #define IMAGEACTIONTEST_H
 
 #include <QTest>
-#include <QDebug>
-#include <QVariant>
-#include <QSet>
-#include <QMap>
 
 #include "Components/Components.h"
-#include "Common/Config.h"
 
 namespace kex
 {

@@ -1,23 +1,18 @@
-#ifndef IMAGEACTIONTEST_H
-#define IMAGEACTIONTEST_H
+#ifndef TEXTACTIONTEST_H
+#define TEXTACTIONTEST_H
 
 #include <QTest>
 
 #include "Components/Components.h"
 
+
 namespace kex
 {
-  class ImageAction;
-
-  class ImageActionTest : public QObject
+  class TextActionTest : public QObject
   {
     Q_OBJECT
   public:
-    explicit ImageActionTest();
-
-  private:
-    QSet<QString> m_categories;
-    ImageAction m_action;
+    explicit TextActionTest();
 
   private slots:
     void categoriesTest();
@@ -27,15 +22,20 @@ namespace kex
     void componentTypeTest();
     void componentTypeToStringTest();
     void constructorTest();
+    void delayMSecsTest();
     void descriptionTest();
     void durationMSecsTest();
+    void equalityTest();
     void initTestCase();
     void labelTest();
     void nameTest();
-    void operatorEqualsTest();
     void parentComponentTest();
+    void setDelayMSecsTest();
+    void setSourcetest();
+    void sourceTest();
+    void textTest();
     void toStringTest();
   };
 }
 
-#endif // IMAGEACTIONTEST_H
+#endif // TEXTACTIONTEST_H

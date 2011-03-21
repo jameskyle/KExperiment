@@ -20,21 +20,22 @@ namespace kex
     ImageAction m_action;
 
   private slots:
-    void initTestCase();
-    void cleanupTestCase();
-    void constructorTest();
-    void cloneTest();
-    void nameTest();
-    void descriptionTest();
-    void labelTest();
     void categoriesTest();
-    void toStringTest();
-    void componentTypeTest();
-    void durationMSecsTest();
-    void componentTypeToStringTest();
+    void cleanupTestCase();
+    void cloneTest();
     void componentTypeFromStringTest();
+    void componentTypeTest();
+    void componentTypeToStringTest();
+    void constructorTest();
+    void descriptionTest();
+    void durationMSecsTest();
+    void initTestCase();
+    void labelTest();
+    void nameTest();
     void operatorEqualsTest();
     void parentComponentTest();
+    void toStringTest();
+
   };
 }
 

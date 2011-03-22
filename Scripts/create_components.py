@@ -3,6 +3,7 @@
 import yaml
 import os
 import sys
+print(sys.argv)
 
 def setup_template():
     template = """
@@ -41,18 +42,24 @@ def finalize_template(template):
 """
     return template
 
-def write_template(template):
-    output = os.path.abspath(os.getcwd())
-    
-    if len(sys.argv) > 1:
-        output = sys.argv[1]
-
-    f = open(os.path.join(output, "ComponentTemplates.h"), "w")
+def write_template(template, output):
+    f = open(output, "w")
     print >>f, template
 
 def main():
+    output=os.path.join(os.getcwd(), "CustomTemplates.h")
+    
+    if len(sys.argv) < 2:
+        sys.stderr.write("No component template provided!\n")
+        exit(1)
+    
+    templates = os.path.abspath(sys.argv[1])
+    
+    if len(sys.argv) > 2:
+        output = sys.argv[2]
+    
     template = setup_template()
-    data = yaml.load(open("components.yml"))
+    data = yaml.load(open(templates))
     
     for comp in data:
         f = os.path.abspath(comp["file"])
@@ -88,9 +95,9 @@ def main():
 
     template = finalize_template(template)
     
-    write_template(template)
+    write_template(template, output)
 
 if __name__ == "__main__":
-    root = os.path.abspath(os.path.dirname(__file__))
-    os.chdir(root)
+    # root = os.path.abspath(os.path.dirname(__file__))
+    # os.chdir(root)
     main()

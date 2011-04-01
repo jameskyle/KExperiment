@@ -9,7 +9,7 @@ namespace kex
                          const QString&       description,
                          const QString&       label,
                          const QSet<QString>& categories,
-                         quint64              durationMSecs) :
+                         qint64              durationMSecs) :
   Component(parent, parentComponent, name, description, label, categories),
   m_durationMSecs(durationMSecs)
   {

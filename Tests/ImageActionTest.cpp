@@ -102,20 +102,19 @@ namespace kex
 
   void ImageActionTest::categoriesTest()
   {
-    QVERIFY(m_action.categories().size() == 0);
-    m_action.addCategory("Cat1");
-    QVERIFY(m_action.categories().size() == 1);
-    QVERIFY(m_action.categories().contains("Cat1"));
+    QStringList list;
+    list << "Cat1" << "Cat2" << "Cat3";
+    ImageAction action;
 
-    m_action.addCategory("Cat2");
-    QVERIFY(m_action.categories().size() == 2);
-    QVERIFY(m_action.categories().contains("Cat1"));
-    QVERIFY(m_action.categories().contains("Cat2"));
+    QVERIFY(action.categories().size() == 0);
+    QVERIFY(action.categories().empty());
 
-    m_action.removeCategory("Cat1");
-    QVERIFY(m_action.categories().size() == 1);
-    QVERIFY(!m_action.categories().contains("Cat1"));
-    QVERIFY(m_action.categories().contains("Cat2"));
+    for (int i = 0; i < list.size(); ++i) {
+      QVERIFY(action.categories().size() == i);
+      action.addCategory(list[i]);
+      QVERIFY(action.categories().contains(list[i]));
+      QVERIFY(action.categories().size() == (i + 1));
+    }
   }
 
   void ImageActionTest::toStringTest()

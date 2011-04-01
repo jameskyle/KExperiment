@@ -8,7 +8,7 @@ namespace kex
   class RestAction : public Component
   {
     Q_OBJECT
-    Q_PROPERTY(quint64 duration READ durationMSecs WRITE setDurationMSecs)
+    Q_PROPERTY(qint64 duration READ durationMSecs WRITE setDurationMSecs)
   public:
     typedef RestAction* Pointer;
 
@@ -30,7 +30,7 @@ namespace kex
                         const QString&       description=QString(""),
                         const QString&       label=QString(""),
                         const QSet<QString>& categories=QSet<QString>(),
-                        quint64              durationMSecs=0);
+                        qint64              durationMSecs=0);
    /** \brief Destructor for the object
     *
     * \author James Kyle KSpace MRI
@@ -44,15 +44,15 @@ namespace kex
     * \date 2010-04-01
     * \param durationMSecs duration in milliseconds
     **/
-    void setDurationMSecs(quint64 durationMSecs) {m_durationMSecs = durationMSecs;}
+    void setDurationMSecs(qint64 durationMSecs) {m_durationMSecs = durationMSecs;}
 
    /** \brief Gets the duration for RestAction in milliseconds.
     *
     * \author James Kyle KSpace MRI
     * \date 2010-04-01
-    * \return quint64 duration in milliseconds
+    * \return qint64 duration in milliseconds
     **/
-    quint64 durationMSecs() const { return m_durationMSecs;}
+    qint64 durationMSecs() const { return m_durationMSecs;}
 
    /** \brief Returns a RestAction that is a clone of the current one
     *
@@ -79,7 +79,7 @@ namespace kex
     bool operator!=(const Component& other) const;
 
   private:
-    quint64 m_durationMSecs; //!< the rest duration for component
+    qint64 m_durationMSecs; //!< the rest duration for component
     };
 };
 #endif

@@ -101,6 +101,8 @@ namespace kex
       t = Component::AudioActionType;
     else if(st == "VideoActionType")
       t = Component::VideoActionType;
+    else if(st == "MediaActionType")
+      t = Component::MediaActionType;
     else if(st == "ActionType")
       t = Component::ActionType;
     else if(st == "EventType")
@@ -132,6 +134,9 @@ namespace kex
         break;
       case VideoActionType:
         typeString = "VideoAction";
+        break;
+      case MediaActionType:
+        typeString = "MediaAction";
         break;
       case ActionType:
         typeString = "Action";

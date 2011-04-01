@@ -14,10 +14,10 @@ namespace kex
     m_componentType = Component::ExperimentType;
   }
 
-  quint64 Experiment::durationMSecs() const
+  qint64 Experiment::durationMSecs() const
   {
     Component::SharedPointer comp;
-    quint64 duration = 0;
+    qint64 duration = 0;
     // all children are trials
     foreach(comp, m_components)
     {

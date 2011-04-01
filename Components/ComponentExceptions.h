@@ -31,6 +31,19 @@ namespace kex
 
 
   };
+
+  class InvalidDelayValue : public std::exception
+  {
+  public:
+    explicit InvalidDelayValue(const char* msg);
+
+    const char* what() const throw();
+
+    ~InvalidDelayValue() throw() {}
+
+  private:
+    const char* m_message;
+  };
 }
 
 #endif // COMPONENTEXCEPTIONS_H

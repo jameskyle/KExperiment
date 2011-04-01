@@ -3,6 +3,7 @@
 
 #include <QTest>
 #include <QDebug>
+#include <QStringList>
 
 #include "Components/Components.h"
 #include "Common/Config.h"
@@ -14,6 +15,10 @@ namespace kex
     Q_OBJECT
   public:
     explicit MediaActionTest();
+
+  private:
+    QString m_testAudioFile;
+    QString m_testVideoFile;
 
   private slots:
     void categoriesTest();
@@ -29,13 +34,12 @@ namespace kex
     void equalityTest();
     void initTestCase();
     void labelTest();
-    void mediaObjectTest();
     void nameTest();
     void parentComponentTest();
-    void setDelayMSecsTest();
-    void setSourceTest();
     void sourceTest();
     void toStringTest();
+
+
   };
 }
 

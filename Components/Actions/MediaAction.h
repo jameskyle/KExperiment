@@ -7,6 +7,7 @@
 
 #include "Components/Component.h"
 #include "Common/Logger.h"
+#include "Components/ComponentExceptions.h"
 
 namespace kex
 {
@@ -14,8 +15,8 @@ namespace kex
   {
     Q_OBJECT
     Q_PROPERTY(QString source   READ source        WRITE setSource)
-    Q_PROPERTY(quint64 delay    READ delayMSecs    WRITE setDelayMSecs)
-    Q_PROPERTY(quint64 duration READ durationMSecs)
+    Q_PROPERTY(qint64 delay    READ delayMSecs    WRITE setDelayMSecs)
+    Q_PROPERTY(qint64 duration READ durationMSecs)
 
   public:
     typedef MediaAction* Pointer;
@@ -25,31 +26,38 @@ namespace kex
                          const QString&       description     = QString(""),
                          const QString&       label           = QString(""),
                          const QSet<QString>& categories      = QSet<QString>(),
-                         quint64              delayMSecs      = 0,
+                         qint64               delayMSecs      = 0,
                          const QString&       source          = QString(""));
 
-      ~MediaAction();
+    ~MediaAction();
     QString source() const;
     void setSource(const QString& sourceFile);
 
-    const Phonon::MediaObject& mediaObject() const {return m_mediaObject;}
+    /** \brief String representation of the MediaAction object.
+     *
+     * \author James A. Kyle KSpace, LLC
+     * \date 31/03/2011
+     * \return Qstring representing the MediaAction instance
+    **/
+    const QString toString() const;
 
-    quint64 durationMSecs() const;
-    quint64 delayMSecs() const {return m_delayMSecs;}
-    void setDelayMSecs(quint64 delayMSecs) {m_delayMSecs = delayMSecs;}
+    qint64 durationMSecs() const;
+    qint64 delayMSecs() const {return m_delayMSecs;}
+    void setDelayMSecs(qint64 delayMSecs);
 
     Pointer clone() const;
     bool operator==(const Component& other) const;
     bool operator!=(const Component& other) const;
 
+  private slots:
+    void updateDurationMSecs(qint64 duration);
+
   private:
     void setComponentType();
 
     Phonon::MediaObject m_mediaObject;
-    quint64 m_delayMSecs;
+    qint64 m_delayMSecs;
+    qint64 m_durationMSecs;
   };
-
-  typedef MediaAction AudioAction;
-  typedef MediaAction VideoAction;
 }
 #endif // MEDIAACTION_H

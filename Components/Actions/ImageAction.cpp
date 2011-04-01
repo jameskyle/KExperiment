@@ -8,8 +8,8 @@ namespace kex
                             const QString& description,
                             const QString& label,
                             const QSet<QString> categories,
-                            quint64 durationMSecs,
-                            quint64 delayMSecs,
+                            qint64 durationMSecs,
+                            qint64 delayMSecs,
                             const QString& imagePath,
                             qint32 xoffset,
                             qint32 yoffset,
@@ -82,7 +82,7 @@ namespace kex
                   arg(yoffset()).arg(imagePath());
   }
 
-  void ImageAction::setDurationMSecs(quint64 durationMSecs)
+  void ImageAction::setDurationMSecs(qint64 durationMSecs)
   {
     if (durationMSecs > Component::MAX_DURATION) {
       QString msg;

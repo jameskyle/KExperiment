@@ -23,6 +23,17 @@ namespace kex
   {
     return m_message;
   }
+
+  InvalidDelayValue::InvalidDelayValue(const char* msg) :
+      exception(),
+      m_message(msg)
+  {
+  }
+
+  const char* InvalidDelayValue::what() const throw()
+  {
+    return m_message;
+  }
 }
 
 

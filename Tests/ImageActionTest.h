@@ -2,6 +2,7 @@
 #define IMAGEACTIONTEST_H
 
 #include <QTest>
+#include <QStringList>
 
 #include "Components/Components.h"
 
@@ -35,6 +36,8 @@ namespace kex
     void operatorEqualsTest();
     void parentComponentTest();
     void toStringTest();
+
+    // TODO: test image specific values
   };
 }
 

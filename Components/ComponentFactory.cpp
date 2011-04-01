@@ -14,11 +14,14 @@ namespace kex
     m_componentCreatorMap[Component::ImageActionType] =
     boost::lambda::new_ptr<ImageAction>();
 
-    m_componentCreatorMap[Component::AudioActionType] =
-    boost::lambda::new_ptr<AudioAction>();
+    m_componentCreatorMap[Component::MediaActionType] =
+        boost::lambda::new_ptr<MediaAction>();
 
-    m_componentCreatorMap[Component::VideoActionType] =
-    boost::lambda::new_ptr<VideoAction>();
+//    m_componentCreatorMap[Component::AudioActionType] =
+//    boost::lambda::new_ptr<AudioAction>();
+
+//    m_componentCreatorMap[Component::VideoActionType] =
+//    boost::lambda::new_ptr<VideoAction>();
 
     m_componentCreatorMap[Component::EventType] =
     boost::lambda::new_ptr<Event>();

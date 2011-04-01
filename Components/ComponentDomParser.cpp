@@ -221,11 +221,8 @@ namespace kex
       else if (t == ImageTagName)
         c_type = Component::ImageActionType;
 
-      else if (t == AudioTagName)
-        c_type = Component::AudioActionType;
-
-      else if (t == VideoTagName)
-        c_type = Component::VideoActionType;
+      else if (t == AudioTagName || t == VideoTagName)
+        c_type = Component::MediaActionType;
 
     } else if (rootName == EventTagName)
     {

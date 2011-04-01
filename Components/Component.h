@@ -47,9 +47,9 @@ namespace kex
       EventType                 = 0x1 << 5,
       TrialType                 = 0x1 << 6,
       ExperimentType            = 0x1 << 7,
+      MediaActionType           = (VideoActionType | AudioActionType),
       ActionType                = (RestActionType | TextActionType |
-                                   ImageActionType | AudioActionType |
-                                   VideoActionType),
+                                   ImageActionType | MediaActionType),
       AllComponents             = (ActionType | EventType |
                                    TrialType | ExperimentType)
     };
@@ -228,9 +228,9 @@ namespace kex
      *
      * \author James Kyle KSpace MRI
      * \date 2010-04-01
-     * \return quint64 duration of component in milliseconds
+     * \return qint64 duration of component in milliseconds
      **/
-    virtual quint64 durationMSecs() const = 0;
+    virtual qint64 durationMSecs() const = 0;
 
     /** \brief Returns a QString representation of the component type.
      *
@@ -295,7 +295,7 @@ namespace kex
 
     static ComponentList& globalList();
 
-    static const quint64 MAX_DURATION = 1800000; //!< maximum run time, 30m
+    static const qint64 MAX_DURATION = 1800000; //!< maximum run time, 30m
 
   protected:
     ComponentTypes  m_componentType; //!< type for component

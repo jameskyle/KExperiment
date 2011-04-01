@@ -14,10 +14,10 @@ namespace kex
     m_componentType = Component::EventType;
   }
 
-  quint64 Event::durationMSecs() const
+  qint64 Event::durationMSecs() const
   {
     Component::SharedPointer comp;
-    quint64 duration = 0;
+    qint64 duration = 0;
 
     foreach(comp, m_components)
     {

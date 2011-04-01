@@ -12,9 +12,9 @@ namespace kex
   class ImageAction : public Component
   {
     Q_OBJECT
-    Q_PROPERTY(quint64 duration      READ durationMSecs  WRITE setDurationMSecs)
+    Q_PROPERTY(qint64 duration      READ durationMSecs  WRITE setDurationMSecs)
     Q_PROPERTY(QString image         READ imagePath      WRITE setImagePath)
-    Q_PROPERTY(quint64 delay         READ delayMSecs     WRITE setDelayMSecs)
+    Q_PROPERTY(qint64 delay         READ delayMSecs     WRITE setDelayMSecs)
     Q_PROPERTY(qint32  xoffset       READ xoffset        WRITE setXoffset)
     Q_PROPERTY(qint32  yoffset       READ yoffset        WRITE setYoffset)
     Q_PROPERTY(kex::Component::ComponentPositions position READ position WRITE setPosition)
@@ -33,8 +33,8 @@ namespace kex
                 const QString&      description=QString(""),
                 const QString&      label=QString(""),
                 const QSet<QString> categories=QSet<QString>(),
-                quint64             durationMSecs=0,
-                quint64             delayMSecs=0,
+                qint64             durationMSecs=0,
+                qint64             delayMSecs=0,
                 const QString&      imagePath=QString(""),
                 qint32              xoffset=0,
                 qint32              yoffset=0,
@@ -52,9 +52,9 @@ namespace kex
      *
      * \author James Kyle KSpace MRI
      * \date 2010-12-13
-     * \return quint64 the duration of component in milliseconds
+     * \return qint64 the duration of component in milliseconds
      **/
-    quint64 durationMSecs() const {return m_durationMSecs;}
+    qint64 durationMSecs() const {return m_durationMSecs;}
 
     /** \brief Sets the duration in milliseconds.
      *
@@ -62,7 +62,7 @@ namespace kex
      * \date 2010-12-13
      * \param durationMSecs the new value for duration in milliseconds
      **/
-    void setDurationMSecs(quint64 durationMSecs);
+    void setDurationMSecs(qint64 durationMSecs);
     /** \brief String representation for the ImageAction.
      *
      * \author James Kyle KSpace MRI
@@ -75,9 +75,9 @@ namespace kex
      *
      * \author James Kyle KSpace MRI
      * \date 2010-12-13
-     * \return quint64 the delay of component in milliseconds
+     * \return qint64 the delay of component in milliseconds
      **/
-    quint64 delayMSecs() const {return m_delayMSecs;}
+    qint64 delayMSecs() const {return m_delayMSecs;}
 
     /** \brief Sets the delay in milliseconds.
         *
@@ -85,7 +85,7 @@ namespace kex
      * \date 2010-12-13
      * \param delayMSecs the new value for delay in milliseconds
      **/
-    void setDelayMSecs(quint64 delayMSecs) {m_delayMSecs = delayMSecs;}
+    void setDelayMSecs(qint64 delayMSecs) {m_delayMSecs = delayMSecs;}
 
     /** \brief Returns the offset of component along x axis.
      *
@@ -154,8 +154,8 @@ namespace kex
     bool operator!=(const Component& other) const;
 
   private:
-    quint64 m_durationMSecs; //!< duration for component in milliseconds
-    quint64 m_delayMSecs; //!< delay for component in milliseconds
+    qint64 m_durationMSecs; //!< duration for component in milliseconds
+    qint64 m_delayMSecs; //!< delay for component in milliseconds
     QImage  m_image; //!< the image used for display.
     QString m_imagePath; //!< the path for the image resource
     qint32  m_xoffset; //!< the offset for component along x axis

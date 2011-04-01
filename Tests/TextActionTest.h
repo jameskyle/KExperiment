@@ -5,7 +5,6 @@
 
 #include "Components/Components.h"
 
-
 namespace kex
 {
   class TextActionTest : public QObject
@@ -31,7 +30,7 @@ namespace kex
     void nameTest();
     void parentComponentTest();
     void setDelayMSecsTest();
-    void setSourcetest();
+    void setSourceTest();
     void sourceTest();
     void textTest();
     void toStringTest();

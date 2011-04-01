@@ -46,7 +46,7 @@ namespace kex
       verifyValues(name, sp->name(), sp->name());
       verifyValues((*map)[LabelKey], sp->label(), sp->name());
       verifyValues((*map)[DescriptionKey], sp->description(), sp->name());
-      verifyValues((quint64)(*map)[DurationMSecsKey].toUInt(),
+      verifyValues((qint64)(*map)[DurationMSecsKey].toUInt(),
                     sp->durationMSecs(), sp->name());
 
       if(sp->componentType() & ~Component::ActionType)
@@ -61,8 +61,8 @@ namespace kex
       } else if(sp->componentType() &
          (Component::ActionType & ~Component::RestActionType))
       {
-        quint64 spec_delay = (*map)[DelayMSecsKey].toUInt();
-        quint64 comp_delay = sp->property("delay").toUInt();
+        qint64 spec_delay = (*map)[DelayMSecsKey].toUInt();
+        qint64 comp_delay = sp->property("delay").toUInt();
 
         verifyValues(spec_delay, comp_delay, sp->name());
       }

@@ -14,13 +14,11 @@ namespace kex
       logger = &Logger::instance();
       config = &Config::instance();
 
-      // FIXME http://tinyurl.com/2ga3sdx
       Config::ApplicationDataDirectoryTypes dt(Config::LogDirectory |
                                                Config::ActionDirectory |
                                                Config::ExperimentDirectory |
                                                Config::EventDirectory |
                                                Config::TrialDirectory);
-
       dataDirectoryList = config->dataDirectoryList(dt);
       foreach(QString path, dataDirectoryList)
       {

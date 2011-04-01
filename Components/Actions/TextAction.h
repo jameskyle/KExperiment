@@ -14,8 +14,8 @@ namespace kex
   {
     Q_OBJECT
     Q_PROPERTY(QString text          READ text          WRITE setText)
-    Q_PROPERTY(quint64 duration      READ durationMSecs WRITE setDurationMSecs)
-    Q_PROPERTY(quint64 delay         READ delayMSecs    WRITE setDelayMSecs)
+    Q_PROPERTY(qint64 duration      READ durationMSecs WRITE setDurationMSecs)
+    Q_PROPERTY(qint64 delay         READ delayMSecs    WRITE setDelayMSecs)
     Q_PROPERTY(QString text          READ text          WRITE setText)
     Q_PROPERTY(QString family        READ family        WRITE setFamily)
     Q_PROPERTY(int     pointSize     READ pointSize     WRITE setPointSize)
@@ -39,8 +39,8 @@ namespace kex
                const QString& description=QString(""),
                const QString& label=QString(""),
                const QSet<QString>& categories=QSet<QString>(),
-               quint64 durationMSecs=0,
-               quint64 delayMSecs=0,
+               qint64 durationMSecs=0,
+               qint64 delayMSecs=0,
                const QString& text=QString(""),
                const QString& family="Helvetica",
                int pointSize=12,
@@ -61,9 +61,9 @@ namespace kex
      *
      * \author James Kyle KSpace MRI
      * \date 2010-12-13
-     * \return quint64 the delay of component in milliseconds
+     * \return qint64 the delay of component in milliseconds
      **/
-    quint64 durationMSecs() const {return m_durationMSecs;}
+    qint64 durationMSecs() const {return m_durationMSecs;}
 
     /** \brief Sets the duration in milliseconds.
      *
@@ -71,15 +71,15 @@ namespace kex
      * \date 2010-12-13
      * \param durationMSecs the new value for duration in milliseconds
      **/
-    void setDurationMSecs(const quint64 durationMSecs){ m_durationMSecs = durationMSecs;}
+    void setDurationMSecs(const qint64 durationMSecs){ m_durationMSecs = durationMSecs;}
 
     /** \brief Returns the delay in milliseconds.
      *
      * \author James Kyle KSpace MRI
      * \date 2010-12-13
-     * \return quint64 the delay of component in milliseconds
+     * \return qint64 the delay of component in milliseconds
      **/
-    quint64 delayMSecs() const {return m_delayMSecs;}
+    qint64 delayMSecs() const {return m_delayMSecs;}
 
     /** \brief Sets the delay in milliseconds.
      *
@@ -87,7 +87,7 @@ namespace kex
      * \date 2010-12-13
      * \param delayMSecs the new value for delay in milliseconds
      **/
-    void setDelayMSecs(const quint64 delayMSecs) {m_delayMSecs = delayMSecs;}
+    void setDelayMSecs(const qint64 delayMSecs);
 
     /** \brief Returns the  QStaticText object for component
      *
@@ -124,7 +124,7 @@ namespace kex
     /** \brief Returns the point size of the text.
      * \author James Kyle KSpace MRI
      * \date 2010-12-13
-     * \return quint64 the delay of component in milliseconds
+     * \return qint64 the delay of component in milliseconds
      **/
     int pointSize() const {return m_font.pointSize();}
 
@@ -241,8 +241,8 @@ namespace kex
     bool operator!=(const Component& other) const;
 
   private:
-    quint64     m_durationMSecs; //!< duration for component in milliseconds
-    quint64     m_delayMSecs; //!< delay for component in milliseconds
+    qint64     m_durationMSecs; //!< duration for component in milliseconds
+    qint64     m_delayMSecs; //!< delay for component in milliseconds
     QStaticText m_text; //!< text object used for rendering
     QColor      m_foreground; //!< foreground color used for text
     QColor      m_background; //!< background color used for text

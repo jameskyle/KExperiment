@@ -54,10 +54,10 @@ namespace kex
     *
     * \author James Kyle KSpace MRI
     * \date 2010-12-15
-    * \return quint64 duration in milliseconds for Trial
+    * \return qint64 duration in milliseconds for Trial
     * \sa Component()
     **/
-    quint64 durationMSecs() const;
+    qint64 durationMSecs() const;
 
    /** \brief Creates a copy of the component.
     *

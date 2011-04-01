@@ -8,8 +8,8 @@ namespace kex
                           const QString& description,
                           const QString& label,
                           const QSet<QString>& categories,
-                          quint64 durationMSecs,
-                          quint64 delayMSecs,
+                          qint64 durationMSecs,
+                          qint64 delayMSecs,
                           const QString& text,
                           const QString& family,
                           int pointSize,
@@ -70,5 +70,11 @@ namespace kex
   bool TextAction::operator!=(const Component& other) const
   {
     return !(*this == other);
+  }
+
+  void TextAction::setDelayMSecs(const qint64 delayMSecs)
+  {
+
+    m_delayMSecs = delayMSecs;
   }
 }

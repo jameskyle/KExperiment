@@ -1,0 +1,12 @@
+<action type="audio">
+  <header>
+    <description>
+      This action is used, the specified audio file is played. 
+    </description>
+    <label>Play audio.</label>
+  </header>
+
+  <audio>
+    /Users/jkyle/Projects/KExperimentProject/KExperiment/Tests/Data/41 _Ich bitt' dich, schreib mir die Es-Skala auf_, WoO 172.mp3 
+  </audio>
+</action>

@@ -1,0 +1,14 @@
+<action type="image">
+  <header>
+    <description>
+      This action is used, the specified image  is displayed for 60 seconds. 
+    </description>
+    <label>Display image for 60 seconds.</label>
+  </header>
+  
+  
+  <image  position="top-center">
+    /Users/jkyle/Library/Application Support/KExperiment/Actions/aa_lnormal.gif
+  </image>
+  <duration>10000</duration>
+</action>

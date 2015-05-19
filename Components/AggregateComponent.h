@@ -6,6 +6,7 @@
 #include <QDebug>
 
 #include "Components/OutputComponent.h"
+#include "Components/ComponentList.h"
 
 namespace kex
 {
@@ -41,21 +42,7 @@ namespace kex
      * \sa ~Action()
      **/
     virtual ~AggregateComponent ();
-    
-    virtual quint32 durationMSecs() const;
-    QList<OutputComponent::SharedPointer> childComponents() const;
-    void appendChild(OutputComponent::SharedPointer child);
-    
-    void insertChild(int index, OutputComponent* comp);
-    void insertChild(int index, OutputComponent::SharedPointer comp);
-
-    void removeChild(int index);
-    bool hasChildren() const;
-    int numChildren() const;
-    SharedPointer child(int row) const;
-    
-  private:
-    QList<SharedPointer> _childComponents;
+        
   };
 }
 #endif

@@ -13,14 +13,12 @@ namespace kex
 
       logger = &Logger::instance();
       config = &Config::instance();
-      
-      // FIXME http://tinyurl.com/2ga3sdx
+
       Config::ApplicationDataDirectoryTypes dt(Config::LogDirectory |
                                                Config::ActionDirectory |
                                                Config::ExperimentDirectory |
                                                Config::EventDirectory |
                                                Config::TrialDirectory);
-      
       dataDirectoryList = config->dataDirectoryList(dt);
       foreach(QString path, dataDirectoryList)
       {
@@ -152,12 +150,12 @@ namespace kex
       // create template files if needed
       writeTemplateFiles();
     }
-    
+
     bool isValidXml(QFile *file, const QXmlSchemaValidator *validator)
     {
       bool valid = false;
       Logger *logger = &Logger::instance();
-      
+
       if (validator->validate(file))
       {
         valid = true;
@@ -169,44 +167,17 @@ namespace kex
       }
       // reset the file to the zero position
       file->seek(0);
-      
+
       return valid;
     }
-    
-    QStringList xmlFileComponentList(Config::ApplicationDataDirectoryTypes t)
-    {
-      QStringList         dirList;
-      QStringList         xmlList;
-      Config              *config = &Config::instance();
-      
-      dirList = config->dataDirectoryList(t);
-      
-      foreach(QString path, dirList)
-      {
-        QDir dir(path);
-        QStringList filters;
-        QStringList fileList;
-        
-        filters << "*.xml";
-        dir.setNameFilters(filters);
-        fileList = dir.entryList(QDir::Files);
-        
-        foreach(QString file, fileList)
-        {
-          QString fullPath("%1/%2");
-          xmlList << fullPath.arg(path).arg(file);
-        }
-      }
-      return xmlList;
-    }
-    
+
     QString componentNameFromBaseName(const QString& baseName)
     {
       QString componentName(baseName);
       QString output;
       // remove .xml extenstion and replace '_' with a space
       componentName.replace("_", " ");
-      
+
       // insert a space before each camelcase, the size and character position
       // of fileName and componentName before the loop are the same, so we can
       // iterate over fileName for the char values.
@@ -223,6 +194,13 @@ namespace kex
       }
       return output.simplified();
     }
+    
+    QString componentNameFromFilePath(const QString& path)
+    {
+      QFileInfo info(path);
+      return componentNameFromBaseName(info.baseName());
+    }
+
 
   } // END_UTILITIES
 } // END_KEX_NAMESPACE

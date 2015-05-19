@@ -2,15 +2,15 @@
 
 namespace kex
 {
-  InformationPage::InformationPage(const OutputComponent::ComponentTypes component,
-                                   QWidget *parent) 
+  InformationPage::InformationPage(const Component::ComponentTypes component,
+                                   QWidget *parent)
   : BaseInformationPage(parent),
     _component(component),
     _actionTypeComboBoxHLayout(0)
   {
   }
-  
-  InformationPage::~InformationPage() 
+
+  InformationPage::~InformationPage()
   {
     if (_actionTypeComboBoxHLayout)
     {
@@ -28,39 +28,39 @@ namespace kex
     int extraLayoutPosition = _mainLayout.count() - 1;
     QComboBox *actionTypeComboBox;
     QLabel *actionTypeLabel;
-    
+
     switch (_component)
     {
-      case OutputComponent::ActionType:
+      case Component::ActionType:
         name = "Action";
         _actionTypeComboBoxHLayout = new QHBoxLayout;
         actionTypeComboBox = new QComboBox(this);
         actionTypeLabel = new QLabel(tr("Action Type:"), this);
-        
+
         actionTypeComboBox->setObjectName("actionTypeComboBox");
         actionTypeLabel->setObjectName("actionTypeLabel");
         actionTypeLabel->setBuddy(actionTypeComboBox);
-        
+
         actionTypeComboBox->addItem(tr("Choose..."));
-         actionTypes = Action::actionTypeList();
+         actionTypes = Component::actionTypes();
         actionTypeComboBox->addItems(actionTypes);
-        
-        _mainLayout.insertLayout(extraLayoutPosition, 
+
+        _mainLayout.insertLayout(extraLayoutPosition,
                                  _actionTypeComboBoxHLayout);
         _actionTypeComboBoxHLayout->addWidget(actionTypeLabel);
         _actionTypeComboBoxHLayout->addWidget(actionTypeComboBox);
-        
+
         registerField("action", actionTypeComboBox);
         break;
-      case OutputComponent::EventType:
+      case Component::EventType:
         name = "Event";
         break;
-      case OutputComponent::TrialType:
+      case Component::TrialType:
         name = "Trial";
         break;
-      case OutputComponent::ExperimentType:
+      case Component::ExperimentType:
         name = "Experiment";
-        break;        
+        break;
     }
 
     setObjectName(QString("%1InformationPage").arg(name));

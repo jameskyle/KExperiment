@@ -16,6 +16,7 @@ namespace kex
    **/
   class LiveView : public QFrame, private Ui::ViewerFrame 
   {
+    Q_OBJECT
   public:
     /** \brief  LiveView constructor
      * 

@@ -4,13 +4,13 @@
 #include <QWizard>
 #include <QDebug>
 
-#include <Wizards/ComponentCreation/WelcomePage.h>
-#include <Wizards/ComponentCreation/InformationPage.h>
-#include <Wizards/ComponentCreation/ConfigurationPage.h>
-#include <Wizards/ComponentCreation/FinishedPage.h>
+#include "UI/Wizards/ComponentCreation/WelcomePage.h"
+#include "UI/Wizards/ComponentCreation/InformationPage.h"
+#include "UI/Wizards/ComponentCreation/ConfigurationPage.h"
+#include "UI/Wizards/ComponentCreation/FinishedPage.h"
 
-#include <Components/Actions/Action.h>
-#include <Common/Global.h>
+#include "Components/Component.h"
+#include "Common/Config.h"
 
 namespace kex
 {
@@ -43,11 +43,11 @@ namespace kex
     * \param  parent Sets the parent QWidget. default = 0
     * \sa setupPages()
     **/
-    CreationWizard(const OutputComponent::ComponentTypes component,
+    CreationWizard(const Component::ComponentTypes component,
                    QWidget *parent = 0);
-    
+
     ~CreationWizard() {}
-      
+
     enum {
       Page_Welcome,
       Page_Information,

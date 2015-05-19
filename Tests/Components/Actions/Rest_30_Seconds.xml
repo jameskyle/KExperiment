@@ -1,0 +1,10 @@
+<action type="rest">
+  <header>
+    <label>Pauses for 30 seconds.</label>
+    <description>
+      When this action is inserted into a Event, a 30s pause is performed at
+      the point of its insertion.
+    </description>
+  </header>
+  <duration>30000</duration> <!-- 30 seconds in milliseconds -->
+</action>

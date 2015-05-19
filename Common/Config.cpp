@@ -1,4 +1,4 @@
-#include "Global.h"
+#include "Config.h"
 
 namespace kex
 {
@@ -6,20 +6,21 @@ namespace kex
    * TODO
    */
   Config::Config() :
-    _organizationName("KSpace MRI"),
-    _domainName("kspace-mri.com"),
-    _applicationName("KExperiment"),
-    _storageLocation(QString("%1/%2")
+    m_organizationName("KSpace MRI"),
+    m_domainName("kspacemri.com"),
+    m_applicationName("KExperiment"),
+    m_storageLocation(QString("%1/%2")
       .arg(QDesktopServices::storageLocation(QDesktopServices::DataLocation))
-      .arg(_applicationName)),
-    _componentSchemaFile(":/schemas/DataTypes.xsd")
+      .arg(m_applicationName)),
+    m_componentSchemaFile(":/schemas/DataTypes.xsd")
   {
     // populate the directory type list
-    _directoryTypeList[LogDirectory]        = "Log";
-    _directoryTypeList[ActionDirectory]      = "Actions";
-    _directoryTypeList[ExperimentDirectory] = "Experiments";
-    _directoryTypeList[EventDirectory]      = "Events";
-    _directoryTypeList[TrialDirectory]      = "Trials";
+    m_directoryTypeList[LogDirectory]        = "Log";
+    m_directoryTypeList[ActionDirectory]      = "Actions";
+    m_directoryTypeList[ExperimentDirectory] = "Experiments";
+    m_directoryTypeList[EventDirectory]      = "Events";
+    m_directoryTypeList[TrialDirectory]      = "Trials";
+
   }
 
   const QString
@@ -28,7 +29,7 @@ namespace kex
   {
     QString path(storageLocation());
 
-    path.append("/").append(_directoryTypeList[directoryType]);
+    path.append("/").append(m_directoryTypeList[directoryType]);
 
     return path;
   }
@@ -41,7 +42,7 @@ namespace kex
 
     // add the core lists
     foreach(ApplicationDataDirectoryTypes directoryType,
-            _directoryTypeList.keys())
+            m_directoryTypeList.keys())
     {
       if ((dt & directoryType))
       {
@@ -51,6 +52,33 @@ namespace kex
 
     return directoryList;
   }
+
+  QStringList Config::xmlFileComponentList(Config::ApplicationDataDirectoryTypes t)
+  {
+    QStringList         dirList;
+    QStringList         xmlList;
+
+    dirList = dataDirectoryList(t);
+
+    foreach(QString path, dirList)
+    {
+      QDir dir(path);
+      QStringList filters;
+      QStringList fileList;
+
+      filters << "*.xml";
+      dir.setNameFilters(filters);
+      fileList = dir.entryList(QDir::Files);
+
+      foreach(QString file, fileList)
+      {
+        QString fullPath("%1/%2");
+        xmlList << fullPath.arg(path).arg(file);
+      }
+    }
+    return xmlList;
+  }
+
 
 //  bool Config::registerComponentMetaData(const QString& classid,
 //                                         QMap<Config::MetaDataType,
@@ -76,12 +104,12 @@ namespace kex
   void Config::addTemplate(ApplicationDataDirectoryTypes storagePath,
                            QString temp)
   {
-    _templates.insert(storagePath, temp);
+    m_templates.insert(storagePath, temp);
   }
 
   const QStringList Config::templates(ApplicationDataDirectoryTypes t) const
   {
-    return _templates.values(t);
+    return m_templates.values(t);
   }
 
 

@@ -2,34 +2,47 @@
 
 namespace kex
 {
-  /**
-   * TODO
-   */
-  RestAction::RestAction(QObject *parent) : Action(parent)
+
+  RestAction::RestAction(QObject             *parent,
+                         Component::Pointer   parentComponent,
+                         const QString&       name,
+                         const QString&       description,
+                         const QString&       label,
+                         const QSet<QString>& categories,
+                         qint64              durationMSecs) :
+  Component(parent, parentComponent, name, description, label, categories),
+  m_durationMSecs(durationMSecs)
   {
+    m_componentType = Component::RestActionType;
   }
 
-  /**
-   * TODO
-   */
   RestAction::~RestAction()
   {
-    
+
   }
 
-  /**
-   * TODO
-   */
-  void RestAction::begin()
+  RestAction::Pointer RestAction::clone() const
   {
-    
+    RestAction *action = new RestAction(parent(),     parentComponent(),
+                                        name(),       description(),
+                                        label(),      categories(),
+                                        durationMSecs());
+
+    return action;
   }
-  
-  /*
-  * TODO
-  */
-  void RestAction::abort()
+
+  bool RestAction::operator==(const Component& other) const
   {
-    
+    const RestAction* derived = qobject_cast<const RestAction*>(&other);
+    bool equal = (derived &&
+                  Component::operator==(other) &&
+                  durationMSecs() == derived->durationMSecs());
+
+    return equal;
+  }
+
+  bool RestAction::operator!=(const Component& other) const
+  {
+    return !(*this == other);
   }
 }

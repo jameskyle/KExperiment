@@ -1,0 +1,107 @@
+<event>
+  <header>
+    <label>Bar</label>
+    <description>described</description>
+  </header>
+  
+  <action type="video">
+    <header>
+      <name>Video Example1</name>
+    </header>
+  </action>
+
+  <action type="text">
+    <header>
+      <name>Text Example1</name>
+    </header>
+    <duration>15000</duration>
+    <delay>5000</delay>
+  </action>
+  
+  <!-- <action type="audio">
+    <header>
+      <name>Audio Example1</name>
+    </header>
+    <delay>10000</delay>
+  </action>
+  
+  <action type="audio">
+    <header>
+      <name>Audio Example1</name>
+    </header>
+    <delay>15000</delay>
+  </action>
+  
+  <action type="audio">
+    <header>
+      <name>Audio Example1</name>
+    </header>
+    <delay>20000</delay>
+  </action> -->
+
+  <action type="image">
+    <header>
+      <name>Image Example1</name>
+    </header>
+    <duration>5000</duration>
+    <image  position="center">
+      /Users/jkyle/Library/Application Support/KExperiment/Actions/aa_lnormal.gif
+     </image>
+   </action>
+
+  <action type="image">
+    <header>
+      <name>Image Example1</name>
+    </header>
+    <duration>5000</duration>
+    <delay>5000</delay>
+    <image  position="top-left">
+      /Users/jkyle/Library/Application Support/KExperiment/Actions/aa_lnormal.gif
+     </image>
+  </action>
+  
+  <action type="image">
+    <header>
+      <name>Image Example1</name>
+    </header>
+    <duration>5000</duration>
+    <delay>10000</delay>
+    <image  position="top-right">
+      /Users/jkyle/Library/Application Support/KExperiment/Actions/aa_lnormal.gif
+     </image>
+  </action>
+  
+  <action type="image">
+    <header>
+      <name>Image Example1</name>
+    </header>
+    <duration>5000</duration>
+    <delay>15000</delay>
+    <image  position="bottom-right">
+      /Users/jkyle/Library/Application Support/KExperiment/Actions/aa_lnormal.gif
+     </image>
+  </action>
+  
+  <action type="image">
+    <header>
+      <name>Image Example1</name>
+    </header>
+    <duration>5000</duration>
+    <delay>20000</delay>
+    <image  position="bottom-left">
+      /Users/jkyle/Library/Application Support/KExperiment/Actions/aa_lnormal.gif
+     </image>
+  </action>
+  
+  <action type="image">
+    <header>
+      <name>Image Example1</name>
+    </header>
+    <duration>5000</duration>
+    <delay>25000</delay>
+    <image  position="center">
+      /Users/jkyle/Library/Application Support/KExperiment/Actions/aa_lnormal.gif
+     </image>
+  </action>
+
+</event>

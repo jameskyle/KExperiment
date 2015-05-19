@@ -14,12 +14,13 @@
 #include <QXmlSchemaValidator>
 #include <QStringList>
 
-#include "Common/Global.h"
+#include "Common/Config.h"
 #include "Components/ComponentFactory.h"
-#include "Components/OutputComponent.h"
+#include "Components/Component.h"
 
 namespace kex
 {
+  class Component;
   namespace Utilities
   {
     void setupAppStorageEnvironment();
@@ -42,7 +43,7 @@ namespace kex
     void writeTemplateFiles();
 
 
-    /** \brief  Registers the comonents with the ComponentFactory
+    /** \brief  Registers the components with the ComponentFactory
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
@@ -73,48 +74,31 @@ namespace kex
      * \version $Rev$  \sa Config
      **/
     void configureApplication();
-    
+
     /** \brief  Validates the provided file using the specified validator.
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
      * Returns true if file conforms to the validator schema.
-     * 
+     *
      * \author James Kyle
      * \author $LastChangedBy$
      * \date 2010-5-3
      * \date $LastChangedDate$
      * \param file the file to be validated
      * \prarm validator validator used to validate
-     * \version $Rev$ 
+     * \version $Rev$
      **/
     bool isValidXml(QFile *file, const QXmlSchemaValidator *validator);
-    
-    /** \brief  Returns a list of paths to the component xml definition files
-     * 
-     * Copyright 2010 KSpace MRI. All Rights Reserved.
-     *
-     * \author James Kyle
-     * \author $LastChangedBy$
-     * \date 2010-5-3
-     * \date $LastChangedDate$
-     * \version $Rev$  \sa validateXml()
-     **/
-    QStringList xmlFileComponentList(kex::Config::ApplicationDataDirectoryTypes t =
-                                     kex::Config::ApplicationDataDirectoryTypes(
-                                      kex::Config::ActionDirectory | 
-                                      kex::Config::EventDirectory | 
-                                      kex::Config::TrialDirectory |
-                                      kex::Config::ExperimentDirectory));
-    
+
     /** \brief  Translates the given fileName string to a valid compnent name.
-     * 
+     *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
      *
      * Al underscores in a comoponent name are converted to spaces
-     * and the .xml extension is removed. Also, camelcase names are expanded 
+     * and the .xml extension is removed. Also, camelcase names are expanded
      * inserting a space before each capital letter.
-     * 
+     *
      * \author James Kyle
      * \author $LastChangedBy$
      * \date 2010-5-4
@@ -124,9 +108,76 @@ namespace kex
      * \version $Rev$
      **/
     QString componentNameFromBaseName(const QString& fileName);
-    
-    bool sortComponentQList(const OutputComponent* c1, 
-                            const OutputComponent* *c2);
+
+    QString componentNameFromFilePath(const QString& path);
+
+    /** \brief  Deletes all the items in the range [begin, end)
+     *
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * Delets all the items in the range [begin, end] using the C++ delete
+     * operator. The item type must be a pointer type.
+     *
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-4
+     * \date $LastChangedDate$
+     * \param begin an STL forward iterator representing the start point
+     * \param end an STL forward iterator representing the stop point
+     * \version $Rev$
+     **/
+    template <class ForwardIterator>
+    void deleteAll(ForwardIterator begin, ForwardIterator end)
+    {
+      while(begin != end)
+      {
+        delete *(begin++);
+      }
+    }
+
+    /** \brief  Deletes all the items in the container
+     *
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * Delets all the items in the container. The container must have a begin()
+     * and end() method that returns an STL iterator.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-4
+     * \date $LastChangedDate$
+     * \param list container that provides begin() and end() iterators
+     * \version $Rev$
+     **/
+    template <class Container>
+    void deleteAll(Container c)
+    {
+      deleteAll(c.begin(), c.end());
+    }
+
+
+    // a find method. For some reason the boost::iterator_facade iterators is
+    // throwing a compile error in std::find for the value. When that is
+    // addressed, std::find can be replaced for this method
+    template<class ForwardIterator, class ValueType>
+    ForwardIterator find(ForwardIterator begin, ForwardIterator end,
+                         ValueType value)
+    {
+      while (begin != end)
+      {
+        if ((*begin) == value)
+        {
+          break;
+        }
+        ++begin;
+      }
+
+      return begin;
+    }
+
+    bool sortComponentQList(const Component::Pointer c1,
+                            const Component::Pointer *c2);
   };
 
 }

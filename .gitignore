@@ -9,4 +9,8 @@ Makefile
 build
 *.xcodeproj
 *.tmproj
+*.pdf
+*.xpr
 Info.plist
+Tests/ComponentTemplates.h
+CMakeLists.txt.user*

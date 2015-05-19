@@ -7,9 +7,11 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QVariant>
+#include <QDir>
 
-#include <Common/Uncopyable.h>
-#include <Common/Logger.h>
+#include "Common/Uncopyable.h"
+
+#include "Common/Logger.h"
 
 namespace kex
 {
@@ -21,7 +23,7 @@ namespace kex
    * \author $LastChangedBy$
    * \date 2010-4-8
    * \date $LastChangedDate$
-   * \version $Rev$  \sa Types.h Global.h
+   * \version $Rev$  \sa Types.h Config.h
    **/
   class Config : private Uncopyable
   {
@@ -57,7 +59,7 @@ namespace kex
      * \date $LastChangedDate$
      * \param directoryType the type of directory
      * \return QString holds the path tot he directory
-     * \version $Rev$  \sa OutputComponent::DataDirectoryType
+     * \version $Rev$  \sa Component::DataDirectoryType
      **/
     const QString
     dataDirectoryPath(const ApplicationDataDirectoryTypes directoryType) const;
@@ -75,7 +77,7 @@ namespace kex
      * \date 2010-4-10
      * \date $LastChangedDate$
      * \version $Rev$
-     * \sa OutputComponent::DataDirectoryType
+     * \sa Component::DataDirectoryType
      * \sa Utilities::setupAppStorageEnvironment
      **/
     const QStringList dataDirectoryList(ApplicationDataDirectoryTypes dt) const;
@@ -117,28 +119,46 @@ namespace kex
      **/
    // const QMap<Config::MetaDataType, QVariant> metaData(QString& key) const;
 
-    const QString organizationName() const {return _organizationName;}
-    const QString domainName() const {return _domainName;}
-    const QString applicationName() const {return _applicationName;}
-    const QString storageLocation() const {return _storageLocation;}
-    const QString componentSchemaFile() const { return _componentSchemaFile;}
+    const QString organizationName() const {return m_organizationName;}
+    const QString domainName() const {return m_domainName;}
+    const QString applicationName() const {return m_applicationName;}
+    const QString storageLocation() const {return m_storageLocation;}
+    const QString componentSchemaFile() const { return m_componentSchemaFile;}
+
     const QStringList templates(ApplicationDataDirectoryTypes t) const;
     void addTemplate(ApplicationDataDirectoryTypes storagePath, QString temp);
 
+    /** \brief  Returns a list of paths to the component xml definition files
+     *
+     * Copyright 2010 KSpace MRI. All Rights Reserved.
+     *
+     * \author James Kyle
+     * \author $LastChangedBy$
+     * \date 2010-5-3
+     * \date $LastChangedDate$
+     * \version $Rev$  \sa validateXml()
+     **/
+    QStringList xmlFileComponentList(kex::Config::ApplicationDataDirectoryTypes t =
+                                     kex::Config::ApplicationDataDirectoryTypes(
+                                     kex::Config::ActionDirectory |
+                                     kex::Config::EventDirectory |
+                                     kex::Config::TrialDirectory |
+                                     kex::Config::ExperimentDirectory));
+
   private:
-    QString _organizationName;
-    QString _domainName;
-    QString _applicationName;
-    QString _storageLocation;
-    QList<ApplicationDataDirectoryTypes> _dataDirectoryList;
-    QMultiMap<ApplicationDataDirectoryTypes, QString> _templates;
-    QString _componentSchemaFile;
+    QString m_organizationName;
+    QString m_domainName;
+    QString m_applicationName;
+    QString m_storageLocation;
+    QList<ApplicationDataDirectoryTypes> m_dataDirectoryList;
+    QMultiMap<ApplicationDataDirectoryTypes, QString> m_templates;
+    QString m_componentSchemaFile;
 
     //!< map of class's application metadata
     //QMap<QString, QMap<MetaDataType, QVariant> > _componentMetaDataMap;
 
     // map between an ApplicationDataDirectoryTypes and its name
-    QMap<ApplicationDataDirectoryTypes, QString> _directoryTypeList;
+    QMap<ApplicationDataDirectoryTypes, QString> m_directoryTypeList;
 
     Config();
     ~Config() {}

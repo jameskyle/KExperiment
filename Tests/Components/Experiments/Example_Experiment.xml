@@ -1,0 +1,16 @@
+<experiment>
+    <header>
+        <label>An example experiment.</label>
+        <description>Description for the example experiment.</description>
+        <categories>
+            <item>Experiment</item>
+            <item>Examples</item>
+        </categories>
+    </header>
+ 
+    <trial>
+        <header>
+            <name>Double Event Example</name>    
+        </header>
+    </trial>
+</experiment>

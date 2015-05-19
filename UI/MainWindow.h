@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include <QObjectCleanupHandler>
 #include <QDebug>
 #include <QXmlStreamReader>
@@ -11,12 +12,14 @@
 
 #include "Wizards/ComponentCreation/CreationWizard.h"
 #include "Wizards/ComponentCreation/ComponentSelectionDialog.h"
-#include "Components/ComponentList.h"
+
+#include "Components/Components.h"
+#include "Components/ComponentDomParser.h"
 #include "ComponentLibrary.h"
 #include "LiveView.h"
 #include "Models/ComponentModel.h"
-#include "Utilities/Utilities.h"
-#include "Common/Global.h"
+#include "Models/ComponentSortFilterProxyModel.h"
+#include "Common/Config.h"
 
 #include "ui_MainWindow.h"
 
@@ -43,9 +46,9 @@ namespace kex
     **/
     //void connectButtonToLibraryDock(QToolButton *button, );
 
-
-
   private:
+    Component::ComponentList m_components;
+
     /** \brief  Creates an Experiment Library dock widget
      *
      * Copyright 2010 KSpace MRI. All Rights Reserved.
@@ -58,7 +61,7 @@ namespace kex
      * \date $LastChangedDate$
     * \version $Rev$  \sa ComponentLibraryDockWidget
     **/
-    void createLibraryDocks();
+    void createViews();
 
     /** \brief  Populates the componentList from the xml component files.
      *
@@ -71,7 +74,7 @@ namespace kex
      * \author $LastChangedBy$
      * \date 2010-5-2
      * \date $LastChangedDate$
-     * \version $Rev$  \sa OutputComponent ComponentList
+     * \version $Rev$  \sa Component ComponentList
      **/
     void populateComponentList();
 
@@ -79,18 +82,19 @@ namespace kex
 
     void makeActionConnections();
 
-    ComponentLibrary *experimentLibraryDock;
-    ComponentLibrary *actionLibraryDock;
-    ComponentLibrary *eventLibraryDock;
-    ComponentLibrary *trialLibraryDock;
-    ComponentList    *componentList;
-    QDataWidgetMapper *mapper;
+    ComponentLibrary *m_componentLibraryDock;
+    QDataWidgetMapper *m_mapper;
+    ComponentModel&   m_componentModel;
 
   public slots:
     void selectComponentWizard();
-    void launchComponentLibrary(OutputComponent::ComponentTypes component);
+    void launchComponentLibrary(Component::ComponentTypes component);
+    void updateTreeViewRoot(const QModelIndex& index);
 
     void showLiveView();
+
+  signals:
+    void filterComponents(Component::ComponentTypes c_types);
   };
 }
 

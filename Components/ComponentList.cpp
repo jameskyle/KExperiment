@@ -1,112 +1,288 @@
 #include "ComponentList.h"
 
 namespace kex {
-  ComponentList::ComponentList() :
-    _componentList()
+/*  bool ComponentList::sortComponentList(Node::Pointer c1, Node::Pointer c2)
+  {
+    return (c1->component()->name() < c2->component()->name());
+  }*/
+  
+  ComponentList::Node::Node(Component::SharedPointer comp) : 
+  m_component(comp),
+  m_durationMSecs(0),
+  m_parent(0),
+  m_previous(0),
+  m_next(0),
+  m_children(new ComponentList(this))
+  {
+  }
+  
+  ComponentList::Node::Node(Component::Pointer comp) : 
+  m_component(comp),
+  m_durationMSecs(0),
+  m_parent(0),
+  m_previous(0),
+  m_next(0),
+  m_children(new ComponentList(this))  
   {
     
   }
-  ComponentList::~ComponentList() 
+  
+  ComponentList::Node::~Node()
   {
+    Utilities::deleteAll(*m_children);
+    delete m_children;
+  }
+  
+  ComponentList& ComponentList::globalList()
+  {
+    static ComponentList cList;
+    return cList;
   }
 
-  ComponentList& ComponentList::instance()
+  ComponentList& ComponentList::Node::children()
   {
-    static ComponentList componentList;
-    return componentList;
+    return *m_children;
   }
-
-  OutputComponent::SharedPointer 
-  ComponentList::find(const QString& componentName) const
+  
+  int ComponentList::Node::position() const
   {
-    ComponentQSetIterator i(_componentList);
-    OutputComponent::SharedPointer currentComponent;
-    OutputComponent::SharedPointer component;
+    ComponentList::const_iterator it(this);
+    int pos(0);
     
-    while (i.hasNext())
+    while ((*it)->m_previous)
     {
-      currentComponent = i.next();
+      ++pos;
+      --it;
+    }
+    
+    return pos;
+  }
+  
+  ComponentList::ComponentList(Node::Pointer parent) :
+  m_head(0),
+  m_tail(0),
+  m_parent(parent),
+  m_size(0)
+  
+  {
+  }
+  
+  ComponentList::~ComponentList() {}
+  int ComponentList::size() const
+  {
+    return m_size;
+  }
+  
+  ComponentList::Node::Pointer ComponentList::front() 
+  {
+    return m_head;
+  }
+  
+  ComponentList::Node::Pointer ComponentList::back()
+  {
+    return m_tail;
+  }
+  
+  bool ComponentList::empty() const
+  {
+    return (m_size == 0);
+  }
+  
+  void ComponentList::push_back(Node::Pointer node)
+  {
+    Q_ASSERT(!node->m_previous && !node->m_next && !node->m_parent);
+    
+    node->m_parent = m_parent;
+    
+    if (m_tail)
+    {
+      m_tail->m_next = node;
+      node->m_previous = m_tail;
+      m_tail = node;
+    } else {
+      Q_ASSERT(m_tail == m_head);
+      m_head = m_tail = node;
+    }
+    
+    connectNodeComponents(m_tail->m_previous, m_tail);
+    ++m_size;
+  }
+  
+  void ComponentList::push_back(Component::Pointer comp)
+  {
+    Node::Pointer node = new Node(comp);
+    push_back(node);
+  }
+  
+  void ComponentList::push_back(Component::SharedPointer comp)
+  {
+    Node::Pointer node = new Node(comp);
+    push_back(node);
+  }
+  
+  void ComponentList::push_front(Node::Pointer node)
+  {
+    Q_ASSERT(!node->m_previous && !node->m_next && !node->m_parent);
+    
+    node->m_parent = m_parent;
+    
+    if (m_head)
+    {
+      Q_ASSERT(!m_head->m_previous);
+      m_head->m_previous = node;
+      node->m_next = m_head;
+    } else {
+      m_tail = node;
+    }
+    
+    m_head = node;
+    
+    connectNodeComponents(m_head, m_head->m_next);
+    ++m_size;
+  }
+  
+  void ComponentList::push_front(Component::Pointer comp)
+  {
+    Node::Pointer node = new Node(comp);
+    push_front(node);
+  }
 
-      if (currentComponent->name() == componentName)
+  void ComponentList::push_front(Component::SharedPointer comp)
+  {
+    Node::Pointer node = new Node(comp);
+    push_front(node);
+  }
+  
+  ComponentList::iterator ComponentList::begin() const 
+  {
+    return iterator(m_head);
+  }
+  
+  ComponentList::iterator ComponentList::end() const
+  {
+    return iterator(0);
+  }
+  
+  void ComponentList::clear()
+  {
+    iterator it(begin());
+    Node::Pointer p;
+    
+    while (it != end())
+    {
+      p = *it;
+      ++it;
+      p->m_previous = 0;
+      p->m_next = 0;
+      p->m_parent = 0;
+    }
+    
+    m_head = m_tail = 0;
+    m_size = 0;
+  }
+  
+  void ComponentList::remove(Node::Pointer node)
+  {
+    iterator it(Utilities::find(begin(), end(), node));
+    
+    if (it != end())
+    {
+      if ((*it)->m_previous)
       {
-        component = currentComponent;
+        (*it)->m_previous->m_next = (*it)->m_next;
+        
+      } else {
+        
+        m_head = (*it)->m_next;
+      }
+      
+      if ((*it)->m_next)
+      {
+        (*it)->m_next->m_previous = (*it)->m_previous;
+        
+      } else {
+        
+        m_tail = (*it)->m_previous;
+      }
+      
+      (*it)->m_previous = 0;
+      (*it)->m_next = 0;
+      (*it)->m_parent = 0;
+      --m_size;
+      
+    }
+  }	
+  
+  ComponentList::iterator ComponentList::findByName(const QString& name) const
+  {
+    iterator b(begin());
+    iterator e(end());
+    while (b != e)
+    {
+      if ((*b)->component()->name() == name)
+      {
         break;
       }
+      ++b;
     }
-    return component;
+    
+    return b;
   }
-
-  void ComponentList::append( OutputComponent::SharedPointer interface)
+  
+  int ComponentList::Node::durationMSecs() const
   {
-    if (_componentList.contains(interface))
-    {
-      Logger *logger = &Logger::instance();
+    int duration(0);
 
-      QString msg("ComponentList::append");
-      QString info("This component has already been defined: %1");
-      logger->displayMessage(msg, info.arg(interface->name()),
-                             QMessageBox::Ok, Logger::WarningLogLevel);
+    if ((m_component->componentType() & Component::ActionType))
+    {
+      duration = m_component->property("durationMSecs").toInt();
     } else
     {
-      _componentList.insert(interface);
-    }
-  }
-
-  bool ComponentList::remove( OutputComponent::SharedPointer comp)
-  {
-    bool found(false);
-
-    if (_componentList.contains(comp))
-    {
-      found = _componentList.remove(comp);
-    }
-
-    return found;
-  }
-  
-  void ComponentList::append(OutputComponent* interface)
-  {
-    OutputComponent::SharedPointer p(interface);
-    append(p);
-  }
-
-  const ComponentList::ComponentQList 
-  ComponentList::filter(OutputComponent::ComponentTypes types) const
-  {
-    ComponentQList  filteredList;
-    
-   ComponentQSetIterator i(_componentList);
-    
-    while (i.hasNext())
-    {
-      OutputComponent::SharedPointer p(i.next());
-      if (p->componentType() & types )
+      iterator it(m_children->begin());
+      while (it != m_children->end())
       {
-        filteredList.append(p);
+        duration += (*it)->durationMSecs();
+        ++it;
       }
     }
-    
-    qSort(filteredList.begin(), filteredList.end(), sortComponentQList);
-    
-    return filteredList;
+
+    return duration;
   }
 
-  int ComponentList::count() const
+  void ComponentList::connectNodeComponents(Node::Pointer previous, 
+                                            Node::Pointer next) const
   {
-    return _componentList.count();
-  }
-
-  bool ComponentList::sortComponentQList(const  OutputComponent::SharedPointer c1,
-                                         const  OutputComponent::SharedPointer c2)
-  {
-    return (c1->name() < c2->name());
+ //   bool success(false);
+//    Component* p = previous->m_component.data();
+//    Component* n = next->m_component.data();
+//    
+//    success = QObject::connect(p, SIGNAL(complete()), n, SLOT(begin()));
+//    
+//    if (!success)
+//    {
+//      QString msg = "Failed to connect component %1 from %2";
+//      msg.arg(previous->m_component->name()).arg(next->m_component->name());
+//      Logger::instance().log(msg, 0, Logger::WarningLogLevel);
+//    }
+    
   }
   
-  const ComponentList::ComponentQList ComponentList::toList() const
+  void ComponentList::disconnectNodeComponents(Node::Pointer previous, 
+                                               Node::Pointer next) const
   {
-    ComponentQList qlist = _componentList.toList();
+    bool success(false);
+    Component* p = previous->m_component.data();
+    Component* n = next->m_component.data();
     
-    qSort(qlist.begin(), qlist.end(), sortComponentQList);
-    return qlist;
+    success = QObject::disconnect(p, SIGNAL(complete()), n, SLOT(begin()));
+    
+    if (!success)
+    {
+      QString msg = "Failed to disconnect component %1 from %2";
+      msg.arg(previous->m_component->name()).arg(next->m_component->name());
+      Logger::instance().log(msg, 0, Logger::WarningLogLevel);
+    }
+    
   }
+
 }

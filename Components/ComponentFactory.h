@@ -9,27 +9,16 @@
 #include <QMap>
 #include <QVariant>
 
-#include "OutputComponent.h"
-#include "Actions/RestAction.h"
-#include "Actions/TextAction.h"
-#include "Actions/ImageAction.h"
-#include "Actions/AudioAction.h"
-#include "Actions/VideoAction.h"
-#include "Event/Event.h"
-#include "Trial/Trial.h"
-#include "Experiment/Experiment.h"
-#include "ComponentDomParser.h"
-
-#include <Common/Global.h>
-
-class OutputComponent;
+#include "Components/Components.h"
+#include "Common/Config.h"
+#include "Common/Uncopyable.h"
 
 namespace kex
 {
   //!< factor creator pointer
-  typedef boost::function<OutputComponent* ()> Creator;
+  typedef boost::function<Component::Pointer ()> Creator;
 
-  /** \brief  Factory for the OutputComponent interface
+  /** \brief  Factory for the Component interface
   *
   * This singleton class creates specific Actions given the appropriate
   * registered identifier.
@@ -55,7 +44,7 @@ namespace kex
     * \date 2010-04-02
     * \return ComponentFactory a reference to the ComponentFactory object.
     *
-    * \sa OutputComponent
+    * \sa Component
     **/
     static ComponentFactory& instance();
 
@@ -63,21 +52,21 @@ namespace kex
     * method
     *
     * Provides a pointer to a newly created object of type 'key'. The object
-    * must be derived from the OutputComponent and be registered before.
+    * must be derived from the Component and be registered before.
     *
     * \author James Kyle KSpace MRI
     * \date 2010-04-02
     * \param  key the mapped key to the registered component.
     *
-    * \return OutputComponent* pointer to the newly created object
+    * \return Component::Pointer pointer to the newly created object
     *
-    * \sa OutputComponent
+    * \sa Component
     **/
-    OutputComponent* create(OutputComponent::ComponentTypes key) const;
-    OutputComponent* create(OutputComponent::ComponentTypes key,
+    Component::Pointer create(Component::ComponentTypes key) const;
+    Component::Pointer create(Component::ComponentTypes key,
                                const QString& templateName) const;
 
-    /** \brief Returns a list of Action types
+    /** \brief Returns a list of Component types
     *
     * Each Action has a type specifier. That type must be registered in
     * order to appear in selections or filter options in Libraries. Once
@@ -89,13 +78,13 @@ namespace kex
     *
     * /sa registerComponentTypes() registerComponentType()
     **/
-    const QList<OutputComponent::ComponentTypes> componentList();
-    
+    const QList<Component::ComponentTypes> componentList();
+
   private:
     ~ComponentFactory () {}
     ComponentFactory();    //!< private constructor
 
-    QMap<OutputComponent::ComponentTypes, Creator> _componentCreatorMap;
+    QMap<Component::ComponentTypes, Creator> m_componentCreatorMap;
 
   };
 

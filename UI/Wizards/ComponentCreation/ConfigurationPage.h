@@ -7,10 +7,10 @@
 #include <QListView>
 #include <QSignalMapper>
 
-#include <Wizards/ComponentCreation/BaseConfigurationPage.h>
 #include "Components/Event/Event.h"
-#include "LiveView.h"
-#include "MainWindow.h"
+#include "UI/Wizards/ComponentCreation/BaseConfigurationPage.h"
+#include "UI/LiveView.h"
+#include "UI/MainWindow.h"
 #include "Utilities/Utilities.h"
 
 namespace kex
@@ -29,36 +29,36 @@ namespace kex
   {
     Q_OBJECT
   public:
-    ConfigurationPage(const OutputComponent::ComponentTypes component,
+    ConfigurationPage(const Component::ComponentTypes component,
                       QWidget *parent = 0);
     ~ConfigurationPage();
 
     void initializePage();
-    
+
     QLabel         durationLabel;
     QLabel         componentListLabel;
 
     QListView       componentListView;
-  
+
     QDoubleSpinBox durationSpinBoxMsecs;
-    
+
     QHBoxLayout*   libraryToolButtonHLayout;
     QHBoxLayout     actionTypeHLayout;
     QVBoxLayout     componentListVLayout;
     QHBoxLayout     durationHLayout;
-  
+
   private:
     QHBoxLayout* getLibraryButtonLayout();
     void setTitles();
-    
-    OutputComponent::ComponentTypes _component;
-    
+
+    Component::ComponentTypes _component;
+
   signals:
-    void launchComponentLibraryRequested(OutputComponent::ComponentTypes component);
-    
+    void launchComponentLibraryRequested(Component::ComponentTypes component);
+
   private slots:
     void dispatchLibraryRequest(const QString& libraryType);
-    
+
   };
 
 }

@@ -2,6 +2,8 @@
 
 namespace kex
 {
+  const double BaseConfigurationPage::DURATION_STEPSIZE = 0.5;
+
   BaseConfigurationPage::BaseConfigurationPage(QWidget *parent)
     : QWizardPage(parent),
       _nameLabel(tr("Name:")),
